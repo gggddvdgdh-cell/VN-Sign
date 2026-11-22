@@ -82,6 +82,7 @@ public final class CertManager: ObservableObject {
             self.certificates.append(newCert)
             if self.activeCertificate == nil {
                 self.activeCertificate = newCert
+                UserDefaults.standard.set(newCert.id.uuidString, forKey: "active_certificate_id")
             }
             self.persistCerts()
         }
@@ -145,6 +146,7 @@ public final class CertManager: ObservableObject {
             self.profiles.append(profile)
             if self.activeProfile == nil {
                 self.activeProfile = profile
+                UserDefaults.standard.set(profile.id.uuidString, forKey: "active_profile_id")
             }
             self.persistProfiles()
         }
@@ -193,6 +195,78 @@ public final class CertManager: ObservableObject {
         return hash.map { String(format: "%02X", $0) }.joined()
     }
     
+    // MARK: - Certificate & Profile Actions
+    
+    public func setActiveCertificate(id: UUID) {
+        let performSet = {
+            if let cert = self.certificates.first(where: { $0.id == id }) {
+                self.activeCertificate = cert
+                UserDefaults.standard.set(id.uuidString, forKey: "active_certificate_id")
+            }
+        }
+        if Thread.isMainThread {
+            performSet()
+        } else {
+            DispatchQueue.main.async(execute: performSet)
+        }
+    }
+    
+    public func setActiveProfile(id: UUID) {
+        let performSet = {
+            if let profile = self.profiles.first(where: { $0.id == id }) {
+                self.activeProfile = profile
+                UserDefaults.standard.set(id.uuidString, forKey: "active_profile_id")
+            }
+        }
+        if Thread.isMainThread {
+            performSet()
+        } else {
+            DispatchQueue.main.async(execute: performSet)
+        }
+    }
+    
+    public func deleteCertificate(id: UUID) {
+        let performDelete = {
+            guard let index = self.certificates.firstIndex(where: { $0.id == id }) else { return }
+            let cert = self.certificates[index]
+            if let fileURL = cert.fileURL {
+                try? FileManager.default.removeItem(at: fileURL)
+            }
+            self.certificates.remove(at: index)
+            if self.activeCertificate?.id == id {
+                self.activeCertificate = self.certificates.first
+                UserDefaults.standard.set(self.activeCertificate?.id.uuidString, forKey: "active_certificate_id")
+            }
+            self.persistCerts()
+        }
+        if Thread.isMainThread {
+            performDelete()
+        } else {
+            DispatchQueue.main.async(execute: performDelete)
+        }
+    }
+    
+    public func deleteProfile(id: UUID) {
+        let performDelete = {
+            guard let index = self.profiles.firstIndex(where: { $0.id == id }) else { return }
+            let profile = self.profiles[index]
+            if let fileURL = profile.fileURL {
+                try? FileManager.default.removeItem(at: fileURL)
+            }
+            self.profiles.remove(at: index)
+            if self.activeProfile?.id == id {
+                self.activeProfile = self.profiles.first
+                UserDefaults.standard.set(self.activeProfile?.id.uuidString, forKey: "active_profile_id")
+            }
+            self.persistProfiles()
+        }
+        if Thread.isMainThread {
+            performDelete()
+        } else {
+            DispatchQueue.main.async(execute: performDelete)
+        }
+    }
+
     // MARK: - Persistence & Pre-loaded Certificate
     
     private func persistCerts() {
@@ -211,13 +285,25 @@ public final class CertManager: ObservableObject {
         if let certData = UserDefaults.standard.data(forKey: "saved_certificates"),
            let savedCerts = try? JSONDecoder().decode([Certificate].self, from: certData) {
             self.certificates = savedCerts
-            self.activeCertificate = savedCerts.first
+            if let activeIdStr = UserDefaults.standard.string(forKey: "active_certificate_id"),
+               let activeId = UUID(uuidString: activeIdStr),
+               let match = savedCerts.first(where: { $0.id == activeId }) {
+                self.activeCertificate = match
+            } else {
+                self.activeCertificate = savedCerts.first
+            }
         }
         
         if let profileData = UserDefaults.standard.data(forKey: "saved_profiles"),
            let savedProfiles = try? JSONDecoder().decode([ProvisioningProfile].self, from: profileData) {
             self.profiles = savedProfiles
-            self.activeProfile = savedProfiles.first
+            if let activeIdStr = UserDefaults.standard.string(forKey: "active_profile_id"),
+               let activeId = UUID(uuidString: activeIdStr),
+               let match = savedProfiles.first(where: { $0.id == activeId }) {
+                self.activeProfile = match
+            } else {
+                self.activeProfile = savedProfiles.first
+            }
         }
     }
 }
