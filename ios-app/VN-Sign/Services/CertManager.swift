@@ -24,7 +24,6 @@ public final class CertManager: ObservableObject {
         try? fileManager.createDirectory(at: profilesDir, withIntermediateDirectories: true)
         
         loadSavedItems()
-        populateSampleEnterpriseCertIfNeeded()
     }
     
     // MARK: - Import .p12
@@ -219,48 +218,6 @@ public final class CertManager: ObservableObject {
            let savedProfiles = try? JSONDecoder().decode([ProvisioningProfile].self, from: profileData) {
             self.profiles = savedProfiles
             self.activeProfile = savedProfiles.first
-        }
-    }
-    
-    private func populateSampleEnterpriseCertIfNeeded() {
-        if certificates.isEmpty {
-            let enterpriseCert = Certificate(
-                id: UUID(),
-                name: "Apple Enterprise Distribution: VN-Sign Corporation",
-                teamName: "VNSIGN PRO ENTERPRISE",
-                teamID: "9X8K2MN4P2",
-                creationDate: Date(),
-                expirationDate: Date().addingTimeInterval(360 * 24 * 3600),
-                sha1Fingerprint: "A4C39B78D124EF829034B761298450123984ABCD",
-                fileURL: nil,
-                password: "1",
-                isRevoked: false
-            )
-            self.certificates.append(enterpriseCert)
-            self.activeCertificate = enterpriseCert
-        }
-        
-        if profiles.isEmpty {
-            let enterpriseProfile = ProvisioningProfile(
-                id: UUID(),
-                uuid: "e7b92f41-9a14-482d-8b01-34e89201ca77",
-                name: "VN-Sign Universal Wildcard In-House",
-                teamIdentifier: "9X8K2MN4P2",
-                teamName: "VNSIGN PRO ENTERPRISE",
-                creationDate: Date(),
-                expirationDate: Date().addingTimeInterval(360 * 24 * 3600),
-                isWildcard: true,
-                provisionsAllDevices: true,
-                provisionedDevices: [],
-                entitlements: [
-                    "application-identifier": AnyCodable("9X8K2MN4P2.*"),
-                    "com.apple.developer.team-identifier": AnyCodable("9X8K2MN4P2"),
-                    "get-task-allow": AnyCodable(false)
-                ],
-                fileURL: nil
-            )
-            self.profiles.append(enterpriseProfile)
-            self.activeProfile = enterpriseProfile
         }
     }
 }

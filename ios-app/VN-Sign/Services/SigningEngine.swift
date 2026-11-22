@@ -53,7 +53,7 @@ public final class SigningEngine: ObservableObject {
         try? fileManager.createDirectory(at: workDir, withIntermediateDirectories: true)
         
         loadSavedSignedApps()
-        populateSampleLibraryAppsIfNeeded()
+        reloadLibraryApps()
     }
     
     // MARK: - Core Signing Execution
@@ -244,54 +244,32 @@ public final class SigningEngine: ObservableObject {
         }
     }
     
-    private func populateSampleLibraryAppsIfNeeded() {
-        if libraryApps.isEmpty {
-            self.libraryApps = [
-                AppItem(
-                    name: "Facebook Pro VIP",
-                    bundleIdentifier: "com.facebook.FacebookPro",
-                    version: "492.0.1",
-                    buildNumber: "128",
-                    fileSize: 182_452_224, // 174 MB
-                    filePath: "d:\\VN-Sign\\FacebookPro.ipa",
+    public func reloadLibraryApps() {
+        guard let docURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        do {
+            let files = try FileManager.default.contentsOfDirectory(at: docURL, includingPropertiesForKeys: [.fileSizeKey], options: [.skipsHiddenFiles])
+            let ipaFiles = files.filter { $0.pathExtension.lowercased() == "ipa" && !$0.lastPathComponent.contains("_signed") }
+            
+            var apps: [AppItem] = []
+            for ipa in ipaFiles {
+                let size = (try? ipa.resourceValues(forKeys: [.fileSizeKey]).fileSize) ?? 0
+                let baseName = ipa.deletingPathExtension().lastPathComponent
+                
+                apps.append(AppItem(
+                    name: baseName,
+                    bundleIdentifier: "com.vnsign.\(baseName.lowercased().filter { $0.isLetter || $0.isNumber })",
+                    version: "1.0",
+                    buildNumber: "1",
+                    fileSize: Int64(size),
+                    filePath: ipa.path,
                     iconPath: nil,
-                    originalIpaPath: "d:\\VN-Sign\\FacebookPro.ipa",
+                    originalIpaPath: ipa.path,
                     isSigned: false
-                ),
-                AppItem(
-                    name: "TikTok Mod No Watermark",
-                    bundleIdentifier: "com.zhiliaoapp.musically.mod",
-                    version: "36.8.0",
-                    buildNumber: "450",
-                    fileSize: 248_512_512, // 237 MB
-                    filePath: "d:\\VN-Sign\\TikTokMod.ipa",
-                    iconPath: nil,
-                    originalIpaPath: "d:\\VN-Sign\\TikTokMod.ipa",
-                    isSigned: false
-                ),
-                AppItem(
-                    name: "YouTube Plus Premium",
-                    bundleIdentifier: "com.google.ios.youtube.plus",
-                    version: "19.45.2",
-                    buildNumber: "89",
-                    fileSize: 154_140_672, // 147 MB
-                    filePath: "d:\\VN-Sign\\YouTubePlus.ipa",
-                    iconPath: nil,
-                    originalIpaPath: "d:\\VN-Sign\\YouTubePlus.ipa",
-                    isSigned: false
-                ),
-                AppItem(
-                    name: "CapCut Pro VIP All Features",
-                    bundleIdentifier: "com.lemon.lvoverseas.vip",
-                    version: "14.1.0",
-                    buildNumber: "302",
-                    fileSize: 220_200_960, // 210 MB
-                    filePath: "d:\\VN-Sign\\CapCutPro.ipa",
-                    iconPath: nil,
-                    originalIpaPath: "d:\\VN-Sign\\CapCutPro.ipa",
-                    isSigned: false
-                )
-            ]
+                ))
+            }
+            self.libraryApps = apps
+        } catch {
+            print("Error reloading library: \(error)")
         }
     }
 }

@@ -35,9 +35,15 @@ public struct SettingsView: View {
         ScrollView {
             VStack(spacing: 16) {
                 // Header Bar
-                HStack {
+                HStack(spacing: 10) {
+                    Image("AppLogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 34, height: 34)
+                        .shadow(color: AppTheme.purple500.opacity(0.4), radius: 6)
+                    
                     Text(NSLocalizedString("settings_title", comment: ""))
-                        .font(.system(size: 26, weight: .bold))
+                        .font(.system(size: 22, weight: .bold))
                         .foregroundColor(.white)
                     Spacer()
                 }

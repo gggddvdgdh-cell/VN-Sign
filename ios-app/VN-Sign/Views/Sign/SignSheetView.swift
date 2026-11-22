@@ -358,52 +358,53 @@ public struct SignSheetView: View {
     // MARK: - Actions
     
     private func startSigning() {
+        guard let _ = certManager.activeCertificate else {
+            errorMessage = "Chưa có chứng chỉ P12! Hãy nhập tệp chứng chỉ .p12 và .mobileprovision trước khi ký."
+            return
+        }
+        
         isExecuting = true
         isSuccess = false
-        signProgress = 0.05
+        signProgress = 0.15
         stageText = NSLocalizedString("step_extract", comment: "")
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         
         Task {
+            // Tìm tệp dylib thực tế nếu người dùng bật tiêm tweak
+            var realDylibURL: URL? = nil
+            if injectDylib {
+                if let docURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
+                   let files = try? FileManager.default.contentsOfDirectory(at: docURL, includingPropertiesForKeys: nil),
+                   let firstDylib = files.first(where: { $0.pathExtension.lowercased() == "dylib" }) {
+                    realDylibURL = firstDylib
+                }
+            }
+            
             let config = SignConfig(
                 appItem: app,
                 certificate: certManager.activeCertificate,
                 provisioningProfile: certManager.activeProfile,
                 customAppName: customAppName,
                 customBundleIdentifier: customBundleID,
-                injectDylibURL: injectDylib ? URL(fileURLWithPath: "d:\\VN-Sign\\Rocket.dylib") : nil,
+                injectDylibURL: realDylibURL,
                 removeDeviceLimits: removeLimits,
                 enableFileSharing: fileSharing,
                 compressionLevel: compressionLevel
             )
             
-            // Giả lập trực quan 4 bước chuyển động mượt mà
-            withAnimation(.easeInOut(duration: 0.6)) {
-                signProgress = 0.25
-                stageText = NSLocalizedString("step_extract", comment: "")
-            }
-            try? await Task.sleep(nanoseconds: 500_000_000)
-            
-            withAnimation(.easeInOut(duration: 0.6)) {
-                signProgress = 0.50
-                stageText = NSLocalizedString("step_inject", comment: "")
-            }
-            try? await Task.sleep(nanoseconds: 500_000_000)
-            
-            withAnimation(.easeInOut(duration: 0.6)) {
-                signProgress = 0.85
-                stageText = NSLocalizedString("step_codesign", comment: "")
-            }
-            try? await Task.sleep(nanoseconds: 600_000_000)
-            
-            withAnimation(.easeInOut(duration: 0.4)) {
-                signProgress = 1.0
-                stageText = NSLocalizedString("step_package", comment: "")
-            }
-            try? await Task.sleep(nanoseconds: 400_000_000)
-            
             do {
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    signProgress = 0.40
+                    stageText = NSLocalizedString("step_codesign", comment: "")
+                }
+                
                 let signedApp = try await signingEngine.sign(config: config)
+                
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    signProgress = 1.0
+                    stageText = NSLocalizedString("step_package", comment: "")
+                }
+                
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
                 
                 await MainActor.run {
@@ -411,8 +412,8 @@ public struct SignSheetView: View {
                     isSuccess = true
                     onSignCompleted?(signedApp)
                     
-                    // Tự động đóng sheet sau 1.5s
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                    // Tự động đóng sheet sau 1.2s
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }

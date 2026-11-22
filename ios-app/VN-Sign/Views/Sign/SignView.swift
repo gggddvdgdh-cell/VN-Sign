@@ -23,6 +23,7 @@ public struct SignView: View {
     @State private var toastMessage: ToastMessage?
     @State private var showInstallAlert: Bool = false
     @State private var appToInstall: AppItem?
+    @State private var showDocumentPicker: Bool = false
     
     public init() {}
     
@@ -30,9 +31,15 @@ public struct SignView: View {
         ZStack {
             VStack(spacing: 0) {
                 // Top Header Bar
-                HStack {
+                HStack(spacing: 10) {
+                    Image("AppLogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 34, height: 34)
+                        .shadow(color: AppTheme.purple500.opacity(0.4), radius: 6)
+                    
                     Text(NSLocalizedString("sign_title", comment: ""))
-                        .font(.system(size: 26, weight: .bold))
+                        .font(.system(size: 22, weight: .bold))
                         .foregroundColor(.white)
                     
                     Spacer()
@@ -52,12 +59,23 @@ public struct SignView: View {
                         .background(Color(red: 16/255, green: 185/255, blue: 129/255).opacity(0.12))
                         .clipShape(Capsule())
                     }
+                    
+                    Button(action: { showDocumentPicker = true }) {
+                        Image(systemName: "plus")
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundColor(.black)
+                            .frame(width: 36, height: 36)
+                            .background(AppTheme.cyanGradient)
+                            .clipShape(Circle())
+                            .cyanGlow(radius: 5)
+                    }
+                    .buttonStyle(ScaleButtonStyle())
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 12)
                 .padding(.bottom, 10)
                 
-                // Bộ chuyển đổi Subtab phân đoạn (Segmented Subtab Switcher)
+                // Bộ chuyển đổi Subtab phân đoạn
                 HStack(spacing: 0) {
                     ForEach(SignSubTab.allCases, id: \.rawValue) { subtab in
                         let isSelected = (activeSubTab == subtab)
@@ -72,7 +90,6 @@ public struct SignView: View {
                                     .font(.system(size: 13, weight: isSelected ? .bold : .medium))
                                     .foregroundColor(isSelected ? .white : Color.white.opacity(0.6))
                                 
-                                // Badge đếm số lượng
                                 let count = (subtab == .library) ? signingEngine.libraryApps.count : signingEngine.signedApps.count
                                 Text("\(count)")
                                     .font(.system(size: 10, weight: .bold))
@@ -111,12 +128,20 @@ public struct SignView: View {
                 }
             }
         }
+        .onAppear {
+            signingEngine.reloadLibraryApps()
+        }
         .sheet(item: $selectedAppToSign) { app in
             SignSheetView(app: app) { newlySignedApp in
                 toastMessage = ToastMessage(title: "Ký thành công!", message: "\(newlySignedApp.name) đã sẵn sàng cài đặt.")
                 withAnimation(AppTheme.springAnimation) {
                     activeSubTab = .signed
                 }
+            }
+        }
+        .sheet(isPresented: $showDocumentPicker) {
+            DocumentPickerView { urls in
+                importIpaFiles(urls: urls)
             }
         }
         .toast(item: $toastMessage)
@@ -139,10 +164,10 @@ public struct SignView: View {
     private var librarySubTabContent: some View {
         ScrollView {
             if signingEngine.libraryApps.isEmpty {
-                VStack(spacing: 12) {
-                    Spacer().frame(height: 60)
+                VStack(spacing: 14) {
+                    Spacer().frame(height: 50)
                     Image(systemName: "square.stack.3d.up.slash")
-                        .font(.system(size: 40))
+                        .font(.system(size: 42))
                         .foregroundColor(Color.white.opacity(0.4))
                     Text(NSLocalizedString("sign_library_empty_title", comment: ""))
                         .font(.system(size: 16, weight: .bold))
@@ -152,6 +177,22 @@ public struct SignView: View {
                         .foregroundColor(Color.white.opacity(0.55))
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 32)
+                    
+                    Button(action: { showDocumentPicker = true }) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "plus.circle.fill")
+                            Text("Nhập tệp IPA từ máy")
+                        }
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundColor(.black)
+                        .padding(.horizontal, 22)
+                        .padding(.vertical, 10)
+                        .background(AppTheme.cyanGradient)
+                        .clipShape(Capsule())
+                        .cyanGlow(radius: 6)
+                    }
+                    .buttonStyle(ScaleButtonStyle())
+                    .padding(.top, 6)
                 }
             } else {
                 LazyVStack(spacing: 10) {
@@ -209,6 +250,29 @@ public struct SignView: View {
     }
     
     // MARK: - Actions
+    
+    private func importIpaFiles(urls: [URL]) {
+        guard let docURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        var count = 0
+        for url in urls {
+            let isAccessing = url.startAccessingSecurityScopedResource()
+            defer { if isAccessing { url.stopAccessingSecurityScopedResource() } }
+            let target = docURL.appendingPathComponent(url.lastPathComponent)
+            do {
+                if FileManager.default.fileExists(atPath: target.path) {
+                    try FileManager.default.removeItem(at: target)
+                }
+                try FileManager.default.copyItem(at: url, to: target)
+                count += 1
+            } catch {
+                print("Lỗi chép IPA: \(error)")
+            }
+        }
+        signingEngine.reloadLibraryApps()
+        if count > 0 {
+            toastMessage = ToastMessage(title: "Đã thêm IPA", message: "\(count) tệp đã vào thư viện")
+        }
+    }
     
     private func shareApp(app: AppItem) {
         let path = app.signedIpaPath ?? app.filePath

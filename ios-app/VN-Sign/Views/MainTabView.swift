@@ -42,6 +42,8 @@ public struct MainTabView: View {
                 Image("Wallpaper")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                    .clipped()
                     .ignoresSafeArea()
                 
                 // Lớp kính mờ điều chỉnh được

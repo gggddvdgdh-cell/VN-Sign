@@ -79,13 +79,15 @@ public struct FileRowView: View {
             // Quick action button nếu là tệp IPA
             if file.fileType == .ipa && !isSelecting {
                 Button(action: onSignAction) {
-                    HStack(spacing: 4) {
-                        PenMorphIcon(tintColor: .black, size: 14)
+                    HStack(spacing: 5) {
+                        Image(systemName: "signature")
+                            .font(.system(size: 13, weight: .bold))
+                            .foregroundColor(.black)
                         Text(NSLocalizedString("files_action_sign", comment: ""))
                             .font(.system(size: 12, weight: .bold))
                             .foregroundColor(.black)
                     }
-                    .padding(.horizontal, 10)
+                    .padding(.horizontal, 12)
                     .padding(.vertical, 6)
                     .background(AppTheme.cyanGradient)
                     .clipShape(Capsule())

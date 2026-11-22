@@ -10,6 +10,11 @@ public struct FileListView: View {
     @State private var selectedSignApp: AppItem?
     @State private var toastMessage: ToastMessage?
     
+    // P12 Password Prompt State
+    @State private var showP12PasswordAlert = false
+    @State private var p12PasswordInput = ""
+    @State private var pendingP12File: FileItem?
+    
     public enum SortOption {
         case nameAsc, dateDesc, sizeDesc
     }
@@ -40,16 +45,26 @@ public struct FileListView: View {
         ZStack {
             VStack(spacing: 0) {
                 // Top Header Bar
-                HStack {
+                HStack(spacing: 10) {
+                    Image("AppLogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 34, height: 34)
+                        .shadow(color: AppTheme.purple500.opacity(0.4), radius: 6)
+                    
                     VStack(alignment: .leading, spacing: 2) {
                         Text(NSLocalizedString("files_title", comment: ""))
-                            .font(.system(size: 26, weight: .bold))
+                            .font(.system(size: 22, weight: .bold))
                             .foregroundColor(.white)
                         
                         if isSelecting {
                             Text(String(format: NSLocalizedString("files_selected_count", comment: ""), selectedCount))
-                                .font(.system(size: 12))
+                                .font(.system(size: 11))
                                 .foregroundColor(AppTheme.cyan400)
+                        } else {
+                            Text("\(files.count) tệp tin trong máy")
+                                .font(.system(size: 11))
+                                .foregroundColor(Color.white.opacity(0.55))
                         }
                     }
                     
@@ -140,7 +155,7 @@ public struct FileListView: View {
                 .padding(.horizontal, 16)
                 .padding(.bottom, 12)
                 
-                // Danh sách tệp tin
+                // Danh sách tệp tin thực tế
                 if filteredFiles.isEmpty {
                     Spacer()
                     emptyStateView
@@ -158,7 +173,7 @@ public struct FileListView: View {
                                         }
                                     },
                                     onSignAction: {
-                                        prepareSign(file: file)
+                                        handleFileAction(file: file)
                                     },
                                     onShareAction: {
                                         shareFile(file: file)
@@ -167,6 +182,15 @@ public struct FileListView: View {
                                         deleteFile(file: file)
                                     }
                                 )
+                                .onTapGesture {
+                                    if isSelecting {
+                                        if let idx = files.firstIndex(where: { $0.id == file.id }) {
+                                            files[idx].isSelected.toggle()
+                                        }
+                                    } else {
+                                        handleFileAction(file: file)
+                                    }
+                                }
                             }
                         }
                         .padding(.horizontal, 16)
@@ -174,7 +198,7 @@ public struct FileListView: View {
                     }
                 }
                 
-                // Thanh tác vụ chọn nhiều (Multi-select bottom action bar)
+                // Thanh tác vụ chọn nhiều
                 if isSelecting && selectedCount > 0 {
                     HStack(spacing: 12) {
                         Button(action: deleteSelected) {
@@ -207,6 +231,27 @@ public struct FileListView: View {
         .sheet(item: $selectedSignApp) { app in
             SignSheetView(app: app)
         }
+        .alert("Nhập mật khẩu P12", isPresented: $showP12PasswordAlert) {
+            TextField("Mật khẩu (nếu không có thì để trống)", text: $p12PasswordInput)
+            Button("Nhập chứng chỉ") {
+                if let p12 = pendingP12File {
+                    do {
+                        let cert = try CertManager.shared.importP12(from: p12.url, password: p12PasswordInput)
+                        toastMessage = ToastMessage(title: "Chứng chỉ hợp lệ", message: "Đã thêm: \(cert.teamName)")
+                    } catch {
+                        toastMessage = ToastMessage(title: "Lỗi P12", message: error.localizedDescription)
+                    }
+                }
+                p12PasswordInput = ""
+                pendingP12File = nil
+            }
+            Button("Hủy", role: .cancel) {
+                p12PasswordInput = ""
+                pendingP12File = nil
+            }
+        } message: {
+            Text("Nhập mật khẩu để giải mã chứng chỉ \(pendingP12File?.name ?? ""):")
+        }
         .toast(item: $toastMessage)
     }
     
@@ -216,11 +261,11 @@ public struct FileListView: View {
         VStack(spacing: 14) {
             ZStack {
                 Circle()
-                    .fill(AppTheme.cyan500.opacity(0.12))
-                    .frame(width: 72, height: 72)
+                    .fill(AppTheme.purple500.opacity(0.15))
+                    .frame(width: 76, height: 76)
                 
-                Image(systemName: "doc.badge.plus")
-                    .font(.system(size: 32, weight: .semibold))
+                Image(systemName: "folder.badge.plus")
+                    .font(.system(size: 34, weight: .semibold))
                     .foregroundColor(AppTheme.cyan400)
             }
             
@@ -236,13 +281,13 @@ public struct FileListView: View {
             
             Button(action: { showDocumentPicker = true }) {
                 HStack(spacing: 6) {
-                    Image(systemName: "plus")
+                    Image(systemName: "plus.circle.fill")
                     Text(NSLocalizedString("files_import_button", comment: ""))
                 }
                 .font(.system(size: 14, weight: .bold))
                 .foregroundColor(.black)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 10)
+                .padding(.horizontal, 22)
+                .padding(.vertical, 11)
                 .background(AppTheme.cyanGradient)
                 .clipShape(Capsule())
                 .cyanGlow(radius: 6)
@@ -262,11 +307,32 @@ public struct FileListView: View {
         for i in 0..<files.count { files[i].isSelected = false }
     }
     
+    private func handleFileAction(file: FileItem) {
+        switch file.fileType {
+        case .ipa:
+            prepareSign(file: file)
+        case .p12:
+            self.pendingP12File = file
+            self.p12PasswordInput = ""
+            self.showP12PasswordAlert = true
+        case .mobileprovision:
+            do {
+                let prof = try CertManager.shared.importMobileProvision(from: file.url)
+                toastMessage = ToastMessage(title: "Đã nạp Profile", message: prof.name)
+            } catch {
+                toastMessage = ToastMessage(title: "Lỗi Profile", message: error.localizedDescription)
+            }
+        default:
+            shareFile(file: file)
+        }
+    }
+    
     private func deleteFile(file: FileItem) {
         withAnimation(AppTheme.springAnimation) {
             files.removeAll { $0.id == file.id }
         }
         try? FileManager.default.removeItem(at: file.url)
+        SigningEngine.shared.reloadLibraryApps()
         toastMessage = ToastMessage(title: "Đã xoá", message: file.name)
     }
     
@@ -279,6 +345,7 @@ public struct FileListView: View {
             files.removeAll { $0.isSelected }
             isSelecting = false
         }
+        SigningEngine.shared.reloadLibraryApps()
         toastMessage = ToastMessage(title: "Đã xoá", message: "\(targets.count) tệp tin")
     }
     
@@ -293,7 +360,7 @@ public struct FileListView: View {
     private func prepareSign(file: FileItem) {
         let app = AppItem(
             name: file.name.replacingOccurrences(of: ".ipa", with: ""),
-            bundleIdentifier: "com.vnsign.\(file.name.lowercased().filter { $0.isLetter })",
+            bundleIdentifier: "com.vnsign.\(file.name.lowercased().filter { $0.isLetter || $0.isNumber })",
             version: "1.0",
             fileSize: file.size,
             filePath: file.url.path,
@@ -304,65 +371,76 @@ public struct FileListView: View {
     }
     
     private func importFiles(urls: [URL]) {
+        guard let docURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        var importedCount = 0
+        
         for url in urls {
-            let name = url.lastPathComponent
-            let ext = url.pathExtension.lowercased()
-            let type: FileType
-            switch ext {
-            case "ipa": type = .ipa
-            case "p12": type = .p12
-            case "mobileprovision": type = .mobileprovision
-            case "dylib": type = .dylib
-            case "zip": type = .zip
-            default: type = .other
+            let isAccessing = url.startAccessingSecurityScopedResource()
+            defer {
+                if isAccessing { url.stopAccessingSecurityScopedResource() }
             }
             
-            let size = (try? FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int64) ?? 0
-            let newFile = FileItem(name: name, url: url, size: size, modificationDate: Date(), fileType: type)
-            files.insert(newFile, at: 0)
+            let name = url.lastPathComponent
+            let targetURL = docURL.appendingPathComponent(name)
+            
+            do {
+                if FileManager.default.fileExists(atPath: targetURL.path) {
+                    try FileManager.default.removeItem(at: targetURL)
+                }
+                try FileManager.default.copyItem(at: url, to: targetURL)
+                importedCount += 1
+                
+                // Tự động nhận diện hồ sơ Mobileprovision
+                if url.pathExtension.lowercased() == "mobileprovision" {
+                    _ = try? CertManager.shared.importMobileProvision(from: targetURL)
+                }
+            } catch {
+                print("Lỗi chép tệp: \(error)")
+            }
         }
-        toastMessage = ToastMessage(title: "Nhập thành công", message: "\(urls.count) tệp đã được thêm")
+        
+        loadInitialFiles()
+        
+        if importedCount > 0 {
+            toastMessage = ToastMessage(title: "Nhập thành công", message: "\(importedCount) tệp đã được thêm vào VN-Sign")
+        }
     }
     
     private func loadInitialFiles() {
-        if files.isEmpty {
-            files = [
-                FileItem(
-                    name: "VN-Sign.ipa",
-                    url: URL(fileURLWithPath: "d:\\VN-Sign\\VN-Sign.ipa"),
-                    size: 14_416_039,
-                    modificationDate: Date(),
-                    fileType: .ipa
-                ),
-                FileItem(
-                    name: "Feather.ipa",
-                    url: URL(fileURLWithPath: "d:\\VN-Sign\\Feather.ipa"),
-                    size: 14_241_853,
-                    modificationDate: Date().addingTimeInterval(-3600),
-                    fileType: .ipa
-                ),
-                FileItem(
-                    name: "VNSign_Enterprise.p12",
-                    url: URL(fileURLWithPath: "d:\\VN-Sign\\VNSign_Enterprise.p12"),
-                    size: 4_096,
-                    modificationDate: Date().addingTimeInterval(-7200),
-                    fileType: .p12
-                ),
-                FileItem(
-                    name: "VN-Sign_Wildcard.mobileprovision",
-                    url: URL(fileURLWithPath: "d:\\VN-Sign\\VN-Sign_Wildcard.mobileprovision"),
-                    size: 8_192,
-                    modificationDate: Date().addingTimeInterval(-10800),
-                    fileType: .mobileprovision
-                ),
-                FileItem(
-                    name: "Rocket_Instagram.dylib",
-                    url: URL(fileURLWithPath: "d:\\VN-Sign\\Rocket_Instagram.dylib"),
-                    size: 2_458_112,
-                    modificationDate: Date().addingTimeInterval(-14400),
-                    fileType: .dylib
-                )
-            ]
+        guard let docURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        
+        do {
+            let fileURLs = try FileManager.default.contentsOfDirectory(
+                at: docURL,
+                includingPropertiesForKeys: [.fileSizeKey, .contentModificationDateKey],
+                options: [.skipsHiddenFiles]
+            )
+            
+            var loadedFiles: [FileItem] = []
+            for url in fileURLs {
+                let name = url.lastPathComponent
+                let ext = url.pathExtension.lowercased()
+                let type: FileType
+                switch ext {
+                case "ipa": type = .ipa
+                case "p12": type = .p12
+                case "mobileprovision": type = .mobileprovision
+                case "dylib": type = .dylib
+                case "zip": type = .zip
+                default: type = .other
+                }
+                
+                let resourceValues = try? url.resourceValues(forKeys: [.fileSizeKey, .contentModificationDateKey])
+                let size = Int64(resourceValues?.fileSize ?? 0)
+                let date = resourceValues?.contentModificationDate ?? Date()
+                
+                loadedFiles.append(FileItem(name: name, url: url, size: size, modificationDate: date, fileType: type))
+            }
+            
+            self.files = loadedFiles
+            SigningEngine.shared.reloadLibraryApps()
+        } catch {
+            print("Error loading documents: \(error)")
         }
     }
 }

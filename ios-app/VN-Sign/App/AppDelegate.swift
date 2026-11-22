@@ -19,38 +19,38 @@ public class AppDelegate: NSObject, UIApplicationDelegate {
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey : Any] = [:]
     ) -> Bool {
-        let ext = url.pathExtension.lowercased()
+        guard let docURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return false }
         
+        let isAccessing = url.startAccessingSecurityScopedResource()
+        defer { if isAccessing { url.stopAccessingSecurityScopedResource() } }
+        
+        let targetURL = docURL.appendingPathComponent(url.lastPathComponent)
+        do {
+            if FileManager.default.fileExists(atPath: targetURL.path) {
+                try FileManager.default.removeItem(at: targetURL)
+            }
+            try FileManager.default.copyItem(at: url, to: targetURL)
+        } catch {
+            print("Lỗi chép tệp mở ngoài: \(error)")
+        }
+        
+        let ext = url.pathExtension.lowercased()
         switch ext {
         case "ipa":
-            // Thêm vào danh sách thư viện ký
-            let name = url.deletingPathExtension().lastPathComponent
-            let size = (try? FileManager.default.attributesOfItem(atPath: url.path)[.size] as? Int64) ?? 0
-            let appItem = AppItem(
-                name: name,
-                bundleIdentifier: "com.vnsign.\(name.lowercased().filter { $0.isLetter })",
-                version: "1.0",
-                fileSize: size,
-                filePath: url.path,
-                originalIpaPath: url.path
-            )
-            DispatchQueue.main.async {
-                SigningEngine.shared.libraryApps.insert(appItem, at: 0)
-            }
+            SigningEngine.shared.reloadLibraryApps()
             return true
             
         case "p12":
-            // Nhập chứng chỉ .p12 (với pass mặc định hoặc thông báo)
-            _ = try? CertManager.shared.importP12(from: url, password: "1")
+            // Thử nhập với mật khẩu mặc định rỗng nếu có
+            _ = try? CertManager.shared.importP12(from: targetURL, password: "")
             return true
             
         case "mobileprovision":
-            // Nhập hồ sơ provisioning
-            _ = try? CertManager.shared.importMobileProvision(from: url)
+            _ = try? CertManager.shared.importMobileProvision(from: targetURL)
             return true
             
         default:
-            return false
+            return true
         }
     }
 }
