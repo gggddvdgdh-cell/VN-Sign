@@ -1,3 +1,14 @@
+# Security: Certificates & Private Keys
+*.p12
+*.mobileprovision
+*.key
+*.pem
+*.cer
+*.crt
+*.zip
+pass.txt
+*00008110*
+
 # Desktop prototypes
 designer/
 vn-studio/

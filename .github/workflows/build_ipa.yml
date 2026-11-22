@@ -15,9 +15,9 @@ permissions:
 jobs:
   build-ipa:
     name: Build & Package VN-Sign iOS IPA
-    # Chạy trên ubuntu-latest để tài khoản GitHub Private (Riêng tư) hay Public (Công khai) đều chạy được 100% miễn phí
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # Chạy trên máy chủ Mac chính thức của Apple trên GitHub (100% miễn phí cho Public Repo)
+    runs-on: macos-14
+    timeout-minutes: 30
 
     steps:
       - name: Checkout Repository
@@ -25,34 +25,95 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Package VN-Sign IPA
+      - name: Select Xcode Version
+        run: |
+          echo "=== 1. Kiểm tra các phiên bản Xcode trên máy Mac ==="
+          ls -d /Applications/Xcode* || true
+          
+          # Ưu tiên Xcode 15 hoặc 16 có sẵn
+          if [ -d "/Applications/Xcode_15.4.app" ]; then
+            sudo xcode-select -switch /Applications/Xcode_15.4.app/Contents/Developer
+          elif [ -d "/Applications/Xcode_16.app" ]; then
+            sudo xcode-select -switch /Applications/Xcode_16.app/Contents/Developer
+          else
+            sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
+          fi
+          
+          xcodebuild -version
+          swift --version
+
+      - name: Compile Swift Code & Build VN-Sign.app
         run: |
           set -e
-          echo "=== 1. Kiểm tra tài nguyên và chuẩn bị đóng gói ==="
-          mkdir -p output_build
+          echo "=== 2. Tiến hành biên dịch mã nguồn Swift thật bằng xcodebuild ==="
+          cd ios-app
           
-          # Tìm kiếm file VN-Sign.ipa sẵn có trong repo
-          if [ -f "VN-Sign.ipa" ]; then
-            echo "Tìm thấy VN-Sign.ipa chính gốc trong repo."
-            cp "VN-Sign.ipa" output_build/VN-Sign.ipa
-          elif [ -f "ios-app/VN-Sign.ipa" ]; then
-            cp "ios-app/VN-Sign.ipa" output_build/VN-Sign.ipa
-          elif [ -f "Feather.ipa" ]; then
-            cp "Feather.ipa" output_build/VN-Sign.ipa
-          else
-            echo "Lỗi: Không tìm thấy nguồn IPA!"
+          # Liệt kê targets và schemes để kiểm tra
+          xcodebuild -project VN-Sign.xcodeproj -list || true
+
+          # Biên dịch toàn bộ file Swift thành ARM64 iOS Binary (Release iphoneos)
+          xcodebuild build \
+            -project VN-Sign.xcodeproj \
+            -scheme VN-Sign \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build/DerivedData \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            AD_HOC_CODE_SIGNING_ALLOWED=YES \
+            COMPILER_INDEX_STORE_ENABLE=NO || \
+          xcodebuild build \
+            -project VN-Sign.xcodeproj \
+            -target VN-Sign \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build/DerivedData \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            AD_HOC_CODE_SIGNING_ALLOWED=YES \
+            COMPILER_INDEX_STORE_ENABLE=NO
+
+          echo "=== 3. Tìm file VN-Sign.app vừa biên dịch xong ==="
+          BUILT_APP=$(find build/DerivedData -name "VN-Sign.app" -type d | head -n 1)
+          
+          if [ -z "$BUILT_APP" ] || [ ! -d "$BUILT_APP" ]; then
+            echo "Lỗi: Không tìm thấy VN-Sign.app sau khi biên dịch!"
             exit 1
           fi
 
-          echo "=== 2. Kiểm tra tính toàn vẹn của tệp IPA ==="
-          ls -lh output_build/VN-Sign.ipa
-          sha256sum output_build/VN-Sign.ipa
+          echo "Đã tìm thấy VN-Sign.app tại: $BUILT_APP"
+
+          echo "=== 4. Đóng gói vào cấu trúc Payload/ và tạo file VN-Sign.ipa ==="
+          rm -rf Payload VN-Sign.ipa
+          mkdir -p Payload
+          cp -R "$BUILT_APP" Payload/VN-Sign.app
+
+          # Gỡ bỏ các cờ cách ly của macOS
+          xattr -rc Payload/VN-Sign.app || true
+
+          # Nén cấu trúc chuẩn của Apple iOS (.ipa)
+          zip -r -y -q "$GITHUB_WORKSPACE/VN-Sign.ipa" Payload
+
+          echo "Biên dịch và đóng gói VN-Sign.ipa thành công 100%!"
+
+      - name: Verify Compiled IPA
+        run: |
+          echo "=== Thông tin chi tiết tệp VN-Sign.ipa vừa build ==="
+          ls -lh "$GITHUB_WORKSPACE/VN-Sign.ipa"
+          
+          echo "=== Cấu trúc bên trong VN-Sign.ipa ==="
+          unzip -l "$GITHUB_WORKSPACE/VN-Sign.ipa" | head -n 30
+          
+          echo "=== Mã băm SHA-256 ==="
+          shasum -a 256 "$GITHUB_WORKSPACE/VN-Sign.ipa"
 
       - name: Upload VN-Sign.ipa Artifact
         uses: actions/upload-artifact@v4
         with:
           name: VN-Sign-ipa
-          path: output_build/VN-Sign.ipa
+          path: VN-Sign.ipa
           retention-days: 30
           if-no-files-found: error
 
@@ -60,12 +121,13 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: output_build/VN-Sign.ipa
+          files: VN-Sign.ipa
           name: "VN-Sign Release ${{ github.ref_name }}"
           body: |
             🎉 **Phát hành VN-Sign iOS ${{ github.ref_name }}**
             - 📦 Tệp cài đặt: `VN-Sign.ipa`
-            - 📱 Tương thích: iOS 15.0 - iOS 18.x
+            - 📱 Được biên dịch native 100% từ mã nguồn Swift bằng Xcode.
+            - 🚀 Tương thích: iOS 16.0 trở lên.
           draft: false
           prerelease: false
         env:
