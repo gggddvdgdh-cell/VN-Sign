@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F1000001"
+               BlueprintIdentifier = "51000001"
                BuildableName = "VN-Sign.app"
                BlueprintName = "VN-Sign"
                ReferencedContainer = "container:VN-Sign.xcodeproj">
@@ -44,7 +44,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F1000001"
+            BlueprintIdentifier = "51000001"
             BuildableName = "VN-Sign.app"
             BlueprintName = "VN-Sign"
             ReferencedContainer = "container:VN-Sign.xcodeproj">
@@ -61,7 +61,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F1000001"
+            BlueprintIdentifier = "51000001"
             BuildableName = "VN-Sign.app"
             BlueprintName = "VN-Sign"
             ReferencedContainer = "container:VN-Sign.xcodeproj">

@@ -7,82 +7,82 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A1000001 /* VNSignApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000001 /* VNSignApp.swift */; };
-		A1000002 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000002 /* AppDelegate.swift */; };
-		A1000003 /* Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000003 /* Certificate.swift */; };
-		A1000004 /* ProvisioningProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000004 /* ProvisioningProfile.swift */; };
-		A1000005 /* AppItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000005 /* AppItem.swift */; };
-		A1000006 /* FileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000006 /* FileItem.swift */; };
-		A1000007 /* SignConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000007 /* SignConfig.swift */; };
-		A1000008 /* CertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000008 /* CertManager.swift */; };
-		A1000009 /* SigningEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000009 /* SigningEngine.swift */; };
-		A1000010 /* MachOParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000010 /* MachOParser.swift */; };
-		A1000011 /* CodeSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000011 /* CodeSigner.swift */; };
-		A1000012 /* DylibInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000012 /* DylibInjector.swift */; };
-		A1000013 /* ZipArchiveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000013 /* ZipArchiveManager.swift */; };
-		A1000014 /* LocalServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000014 /* LocalServer.swift */; };
-		A1000015 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000015 /* MainTabView.swift */; };
-		A1000016 /* FileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000016 /* FileListView.swift */; };
-		A1000017 /* FileRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000017 /* FileRowView.swift */; };
-		A1000018 /* SignView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000018 /* SignView.swift */; };
-		A1000019 /* LibraryAppRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000019 /* LibraryAppRow.swift */; };
-		A1000020 /* SignedAppRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000020 /* SignedAppRow.swift */; };
-		A1000021 /* SignSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000021 /* SignSheetView.swift */; };
-		A1000022 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000022 /* SettingsView.swift */; };
-		A1000023 /* MorphingIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000023 /* MorphingIcons.swift */; };
-		A1000024 /* SlidingDock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000024 /* SlidingDock.swift */; };
-		A1000025 /* GlassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000025 /* GlassCard.swift */; };
-		A1000026 /* GlassButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000026 /* GlassButton.swift */; };
-		A1000027 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000027 /* ProgressBar.swift */; };
-		A1000028 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000028 /* ToastView.swift */; };
-		A1000029 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000029 /* Theme.swift */; };
-		A1000030 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000030 /* DeviceInfo.swift */; };
-		A1000031 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000031 /* Extensions.swift */; };
-		A1000032 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1000032 /* Assets.xcassets */; };
-		A1000033 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B1000033 /* Localizable.strings */; };
+		11000001 /* VNSignApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000001 /* VNSignApp.swift */; };
+		11000002 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000002 /* AppDelegate.swift */; };
+		11000003 /* Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000003 /* Certificate.swift */; };
+		11000004 /* ProvisioningProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000004 /* ProvisioningProfile.swift */; };
+		11000005 /* AppItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000005 /* AppItem.swift */; };
+		11000006 /* FileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000006 /* FileItem.swift */; };
+		11000007 /* SignConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000007 /* SignConfig.swift */; };
+		11000008 /* CertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000008 /* CertManager.swift */; };
+		11000009 /* SigningEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000009 /* SigningEngine.swift */; };
+		11000010 /* MachOParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000010 /* MachOParser.swift */; };
+		11000011 /* CodeSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000011 /* CodeSigner.swift */; };
+		11000012 /* DylibInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000012 /* DylibInjector.swift */; };
+		11000013 /* ZipArchiveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000013 /* ZipArchiveManager.swift */; };
+		11000014 /* LocalServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000014 /* LocalServer.swift */; };
+		11000015 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000015 /* MainTabView.swift */; };
+		11000016 /* FileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000016 /* FileListView.swift */; };
+		11000017 /* FileRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000017 /* FileRowView.swift */; };
+		11000018 /* SignView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000018 /* SignView.swift */; };
+		11000019 /* LibraryAppRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000019 /* LibraryAppRow.swift */; };
+		11000020 /* SignedAppRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000020 /* SignedAppRow.swift */; };
+		11000021 /* SignSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000021 /* SignSheetView.swift */; };
+		11000022 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000022 /* SettingsView.swift */; };
+		11000023 /* MorphingIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000023 /* MorphingIcons.swift */; };
+		11000024 /* SlidingDock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000024 /* SlidingDock.swift */; };
+		11000025 /* GlassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000025 /* GlassCard.swift */; };
+		11000026 /* GlassButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000026 /* GlassButton.swift */; };
+		11000027 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000027 /* ProgressBar.swift */; };
+		11000028 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000028 /* ToastView.swift */; };
+		11000029 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000029 /* Theme.swift */; };
+		11000030 /* DeviceInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000030 /* DeviceInfo.swift */; };
+		11000031 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21000031 /* Extensions.swift */; };
+		11000032 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21000032 /* Assets.xcassets */; };
+		11000033 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 21000033 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C1000001 /* VN-Sign.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "VN-Sign.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B1000001 /* VNSignApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VNSignApp.swift; sourceTree = "<group>"; };
-		B1000002 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B1000003 /* Certificate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Certificate.swift; sourceTree = "<group>"; };
-		B1000004 /* ProvisioningProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvisioningProfile.swift; sourceTree = "<group>"; };
-		B1000005 /* AppItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppItem.swift; sourceTree = "<group>"; };
-		B1000006 /* FileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItem.swift; sourceTree = "<group>"; };
-		B1000007 /* SignConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignConfig.swift; sourceTree = "<group>"; };
-		B1000008 /* CertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertManager.swift; sourceTree = "<group>"; };
-		B1000009 /* SigningEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigningEngine.swift; sourceTree = "<group>"; };
-		B1000010 /* MachOParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MachOParser.swift; sourceTree = "<group>"; };
-		B1000011 /* CodeSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeSigner.swift; sourceTree = "<group>"; };
-		B1000012 /* DylibInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DylibInjector.swift; sourceTree = "<group>"; };
-		B1000013 /* ZipArchiveManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipArchiveManager.swift; sourceTree = "<group>"; };
-		B1000014 /* LocalServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalServer.swift; sourceTree = "<group>"; };
-		B1000015 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
-		B1000016 /* FileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListView.swift; sourceTree = "<group>"; };
-		B1000017 /* FileRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileRowView.swift; sourceTree = "<group>"; };
-		B1000018 /* SignView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignView.swift; sourceTree = "<group>"; };
-		B1000019 /* LibraryAppRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryAppRow.swift; sourceTree = "<group>"; };
-		B1000020 /* SignedAppRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignedAppRow.swift; sourceTree = "<group>"; };
-		B1000021 /* SignSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignSheetView.swift; sourceTree = "<group>"; };
-		B1000022 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		B1000023 /* MorphingIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorphingIcons.swift; sourceTree = "<group>"; };
-		B1000024 /* SlidingDock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingDock.swift; sourceTree = "<group>"; };
-		B1000025 /* GlassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassCard.swift; sourceTree = "<group>"; };
-		B1000026 /* GlassButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassButton.swift; sourceTree = "<group>"; };
-		B1000027 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
-		B1000028 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
-		B1000029 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
-		B1000030 /* DeviceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
-		B1000031 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		B1000032 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B1000034 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = "VN-Sign/Resources/vi.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		B1000035 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "VN-Sign/Resources/en.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		B1000036 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		21000000 /* VN-Sign.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "VN-Sign.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		21000001 /* VNSignApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VNSignApp.swift; sourceTree = "<group>"; };
+		21000002 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		21000003 /* Certificate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Certificate.swift; sourceTree = "<group>"; };
+		21000004 /* ProvisioningProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvisioningProfile.swift; sourceTree = "<group>"; };
+		21000005 /* AppItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppItem.swift; sourceTree = "<group>"; };
+		21000006 /* FileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItem.swift; sourceTree = "<group>"; };
+		21000007 /* SignConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignConfig.swift; sourceTree = "<group>"; };
+		21000008 /* CertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertManager.swift; sourceTree = "<group>"; };
+		21000009 /* SigningEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigningEngine.swift; sourceTree = "<group>"; };
+		21000010 /* MachOParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MachOParser.swift; sourceTree = "<group>"; };
+		21000011 /* CodeSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeSigner.swift; sourceTree = "<group>"; };
+		21000012 /* DylibInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DylibInjector.swift; sourceTree = "<group>"; };
+		21000013 /* ZipArchiveManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZipArchiveManager.swift; sourceTree = "<group>"; };
+		21000014 /* LocalServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalServer.swift; sourceTree = "<group>"; };
+		21000015 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		21000016 /* FileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListView.swift; sourceTree = "<group>"; };
+		21000017 /* FileRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileRowView.swift; sourceTree = "<group>"; };
+		21000018 /* SignView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignView.swift; sourceTree = "<group>"; };
+		21000019 /* LibraryAppRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryAppRow.swift; sourceTree = "<group>"; };
+		21000020 /* SignedAppRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignedAppRow.swift; sourceTree = "<group>"; };
+		21000021 /* SignSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignSheetView.swift; sourceTree = "<group>"; };
+		21000022 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		21000023 /* MorphingIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorphingIcons.swift; sourceTree = "<group>"; };
+		21000024 /* SlidingDock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingDock.swift; sourceTree = "<group>"; };
+		21000025 /* GlassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassCard.swift; sourceTree = "<group>"; };
+		21000026 /* GlassButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassButton.swift; sourceTree = "<group>"; };
+		21000027 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
+		21000028 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		21000029 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		21000030 /* DeviceInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceInfo.swift; sourceTree = "<group>"; };
+		21000031 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		21000032 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		21000034 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = "vi.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		21000035 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = "en.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		21000036 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		D1000001 /* Frameworks */ = {
+		31000001 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -92,99 +92,139 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		E1000001 = {
+		41000000 /* Main Group */ = {
 			isa = PBXGroup;
 			children = (
-				E1000002 /* VN-Sign */,
-				C1000001 /* Products */,
+				41000001 /* VN-Sign */,
+				41000099 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		E1000002 /* VN-Sign */ = {
+		41000099 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E1000003 /* App */,
-				E1000004 /* Models */,
-				E1000005 /* Services */,
-				E1000006 /* Views */,
-				E1000007 /* Utilities */,
-				E1000008 /* Resources */,
-				B1000036 /* Info.plist */,
+				21000000 /* VN-Sign.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		41000001 /* VN-Sign */ = {
+			isa = PBXGroup;
+			children = (
+				41000002 /* App */,
+				41000003 /* Models */,
+				41000004 /* Services */,
+				41000005 /* Views */,
+				41000006 /* Utilities */,
+				41000007 /* Resources */,
+				21000036 /* Info.plist */,
 			);
 			path = "VN-Sign";
 			sourceTree = "<group>";
 		};
-		E1000003 /* App */ = {
+		41000002 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				B1000001 /* VNSignApp.swift */,
-				B1000002 /* AppDelegate.swift */,
+				21000001 /* VNSignApp.swift */,
+				21000002 /* AppDelegate.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
 		};
-		E1000004 /* Models */ = {
+		41000003 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				B1000003 /* Certificate.swift */,
-				B1000004 /* ProvisioningProfile.swift */,
-				B1000005 /* AppItem.swift */,
-				B1000006 /* FileItem.swift */,
-				B1000007 /* SignConfig.swift */,
+				21000003 /* Certificate.swift */,
+				21000004 /* ProvisioningProfile.swift */,
+				21000005 /* AppItem.swift */,
+				21000006 /* FileItem.swift */,
+				21000007 /* SignConfig.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
 		};
-		E1000005 /* Services */ = {
+		41000004 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				B1000008 /* CertManager.swift */,
-				B1000009 /* SigningEngine.swift */,
-				B1000010 /* MachOParser.swift */,
-				B1000011 /* CodeSigner.swift */,
-				B1000012 /* DylibInjector.swift */,
-				B1000013 /* ZipArchiveManager.swift */,
-				B1000014 /* LocalServer.swift */,
+				21000008 /* CertManager.swift */,
+				21000009 /* SigningEngine.swift */,
+				21000010 /* MachOParser.swift */,
+				21000011 /* CodeSigner.swift */,
+				21000012 /* DylibInjector.swift */,
+				21000013 /* ZipArchiveManager.swift */,
+				21000014 /* LocalServer.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
 		};
-		E1000006 /* Views */ = {
+		41000005 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B1000015 /* MainTabView.swift */,
-				B1000016 /* FileListView.swift */,
-				B1000017 /* FileRowView.swift */,
-				B1000018 /* SignView.swift */,
-				B1000019 /* LibraryAppRow.swift */,
-				B1000020 /* SignedAppRow.swift */,
-				B1000021 /* SignSheetView.swift */,
-				B1000022 /* SettingsView.swift */,
-				B1000023 /* MorphingIcons.swift */,
-				B1000024 /* SlidingDock.swift */,
-				B1000025 /* GlassCard.swift */,
-				B1000026 /* GlassButton.swift */,
-				B1000027 /* ProgressBar.swift */,
-				B1000028 /* ToastView.swift */,
+				21000015 /* MainTabView.swift */,
+				41000008 /* Components */,
+				41000009 /* Files */,
+				41000010 /* Settings */,
+				41000011 /* Sign */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		E1000007 /* Utilities */ = {
+		41000008 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				B1000029 /* Theme.swift */,
-				B1000030 /* DeviceInfo.swift */,
-				B1000031 /* Extensions.swift */,
+				21000026 /* GlassButton.swift */,
+				21000025 /* GlassCard.swift */,
+				21000023 /* MorphingIcons.swift */,
+				21000027 /* ProgressBar.swift */,
+				21000024 /* SlidingDock.swift */,
+				21000028 /* ToastView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		41000009 /* Files */ = {
+			isa = PBXGroup;
+			children = (
+				21000016 /* FileListView.swift */,
+				21000017 /* FileRowView.swift */,
+			);
+			path = Files;
+			sourceTree = "<group>";
+		};
+		41000010 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				21000022 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		41000011 /* Sign */ = {
+			isa = PBXGroup;
+			children = (
+				21000019 /* LibraryAppRow.swift */,
+				21000020 /* SignedAppRow.swift */,
+				21000021 /* SignSheetView.swift */,
+				21000018 /* SignView.swift */,
+			);
+			path = Sign;
+			sourceTree = "<group>";
+		};
+		41000006 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				21000030 /* DeviceInfo.swift */,
+				21000031 /* Extensions.swift */,
+				21000029 /* Theme.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		E1000008 /* Resources */ = {
+		41000007 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B1000032 /* Assets.xcassets */,
-				B1000033 /* Localizable.strings */,
+				21000032 /* Assets.xcassets */,
+				21000033 /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -192,13 +232,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F1000001 /* VN-Sign */ = {
+		51000001 /* VN-Sign */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = G1000001 /* Build configuration list for PBXNativeTarget "VN-Sign" */;
+			buildConfigurationList = 71000002 /* Build configuration list for PBXNativeTarget "VN-Sign" */;
 			buildPhases = (
-				H1000001 /* Sources */,
-				D1000001 /* Frameworks */,
-				I1000001 /* Resources */,
+				61000001 /* Sources */,
+				31000001 /* Frameworks */,
+				61000002 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -206,20 +246,20 @@
 			);
 			name = "VN-Sign";
 			productName = "VN-Sign";
-			productReference = C1000001 /* VN-Sign.app */;
+			productReference = 21000000 /* VN-Sign.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		J1000001 /* Project object */ = {
+		81000001 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 			};
-			buildConfigurationList = K1000001 /* Build configuration list for PBXProject "VN-Sign" */;
+			buildConfigurationList = 71000001 /* Build configuration list for PBXProject "VN-Sign" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = vi;
 			hasScannedForEncodings = 0;
@@ -228,75 +268,75 @@
 				vi,
 				Base,
 			);
-			mainGroup = E1000001;
-			productRefGroup = C1000001 /* Products */;
+			mainGroup = 41000000 /* Main Group */;
+			productRefGroup = 41000099 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F1000001 /* VN-Sign */,
+				51000001 /* VN-Sign */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		I1000001 /* Resources */ = {
+		61000002 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1000032 /* Assets.xcassets in Resources */,
-				A1000033 /* Localizable.strings in Resources */,
+				11000032 /* Assets.xcassets in Resources */,
+				11000033 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		H1000001 /* Sources */ = {
+		61000001 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1000001 /* VNSignApp.swift in Sources */,
-				A1000002 /* AppDelegate.swift in Sources */,
-				A1000003 /* Certificate.swift in Sources */,
-				A1000004 /* ProvisioningProfile.swift in Sources */,
-				A1000005 /* AppItem.swift in Sources */,
-				A1000006 /* FileItem.swift in Sources */,
-				A1000007 /* SignConfig.swift in Sources */,
-				A1000008 /* CertManager.swift in Sources */,
-				A1000009 /* SigningEngine.swift in Sources */,
-				A1000010 /* MachOParser.swift in Sources */,
-				A1000011 /* CodeSigner.swift in Sources */,
-				A1000012 /* DylibInjector.swift in Sources */,
-				A1000013 /* ZipArchiveManager.swift in Sources */,
-				A1000014 /* LocalServer.swift in Sources */,
-				A1000015 /* MainTabView.swift in Sources */,
-				A1000016 /* FileListView.swift in Sources */,
-				A1000017 /* FileRowView.swift in Sources */,
-				A1000018 /* SignView.swift in Sources */,
-				A1000019 /* LibraryAppRow.swift in Sources */,
-				A1000020 /* SignedAppRow.swift in Sources */,
-				A1000021 /* SignSheetView.swift in Sources */,
-				A1000022 /* SettingsView.swift in Sources */,
-				A1000023 /* MorphingIcons.swift in Sources */,
-				A1000024 /* SlidingDock.swift in Sources */,
-				A1000025 /* GlassCard.swift in Sources */,
-				A1000026 /* GlassButton.swift in Sources */,
-				A1000027 /* ProgressBar.swift in Sources */,
-				A1000028 /* ToastView.swift in Sources */,
-				A1000029 /* Theme.swift in Sources */,
-				A1000030 /* DeviceInfo.swift in Sources */,
-				A1000031 /* Extensions.swift in Sources */,
+				11000001 /* VNSignApp.swift in Sources */,
+				11000002 /* AppDelegate.swift in Sources */,
+				11000003 /* Certificate.swift in Sources */,
+				11000004 /* ProvisioningProfile.swift in Sources */,
+				11000005 /* AppItem.swift in Sources */,
+				11000006 /* FileItem.swift in Sources */,
+				11000007 /* SignConfig.swift in Sources */,
+				11000008 /* CertManager.swift in Sources */,
+				11000009 /* SigningEngine.swift in Sources */,
+				11000010 /* MachOParser.swift in Sources */,
+				11000011 /* CodeSigner.swift in Sources */,
+				11000012 /* DylibInjector.swift in Sources */,
+				11000013 /* ZipArchiveManager.swift in Sources */,
+				11000014 /* LocalServer.swift in Sources */,
+				11000015 /* MainTabView.swift in Sources */,
+				11000016 /* FileListView.swift in Sources */,
+				11000017 /* FileRowView.swift in Sources */,
+				11000018 /* SignView.swift in Sources */,
+				11000019 /* LibraryAppRow.swift in Sources */,
+				11000020 /* SignedAppRow.swift in Sources */,
+				11000021 /* SignSheetView.swift in Sources */,
+				11000022 /* SettingsView.swift in Sources */,
+				11000023 /* MorphingIcons.swift in Sources */,
+				11000024 /* SlidingDock.swift in Sources */,
+				11000025 /* GlassCard.swift in Sources */,
+				11000026 /* GlassButton.swift in Sources */,
+				11000027 /* ProgressBar.swift in Sources */,
+				11000028 /* ToastView.swift in Sources */,
+				11000029 /* Theme.swift in Sources */,
+				11000030 /* DeviceInfo.swift in Sources */,
+				11000031 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		B1000033 /* Localizable.strings */ = {
+		21000033 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				B1000034 /* vi */,
-				B1000035 /* en */,
+				21000034 /* vi */,
+				21000035 /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -304,7 +344,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		L1000001 /* Debug */ = {
+		91000001 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -332,7 +372,7 @@
 			};
 			name = Debug;
 		};
-		L1000002 /* Release */ = {
+		91000002 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -354,11 +394,14 @@
 			};
 			name = Release;
 		};
-		L1000003 /* Debug */ = {
+		91000003 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = NO;
@@ -376,11 +419,14 @@
 			};
 			name = Debug;
 		};
-		L1000004 /* Release */ = {
+		91000004 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = NO;
@@ -401,20 +447,20 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		K1000001 /* Build configuration list for PBXProject "VN-Sign" */ = {
+		71000001 /* Build configuration list for PBXProject "VN-Sign" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				L1000001 /* Debug */,
-				L1000002 /* Release */,
+				91000001 /* Debug */,
+				91000002 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		G1000001 /* Build configuration list for PBXNativeTarget "VN-Sign" */ = {
+		71000002 /* Build configuration list for PBXNativeTarget "VN-Sign" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				L1000003 /* Debug */,
-				L1000004 /* Release */,
+				91000003 /* Debug */,
+				91000004 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -422,5 +468,5 @@
 /* End XCConfigurationList section */
 
 	};
-	rootObject = J1000001 /* Project object */;
+	rootObject = 81000001 /* Project object */;
 }

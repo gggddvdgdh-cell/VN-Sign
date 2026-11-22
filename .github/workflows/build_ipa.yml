@@ -54,19 +54,8 @@ jobs:
           xcodebuild build \
             -project VN-Sign.xcodeproj \
             -scheme VN-Sign \
+            -destination "generic/platform=iOS" \
             -configuration Release \
-            -sdk iphoneos \
-            -derivedDataPath build/DerivedData \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_IDENTITY="" \
-            AD_HOC_CODE_SIGNING_ALLOWED=YES \
-            COMPILER_INDEX_STORE_ENABLE=NO || \
-          xcodebuild build \
-            -project VN-Sign.xcodeproj \
-            -target VN-Sign \
-            -configuration Release \
-            -sdk iphoneos \
             -derivedDataPath build/DerivedData \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
