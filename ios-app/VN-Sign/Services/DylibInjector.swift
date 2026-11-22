@@ -74,16 +74,12 @@ public final class DylibInjector {
         }
         
         // Xây dựng struct dylib_command
-        var dylibCmd = dylib_command()
-        dylibCmd.cmd = MachOParser.LC_LOAD_DYLIB
-        dylibCmd.cmdsize = alignedCmdSize
-        dylibCmd.dylib.name.offset = UInt32(cmdHeaderSize)
-        dylibCmd.dylib.timestamp = 2
-        dylibCmd.dylib.current_version = 0x00010000
-        dylibCmd.dylib.compatibility_version = 0x00010000
+        let lcStr = lc_str(offset: UInt32(cmdHeaderSize))
+        let dylibInfo = dylib(name: lcStr, timestamp: 2, current_version: 0x00010000, compatibility_version: 0x00010000)
+        var dylibCmd = dylib_command(cmd: MachOParser.LC_LOAD_DYLIB, cmdsize: alignedCmdSize, dylib: dylibInfo)
         
         // Chuẩn bị buffer dữ liệu mới
-        var newCmdBuffer = Data(bytes: &dylibCmd, count: cmdHeaderSize)
+        var newCmdBuffer = withUnsafeBytes(of: &dylibCmd) { Data($0) }
         newCmdBuffer.append(pathData)
         newCmdBuffer.append(0) // Null-terminator
         

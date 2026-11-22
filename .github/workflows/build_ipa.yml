@@ -61,7 +61,11 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
             AD_HOC_CODE_SIGNING_ALLOWED=YES \
-            COMPILER_INDEX_STORE_ENABLE=NO
+            COMPILER_INDEX_STORE_ENABLE=NO 2>&1 | tee xcodebuild.log || {
+              echo "=== XCODEBUILD ERROR LOG ==="
+              cat xcodebuild.log
+              exit 1
+            }
 
           echo "=== 3. Tìm file VN-Sign.app vừa biên dịch xong ==="
           BUILT_APP=$(find build/DerivedData -name "VN-Sign.app" -type d | head -n 1)
@@ -104,6 +108,13 @@ jobs:
           path: VN-Sign.ipa
           retention-days: 30
           if-no-files-found: error
+
+      - name: Upload Build Log on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcodebuild-log
+          path: ios-app/xcodebuild.log
 
       - name: Create GitHub Release (On Tag Push)
         if: startsWith(github.ref, 'refs/tags/')

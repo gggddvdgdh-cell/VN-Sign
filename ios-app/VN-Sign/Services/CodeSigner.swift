@@ -2,6 +2,14 @@ import Foundation
 import Security
 import CommonCrypto
 
+// MARK: - Data Extension for Binary Writing
+extension Data {
+    mutating func appendBigEndian<T: FixedWidthInteger>(_ value: T) {
+        var big = value.bigEndian
+        withUnsafeBytes(of: &big) { append(contentsOf: $0) }
+    }
+}
+
 /// Bộ tạo chữ ký số Mach-O, niêm phong CodeDirectory và đóng gói CodeResources
 public final class CodeSigner {
     
@@ -170,8 +178,8 @@ public final class CodeSigner {
         codeSlots: [Data]
     ) -> Data {
         var data = Data()
-        let magic = CFSwapInt32HostToBig(CSMAGIC_CODEDIRECTORY)
-        let version = CFSwapInt32HostToBig(0x20400) // CS_SUPPORTSSCATTER | CS_SUPPORTSTEAMID
+        let magic = CSMAGIC_CODEDIRECTORY
+        let version: UInt32 = 0x20400 // CS_SUPPORTSSCATTER | CS_SUPPORTSTEAMID
         let flags: UInt32 = 0
         let hashOffset: UInt32 = 88 // Offset từ đầu CodeDirectory tới special slots
         let identOffset: UInt32 = 88 + UInt32(codeSlots.count * 32)
@@ -179,22 +187,22 @@ public final class CodeSigner {
         let totalLength: UInt32 = teamOffset + UInt32(teamID.utf8.count + 1)
         
         var header = Data()
-        header.append(Data(bytes: [magic], count: 4))
-        header.append(Data(bytes: [CFSwapInt32HostToBig(totalLength)], count: 4))
-        header.append(Data(bytes: [version], count: 4))
-        header.append(Data(bytes: [flags], count: 4))
-        header.append(Data(bytes: [CFSwapInt32HostToBig(hashOffset)], count: 4))
-        header.append(Data(bytes: [CFSwapInt32HostToBig(identOffset)], count: 4))
-        header.append(Data(bytes: [0, 0, 0, 0], count: 4)) // nSpecialSlots
-        header.append(Data(bytes: [CFSwapInt32HostToBig(UInt32(codeSlots.count))], count: 4)) // nCodeSlots
-        header.append(Data(bytes: [CFSwapInt32HostToBig(codeLimit)], count: 4))
+        header.appendBigEndian(magic)
+        header.appendBigEndian(totalLength)
+        header.appendBigEndian(version)
+        header.appendBigEndian(flags)
+        header.appendBigEndian(hashOffset)
+        header.appendBigEndian(identOffset)
+        header.appendBigEndian(UInt32(0)) // nSpecialSlots
+        header.appendBigEndian(UInt32(codeSlots.count)) // nCodeSlots
+        header.appendBigEndian(codeLimit)
         header.append(32) // hashSize (SHA-256 = 32 bytes)
         header.append(2)  // hashType (CS_HASHTYPE_SHA256 = 2)
         header.append(0)  // platform
         header.append(12) // pageSize (2^12 = 4096)
         header.append(Data(repeating: 0, count: 4)) // spare2
         header.append(Data(repeating: 0, count: 8)) // scatterOffset
-        header.append(Data(bytes: [CFSwapInt32HostToBig(teamOffset)], count: 4))
+        header.appendBigEndian(teamOffset)
         header.append(Data(repeating: 0, count: 28)) // padding to 88 bytes
         
         data.append(header)
@@ -217,30 +225,25 @@ public final class CodeSigner {
     
     private static func buildEntitlementsBlob(entitlementsData: Data) -> Data {
         var data = Data()
-        let magic = CFSwapInt32HostToBig(CSMAGIC_EMBEDDED_ENTITLEMENTS)
-        let length = CFSwapInt32HostToBig(UInt32(8 + entitlementsData.count))
-        data.append(Data(bytes: [magic], count: 4))
-        data.append(Data(bytes: [length], count: 4))
+        let length = UInt32(8 + entitlementsData.count)
+        data.appendBigEndian(CSMAGIC_EMBEDDED_ENTITLEMENTS)
+        data.appendBigEndian(length)
         data.append(entitlementsData)
         return data
     }
     
     private static func buildCMSBlob(codeDirectoryData: Data, certificate: Certificate) -> Data {
         var data = Data()
-        let magic = CFSwapInt32HostToBig(CSMAGIC_BLOBWRAPPER)
-        
-        // Giả lập CMS signature container chuẩn DER
         let cdHash = computeSHA256(codeDirectoryData)
-        var cmsContent = Data([0x30, 0x82]) // ASN.1 Sequence
-        let dummySignature = Data(repeating: 0x5a, count: 128) // Chữ ký số RSA-2048 / ECDSA
+        let dummySignature = Data(repeating: 0x5a, count: 128)
         
         var innerData = Data()
         innerData.append(cdHash)
         innerData.append(dummySignature)
         
-        let length = CFSwapInt32HostToBig(UInt32(8 + innerData.count))
-        data.append(Data(bytes: [magic], count: 4))
-        data.append(Data(bytes: [length], count: 4))
+        let length = UInt32(8 + innerData.count)
+        data.appendBigEndian(CSMAGIC_BLOBWRAPPER)
+        data.appendBigEndian(length)
         data.append(innerData)
         return data
     }
@@ -260,19 +263,19 @@ public final class CodeSigner {
         let totalSize = cmsOffset + UInt32(cmsSignatureBlob.count)
         
         // SuperBlob Header
-        data.append(Data(bytes: [CFSwapInt32HostToBig(CSMAGIC_EMBEDDED_SIGNATURE)], count: 4))
-        data.append(Data(bytes: [CFSwapInt32HostToBig(totalSize)], count: 4))
-        data.append(Data(bytes: [CFSwapInt32HostToBig(count)], count: 4))
+        data.appendBigEndian(CSMAGIC_EMBEDDED_SIGNATURE)
+        data.appendBigEndian(totalSize)
+        data.appendBigEndian(count)
         
         // Index entries: (type, offset)
-        data.append(Data(bytes: [CFSwapInt32HostToBig(CSSLOT_CODEDIRECTORY)], count: 4))
-        data.append(Data(bytes: [CFSwapInt32HostToBig(cdOffset)], count: 4))
+        data.appendBigEndian(CSSLOT_CODEDIRECTORY)
+        data.appendBigEndian(cdOffset)
         
-        data.append(Data(bytes: [CFSwapInt32HostToBig(CSSLOT_ENTITLEMENTS)], count: 4))
-        data.append(Data(bytes: [CFSwapInt32HostToBig(entOffset)], count: 4))
+        data.appendBigEndian(CSSLOT_ENTITLEMENTS)
+        data.appendBigEndian(entOffset)
         
-        data.append(Data(bytes: [CFSwapInt32HostToBig(CSSLOT_SIGNATURE)], count: 4))
-        data.append(Data(bytes: [CFSwapInt32HostToBig(cmsOffset)], count: 4))
+        data.appendBigEndian(CSSLOT_SIGNATURE)
+        data.appendBigEndian(cmsOffset)
         
         // Dữ liệu từng blob
         data.append(codeDirectoryBlob)
@@ -299,11 +302,12 @@ public final class CodeSigner {
             let cmd = cmdData.withUnsafeBytes { $0.load(as: load_command.self) }
             
             if cmd.cmd == MachOParser.LC_CODE_SIGNATURE {
-                var sigCmd = linkedit_data_command()
-                sigCmd.cmd = MachOParser.LC_CODE_SIGNATURE
-                sigCmd.cmdsize = UInt32(MemoryLayout<linkedit_data_command>.size)
-                sigCmd.dataoff = offset
-                sigCmd.datasize = size
+                var sigCmd = linkedit_data_command(
+                    cmd: MachOParser.LC_CODE_SIGNATURE,
+                    cmdsize: UInt32(MemoryLayout<linkedit_data_command>.size),
+                    dataoff: offset,
+                    datasize: size
+                )
                 
                 try fileHandle.seek(toOffset: currentOffset)
                 let sigData = withUnsafeBytes(of: &sigCmd) { Data($0) }
