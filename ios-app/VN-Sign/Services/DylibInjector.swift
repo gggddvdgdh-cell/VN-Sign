@@ -79,7 +79,7 @@ public final class DylibInjector {
         var dylibCmd = dylib_command(cmd: MachOParser.LC_LOAD_DYLIB, cmdsize: alignedCmdSize, dylib: dylibInfo)
         
         // Chuẩn bị buffer dữ liệu mới
-        var newCmdBuffer = withUnsafeBytes(of: &dylibCmd) { Data($0) }
+        var newCmdBuffer = Swift.withUnsafeBytes(of: &dylibCmd) { Data($0) }
         newCmdBuffer.append(pathData)
         newCmdBuffer.append(0) // Null-terminator
         
@@ -97,7 +97,7 @@ public final class DylibInjector {
         header.sizeofcmds += alignedCmdSize
         
         try fileHandle.seek(toOffset: 0)
-        let updatedHeaderData = withUnsafeBytes(of: &header) { Data($0) }
+        let updatedHeaderData = Swift.withUnsafeBytes(of: &header) { Data($0) }
         try fileHandle.write(contentsOf: updatedHeaderData)
     }
 }

@@ -1,12 +1,13 @@
 import Foundation
 import Security
 import CommonCrypto
+import MachO
 
 // MARK: - Data Extension for Binary Writing
 extension Data {
     mutating func appendBigEndian<T: FixedWidthInteger>(_ value: T) {
         var big = value.bigEndian
-        withUnsafeBytes(of: &big) { append(contentsOf: $0) }
+        Swift.withUnsafeBytes(of: &big) { append(contentsOf: $0) }
     }
 }
 
@@ -310,7 +311,7 @@ public final class CodeSigner {
                 )
                 
                 try fileHandle.seek(toOffset: currentOffset)
-                let sigData = withUnsafeBytes(of: &sigCmd) { Data($0) }
+                let sigData = Swift.withUnsafeBytes(of: &sigCmd) { Data($0) }
                 try fileHandle.write(contentsOf: sigData)
                 return
             }

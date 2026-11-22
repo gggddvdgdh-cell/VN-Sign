@@ -93,7 +93,7 @@ public final class MachOParser {
                 if let segData = try fileHandle.read(upToCount: MemoryLayout<segment_command_64>.size),
                    segData.count == MemoryLayout<segment_command_64>.size {
                     let seg = segData.withUnsafeBytes { $0.load(as: segment_command_64.self) }
-                    let segName = withUnsafeBytes(of: seg.segname) { rawPtr -> String in
+                    let segName = Swift.withUnsafeBytes(of: seg.segname) { rawPtr -> String in
                         let ptr = rawPtr.baseAddress!.assumingMemoryBound(to: CChar.self)
                         return String(cString: ptr)
                     }
