@@ -15,8 +15,7 @@ permissions:
 jobs:
   build-ipa:
     name: Build & Package VN-Sign iOS IPA
-    # Chạy trên máy chủ Mac chính thức của Apple trên GitHub (100% miễn phí cho Public Repo)
-    runs-on: macos-14
+    runs-on: macos-latest
     timeout-minutes: 30
 
     steps:
