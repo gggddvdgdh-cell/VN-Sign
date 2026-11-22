@@ -43,14 +43,10 @@ jobs:
 
       - name: Compile Swift Code & Build VN-Sign.app
         run: |
-          set -e
-          echo "=== 2. Tiến hành biên dịch mã nguồn Swift thật bằng xcodebuild ==="
+          set +e
           cd ios-app
           
-          # Liệt kê targets và schemes để kiểm tra
-          xcodebuild -project VN-Sign.xcodeproj -list || true
-
-          # Biên dịch toàn bộ file Swift thành ARM64 iOS Binary (Release iphoneos)
+          echo "=== 2. Tiến hành biên dịch mã nguồn Swift thật bằng xcodebuild ==="
           xcodebuild build \
             -project VN-Sign.xcodeproj \
             -scheme VN-Sign \
@@ -61,8 +57,28 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
             AD_HOC_CODE_SIGNING_ALLOWED=YES \
-            COMPILER_INDEX_STORE_ENABLE=NO
-
+            COMPILER_INDEX_STORE_ENABLE=NO > build.log 2>&1
+          
+          BUILD_STATUS=$?
+          
+          if [ $BUILD_STATUS -ne 0 ]; then
+            echo "::error::XCODEBUILD FAILED WITH CODE $BUILD_STATUS"
+            echo "### ❌ Xcodebuild Compilation Failed (Code $BUILD_STATUS)" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            grep -E "(error:|fatal error:|BUILD FAILED|\*\* BUILD FAILED \*\*)" build.log -B 1 -A 3 | head -n 100 >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            
+            # Đưa từng dòng lỗi thành GitHub Annotation
+            grep -E "(error:|fatal error:)" build.log | head -n 30 | while IFS= read -r errline; do
+              echo "::error::$errline"
+            done
+            
+            echo "=== TOÀN BỘ LOG ĐUÔI ==="
+            tail -n 150 build.log
+            exit $BUILD_STATUS
+          fi
+          
+          set -e
           echo "=== 3. Tìm file VN-Sign.app vừa biên dịch xong ==="
           BUILT_APP=$(find build/DerivedData/Build/Products -name "VN-Sign.app" -type d | head -n 1)
           
