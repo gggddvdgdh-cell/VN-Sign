@@ -59,39 +59,9 @@ public final class CertManager: ObservableObject {
         // Trích xuất Subject Summary
         let commonName = SecCertificateCopySubjectSummary(certificate) as String? ?? "Apple Developer Certificate"
         
-        // Trích xuất thông tin chi tiết qua SecCertificateCopyValues
-        let values = SecCertificateCopyValues(certificate, nil, nil) as? [String: [String: Any]] ?? [:]
-        
-        var teamID = ""
-        var teamName = ""
-        var expirationDate = Date().addingTimeInterval(365 * 24 * 3600)
-        
-        // Phân tích Subject OID để lấy OU (Team ID) và O (Team Name)
-        if let subjectDict = values["2.5.29.17"] ?? values[kSecOIDX509V1SubjectName as String],
-           let subValues = subjectDict[kSecPropertyKeyValue as String] as? [[String: Any]] {
-            for entry in subValues {
-                guard let label = entry[kSecPropertyKeyLabel as String] as? String,
-                      let val = entry[kSecPropertyKeyValue as String] as? String else { continue }
-                if label == "2.5.4.11" || label == "OU" {
-                    teamID = val
-                } else if label == "2.5.4.10" || label == "O" {
-                    teamName = val
-                }
-            }
-        }
-        
-        // Phân tích Expiry Date
-        if let validityDict = values[kSecOIDX509V1ValidityNotAfter as String],
-           let expireTimestamp = validityDict[kSecPropertyKeyValue as String] as? TimeInterval {
-            expirationDate = Date(timeIntervalSinceReferenceDate: expireTimestamp)
-        }
-        
-        if teamID.isEmpty {
-            teamID = extractTeamIDFallback(from: commonName)
-        }
-        if teamName.isEmpty {
-            teamName = commonName
-        }
+        let teamID = extractTeamIDFallback(from: commonName)
+        let teamName = commonName
+        let expirationDate = Date().addingTimeInterval(365 * 24 * 3600)
         
         // Lưu tệp p12 vào thư mục app
         let targetURL = certsDir.appendingPathComponent("\(UUID().uuidString).p12")
