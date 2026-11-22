@@ -61,11 +61,7 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
             AD_HOC_CODE_SIGNING_ALLOWED=YES \
-            COMPILER_INDEX_STORE_ENABLE=NO 2>&1 | tee xcodebuild.log || {
-              echo "=== XCODEBUILD ERROR LOG ==="
-              cat xcodebuild.log
-              exit 1
-            }
+            COMPILER_INDEX_STORE_ENABLE=NO
 
           echo "=== 3. Tìm file VN-Sign.app vừa biên dịch xong ==="
           BUILT_APP=$(find build/DerivedData/Build/Products -name "VN-Sign.app" -type d | head -n 1)
@@ -87,8 +83,6 @@ jobs:
           # KIỂM TRA BẮT BUỘC: File thực thi nhị phân Mach-O ARM64 phải tồn tại
           if [ ! -f "$BUILT_APP/VN-Sign" ]; then
             echo "CRITICAL ERROR: Tệp thực thi VN-Sign không được biên dịch vào .app!"
-            echo "=== TOÀN BỘ LOG XCODEBUILD ==="
-            cat xcodebuild.log
             exit 1
           fi
 
@@ -123,13 +117,6 @@ jobs:
           path: VN-Sign.ipa
           retention-days: 30
           if-no-files-found: error
-
-      - name: Upload Full Xcodebuild Log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: xcodebuild-log
-          path: ios-app/xcodebuild.log
 
       - name: Create or Update GitHub Release
         if: github.ref == 'refs/heads/main'
