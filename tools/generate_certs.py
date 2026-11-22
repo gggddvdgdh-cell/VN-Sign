@@ -47,7 +47,7 @@ ca_cert = (
 # 2. Server Cert for 127.0.0.1 and localhost
 server_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
 server_name = x509.Name([
-    x509.NameAttribute(NameOID.COMMON_NAME, '127.0.0.1'),
+    x509.NameAttribute(NameOID.COMMON_NAME, 'app.localhost.direct'),
     x509.NameAttribute(NameOID.ORGANIZATION_NAME, 'VN-Sign Local OTA Server'),
     x509.NameAttribute(NameOID.COUNTRY_NAME, 'VN'),
 ])
@@ -62,8 +62,10 @@ server_cert = (
     .add_extension(x509.BasicConstraints(ca=False, path_length=None), critical=True)
     .add_extension(
         x509.SubjectAlternativeName([
-            x509.IPAddress(ipaddress.IPv4Address('127.0.0.1')),
+            x509.DNSName('app.localhost.direct'),
+            x509.DNSName('*.localhost.direct'),
             x509.DNSName('localhost'),
+            x509.IPAddress(ipaddress.IPv4Address('127.0.0.1')),
             x509.DNSName('vnsign.local'),
         ]),
         critical=False,

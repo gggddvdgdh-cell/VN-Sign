@@ -101,8 +101,8 @@ public final class LocalServer: ObservableObject {
             try? startServer()
         }
         
-        // Tạo manifest endpoint qua HTTPS 127.0.0.1
-        let manifestEndpoint = "https://127.0.0.1:\(httpsPort)/manifest.plist"
+        // Tạo manifest endpoint qua HTTPS app.localhost.direct (tự động phân giải 127.0.0.1)
+        let manifestEndpoint = "https://app.localhost.direct:\(httpsPort)/manifest.plist"
         guard let encodedManifest = manifestEndpoint.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let itmsURL = URL(string: "itms-services://?action=download-manifest&url=\(encodedManifest)") else {
             return
@@ -249,8 +249,8 @@ public final class LocalServer: ObservableObject {
             originalIpaPath: ""
         )
         
-        // URL tải IPA bắt buộc phải qua HTTPS 127.0.0.1
-        let downloadURL = "https://127.0.0.1:\(httpsPort)/download.ipa"
+        // URL tải IPA bắt buộc phải qua HTTPS app.localhost.direct
+        let downloadURL = "https://app.localhost.direct:\(httpsPort)/download.ipa"
         
         let manifestXML = """
         <?xml version="1.0" encoding="UTF-8"?>

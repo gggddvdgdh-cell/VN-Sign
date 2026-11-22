@@ -9,25 +9,25 @@
             <string>vnsign_root_ca.crt</string>
             <key>PayloadContent</key>
             <data>
-MIIDZjCCAk6gAwIBAgIUbQuBpSu1bbGmOiasqbe0EfY21iQwDQYJKoZIhvcNAQEL
+MIIDZjCCAk6gAwIBAgIUOvAHxZXLN6wXoFWNu9HFln7twP0wDQYJKoZIhvcNAQEL
 BQAwSzEeMBwGA1UEAwwVVk4tU2lnbiBMb2NhbCBSb290IENBMRwwGgYDVQQKDBNW
-Ti1TaWduIENvcnBvcmF0aW9uMQswCQYDVQQGEwJWTjAeFw0yNjExMjExNDQzNTRa
-Fw00NjExMTcxNDQzNTRaMEsxHjAcBgNVBAMMFVZOLVNpZ24gTG9jYWwgUm9vdCBD
+Ti1TaWduIENvcnBvcmF0aW9uMQswCQYDVQQGEwJWTjAeFw0yNjExMjExNTAwMjJa
+Fw00NjExMTcxNTAwMjJaMEsxHjAcBgNVBAMMFVZOLVNpZ24gTG9jYWwgUm9vdCBD
 QTEcMBoGA1UECgwTVk4tU2lnbiBDb3Jwb3JhdGlvbjELMAkGA1UEBhMCVk4wggEi
-MA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDXzQkRdvAgU+h7SQbS42JHc2+i
-8OaVbB4NETwjqGIZfOGyBOct3+cBaGFp0aaIh4dMyHJi3jbBfPLpnMDK4ZtS5DDA
-3qj8FtgFlluTveDzsdxb+FqyPy9gwXT6OoQ0VkW08UoZ5tdEYUvFS8siUWNKn/tv
-GgFLTtQyuUvAFqceb2juspvov4/DA5whIHyRmUD6ZvPjQ9Bf70QaCjPPIQgrKEIz
-+Ow1da00z1otZvOc7pFw22FNtRoqIytIoWG46LrcWREBuuwZe/6Bo2pSDV0s42Ef
-gg8/dAvTPKxK0ZOab/1KGrJYHRBqd9XlC/TOOlqkaLa/q+zmhzEVHRN80w9NAgMB
+MA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCsB5OhJy2Pcy/Fzw2GEN8JNPu+
+KH6ZGk1kNeG6+B3Mby3I6fHkjwnuKlX2GqeUEUYzm/Ujqh6kcsOobwW69y01IVP0
+vRNYINBbF4kvKcvwriHWvxfzKVpvGketdYTwWlhBtS8vlBxT78XH7XUiLHWxyLcp
+EWOlLERzeMlrIgwDWD7v770fYudmKmaNV2mUL+uqDOR4vG2avsS86EB3oo/EuVrf
+JgIqhOwTQ+Xj3+dNamPqSygiWyp/xCplid4YjYpk0+b2dGWrg9MrZ5sk6UukjxdK
+Fj2oLnCNX890RNoZntXCVJAKE+9vcXKgR/dvKp3dkCEuhbhaVWHV0G5O8ExDAgMB
 AAGjQjBAMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgGGMB0GA1UdDgQW
-BBRAti2PwfkMZrA/2yoFyLDF+ly5gjANBgkqhkiG9w0BAQsFAAOCAQEAVVNchm3m
-lRLoFb+WDKJFAG/9u8v2fRpx6hXuNdEZdSz4JIQyvxefASpTHLE8J8SbX2LjtwXl
-k1C0g/PjSJNUr4uGordcYGPUFthUKgiTTxYRlmgjB5+fcy7s9mISudtdfyaO+mY6
-BXpvVlMim3nOaoYN2yeqOKNMne/HdQPVOKweoyi8i/atx2tjZz9MZ4wfqFlcALS8
-FOxYvOUJoY7mlqIlw6QAQtBwryIU3KSwghmh6Kovx6+VdZ9FsK1noJ9GVsOQQJj2
-LjvpBPUTXnZ74v3sfYh9gzDodNI6k+ABV833qs0Bbx1eNxw9vx9cZFhKWQTHNHiP
-iyf/5gAA1NSRWg==
+BBRgmSG/Q9KEyp4JwUJ2n1cSY6OgTTANBgkqhkiG9w0BAQsFAAOCAQEAi5PYdR2L
+V0T23AdGOCSVYnlM7GAyrWI0TZmdBmIrwMF4+0gOs7BydFYky7AIEpOmeqwFnQTL
+LvYmM1QgDqsqmMZIMHxUzk7Yle/ivj+AT8yHOZgNYD/2tXY1BQzjJTQ5EmpR2QZV
+7WLbd7Gp323DeUXPOEZLT3YSPTj7PdQGTJdCtHghVsL7pD5hvBs2Yhrhr4Lh7zy+
+3zZIqoV2OMXn/FV4A9Wb4yYjMgTxjYwJc/XUWk6FZ7Tqz05WDJu8VtVuHu6QICwx
+0ZBgdM9iY5huROt8xbiWZKP1YggJbesMARCigv3QRMooM6q9xl0pe7YkxMORH8kk
+5ZUk2a0JgV/6ww==
             </data>
             <key>PayloadDescription</key>
             <string>Chứng chỉ gốc tin cậy nội bộ phục vụ cài đặt trực tiếp ứng dụng OTA HTTPS cho VN-Sign.</string>
@@ -38,7 +38,7 @@ iyf/5gAA1NSRWg==
             <key>PayloadType</key>
             <string>com.apple.security.root</string>
             <key>PayloadUUID</key>
-            <string>406A1F0D-EB94-481C-B7E3-CB02E803A435</string>
+            <string>5DA72986-0D7D-48E1-8BEA-C81DD1F1102C</string>
             <key>PayloadVersion</key>
             <integer>1</integer>
         </dict>
@@ -56,7 +56,7 @@ iyf/5gAA1NSRWg==
     <key>PayloadType</key>
     <string>Configuration</string>
     <key>PayloadUUID</key>
-    <string>89F95809-F913-4B31-80E1-BBF255FAA2A0</string>
+    <string>FD88A3CE-56F1-4E72-9624-D9303709AA8A</string>
     <key>PayloadVersion</key>
     <integer>1</integer>
 </dict>
