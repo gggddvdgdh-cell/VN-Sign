@@ -16,6 +16,8 @@ public enum AppTheme {
     // Màu tím thương hiệu VN-Sign
     public static let purple500 = Color(red: 168/255, green: 85/255, blue: 247/255)
     public static let purple400 = Color(red: 192/255, green: 132/255, blue: 252/255)
+    public static let purple700 = Color(red: 126/255, green: 34/255, blue: 206/255)
+    public static let blue500 = Color(red: 59/255, green: 130/255, blue: 246/255)
     
     // Màu kính mờ (Frosted Glass)
     public static let glassFill = Color.white.opacity(0.06)
