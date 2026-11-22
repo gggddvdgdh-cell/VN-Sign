@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VN-Sign Pro - Căn Chỉnh Chuẩn Xác 100%</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* Hiệu ứng Kính Mờ Cao Cấp (Frosted Glassmorphism) */
+    .glass-panel {
+      background: rgba(15, 20, 32, 0.65);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .glass-btn {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .glass-btn:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* ================= CÔNG TẮC NATIVE IOS (Flawless iOS Switch) ================= */
+    .ios-switch {
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+    .ios-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .ios-switch-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      transition: 0.3s cubic-bezier(0.34, 1.45, 0.64, 1);
+      border-radius: 22px;
+    }
+    .ios-switch-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 1px;
+      bottom: 1px;
+      background-color: #ffffff;
+      transition: 0.3s cubic-bezier(0.34, 1.45, 0.64, 1);
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+    .ios-switch input:checked + .ios-switch-slider {
+      background-color: #06b6d4;
+      border-color: #22d3ee;
+      box-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+    }
+    .ios-switch input:checked + .ios-switch-slider:before {
+      transform: translateX(16px);
+    }
+
+    /* ================= MORPHICONS VECTOR ANIMATIONS ================= */
+    .morphicon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      flex-shrink: 0;
+    }
+
+    /* Morphicon Folder (Nắp mở góc tự nhiên) */
+    .morph-folder .folder-top {
+      transform-origin: 4px 7px;
+      transition: transform 0.35s cubic-bezier(0.34, 1.4, 0.64, 1);
+    }
+    .tab-btn.active .morph-folder .folder-top,
+    .morph-folder:hover .folder-top {
+      transform: rotate(-18deg) skewX(10deg);
+    }
+
+    /* Morphicon Pen Signature (Nét vẽ ký uốn lượn liên tục) */
+    @keyframes morphDrawStroke {
+      0% { stroke-dashoffset: 40; }
+      50% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: 0; }
+    }
+    .morph-pen .sign-stroke {
+      stroke-dasharray: 40;
+      stroke-dashoffset: 0;
+      animation: morphDrawStroke 2.6s ease-in-out infinite;
+    }
+    .morph-pen:hover .pen-body {
+      transform: rotate(-8deg);
+      transform-origin: 3px 21px;
+    }
+
+    /* Morphicon Gear Rotation (Xoay cơ khí mượt mà) */
+    .morph-gear svg {
+      transform-origin: 12px 12px;
+      transition: transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1);
+    }
+    .tab-btn.active .morph-gear svg,
+    .morph-gear:hover svg {
+      transform: rotate(90deg);
+    }
+
+    /* Morphicon Shield Radar Wave */
+    @keyframes shieldPulse {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(16, 185, 129, 0)); }
+      50% { transform: scale(1.06); filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.7)); }
+    }
+    .morph-shield {
+      animation: shieldPulse 3.5s ease-in-out infinite;
+    }
+
+    /* Morphicon Globe Rotation */
+    @keyframes globeRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .morph-globe .globe-axis {
+      transform-origin: 12px 12px;
+      animation: globeRotate 14s linear infinite;
+    }
+
+    /* Morphicon Compress Arrow Bounce */
+    @keyframes compressAction {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(1.5px); }
+    }
+    .morph-compress .arrow-down { animation: compressAction 2s ease-in-out infinite; }
+    .morph-compress .arrow-up { animation: compressAction 2s ease-in-out infinite reverse; }
+
+    /* Morphicon Trash Lid Tilt */
+    .morph-trash .trash-lid {
+      transform-origin: 3px 6px;
+      transition: transform 0.35s cubic-bezier(0.34, 1.5, 0.64, 1);
+    }
+    .morph-trash:hover .trash-lid {
+      transform: rotate(-28deg) translateY(-2px);
+    }
+
+    /* Morphicon Server LEDs */
+    @keyframes ledBlink {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+    .morph-server .led-1 { animation: ledBlink 1.4s infinite; }
+    .morph-server .led-2 { animation: ledBlink 1.8s infinite 0.4s; }
+
+    /* Morphicon Lock Shackle State */
+    .morph-lock-shackle {
+      transform-origin: 17px 11px;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .morph-unlocked .morph-lock-shackle {
+      transform: translateY(-4px) rotate(-28deg);
+    }
+
+    /* ================= BẦU DỤC LƯỚT 100% CHUẨN XÁC (Grid-aligned Sliding Dock Indicator) ================= */
+    #dock-indicator {
+      transition: transform 0.36s cubic-bezier(0.34, 1.4, 0.64, 1);
+      will-change: transform;
+    }
+
+    /* Hình nền phát sáng phía sau kính */
+    .bg-theme-aurora {
+      background: radial-gradient(circle at 20% 15%, #4f46e5 0%, transparent 45%),
+                  radial-gradient(circle at 85% 30%, #ec4899 0%, transparent 40%),
+                  radial-gradient(circle at 50% 80%, #06b6d4 0%, transparent 50%),
+                  #070a12;
+    }
+    .bg-theme-cyber {
+      background: radial-gradient(circle at 80% 20%, #3b82f6 0%, transparent 50%),
+                  radial-gradient(circle at 10% 70%, #10b981 0%, transparent 45%),
+                  #050811;
+    }
+    .bg-theme-sunset {
+      background: radial-gradient(circle at 30% 20%, #f97316 0%, transparent 45%),
+                  radial-gradient(circle at 80% 60%, #8b5cf6 0%, transparent 50%),
+                  #0a0712;
+    }
+    .bg-theme-midnight {
+      background: radial-gradient(circle at 50% 30%, #1e293b 0%, transparent 60%),
+                  #000000;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-white min-h-screen flex flex-col items-center justify-center p-2">
+
+  <!-- Tiêu đề Header Ngoài Mockup -->
+  <div class="mb-2 text-center">
+    <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-full text-xs font-medium mb-1">
+      <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span> VN-Sign Pro • Căn Chỉnh Ngay Ngắn 100%
+    </div>
+    <p class="text-[11px] text-slate-400">Các nút cân đối hoàn hảo • Bút ký Morphicon nhỏ gọn • Khung kính mờ E-Sign đầy đủ</p>
+  </div>
+
+  <!-- Khung iPhone 16 Pro Mockup -->
+  <div class="relative w-[365px] h-[755px] bg-black rounded-[52px] p-3 shadow-2xl border-4 border-slate-700/80 ring-1 ring-white/10 flex flex-col overflow-hidden">
+    
+    <!-- Dynamic Island -->
+    <div class="absolute top-4 left-1/2 -translate-x-1/2 w-28 h-7 bg-black rounded-full z-50 flex items-center justify-between px-3 shadow-lg pointer-events-none">
+      <div class="w-2.5 h-2.5 rounded-full bg-slate-900 border border-slate-800"></div>
+      <div class="w-2 h-2 rounded-full bg-blue-900/40"></div>
+    </div>
+
+    <!-- Màn hình bên trong iPhone -->
+    <div id="screen" class="relative w-full h-full bg-theme-aurora text-slate-100 rounded-[42px] flex flex-col overflow-hidden transition-all duration-700">
+      
+      <!-- iOS Status Bar -->
+      <div class="h-11 pt-2 px-6 flex justify-between items-center text-xs font-semibold text-slate-200 z-30 shrink-0">
+        <span>9:41</span>
+        <div class="flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 18.25c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l.64-.64C7.93 20.26 9.88 21 12 21s4.07-.74 5.6-1.98l.64.64c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41l-.62-.64C20.26 16.07 21 14.12 21 12c0-4.97-4.03-9-9-9z"/></svg>
+          <div class="w-5 h-2.5 border border-slate-200 rounded-sm p-0.5 flex items-center">
+            <div class="h-full w-full bg-slate-200 rounded-xs"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 1: DANH SÁCH TỆP TIN ================= -->
+      <div id="tab-files" class="tab-content flex-1 flex flex-col px-3.5 pt-1 overflow-y-auto pb-24 no-scrollbar">
+        
+        <!-- Header chính -->
+        <div class="glass-panel rounded-2xl p-3 mb-2.5 sticky top-0 z-20">
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <h2 class="text-sm font-bold tracking-tight text-white flex items-center gap-1.5 drop-shadow-sm">
+                Danh sách tệp tin
+              </h2>
+              <p class="text-[10px] text-slate-300/80">Quản lý <span id="file-count" class="text-cyan-300 font-semibold font-mono">4</span> tệp • 217 MB</p>
+            </div>
+            
+            <!-- Cụm nút công cụ thẳng hàng tuyệt đối (h-7 chuẩn xác) -->
+            <div class="flex items-center gap-1.5">
+              <button onclick="toggleSelectMode()" id="btn-select-mode" class="glass-btn h-7 px-3 rounded-full text-cyan-300 text-[11px] font-semibold flex items-center justify-center active:scale-95 transition-all">
+                Chọn
+              </button>
+
+              <button onclick="openFilePicker()" class="w-7 h-7 rounded-full bg-blue-600/85 hover:bg-blue-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/30 active:scale-95 transition-all border border-white/20 morphicon shrink-0" title="Nhập tệp từ máy">
+                <svg class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              </button>
+
+              <button onclick="toggleMoreMenu()" class="glass-btn w-7 h-7 rounded-full text-slate-200 flex items-center justify-center active:scale-95 transition-all morphicon shrink-0">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Thanh tìm kiếm -->
+          <div class="relative">
+            <input type="text" placeholder="Tìm kiếm tệp IPA, ZIP, P12..." class="w-full bg-white/5 border border-white/10 rounded-xl py-1.5 pl-7 pr-3 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400/60 backdrop-blur-md">
+            <svg class="w-3 h-3 text-slate-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </div>
+        </div>
+
+        <!-- Thanh tác vụ Chọn Nhiều Tệp -->
+        <div id="selection-bar" class="hidden glass-panel rounded-2xl p-2.5 mb-2.5 flex items-center justify-between text-xs sticky top-24 z-20 border-cyan-400/40">
+          <div class="flex items-center gap-2">
+            <span id="selected-count" class="text-cyan-300 font-semibold text-xs">Đã chọn 0 tệp</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button onclick="moveSelectedFiles()" class="h-7 px-2.5 rounded-lg bg-indigo-500/30 hover:bg-indigo-500/40 text-indigo-200 border border-indigo-400/40 flex items-center gap-1 font-medium transition-all">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+              <span>Di chuyển</span>
+            </button>
+            <button onclick="deleteSelectedFiles()" class="h-7 px-2.5 rounded-lg bg-red-500/30 hover:bg-red-500/40 text-red-200 border border-red-400/40 flex items-center gap-1 font-medium transition-all">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              <span>Xóa</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Danh sách tệp tin (Các dòng căn chỉnh thẳng hàng tuyệt đối) -->
+        <div id="file-list" class="space-y-2">
+          
+          <div class="file-item glass-card rounded-2xl p-2.5 flex items-center justify-between cursor-pointer transition-all hover:border-cyan-400/30" onclick="handleFileClick(event, this, 'Facebook_v450_Pro.ipa', '85.2 MB', 'IPA')">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <input type="checkbox" class="file-check hidden w-4 h-4 rounded-full bg-white/10 border-white/30 text-blue-500 focus:ring-0 mr-1" onclick="event.stopPropagation()">
+              <div class="w-9 h-9 rounded-xl bg-blue-500/25 border border-blue-400/40 flex items-center justify-center text-blue-300 font-bold text-xs shrink-0 shadow-inner">
+                IPA
+              </div>
+              <div class="min-w-0">
+                <div class="text-xs font-semibold text-white drop-shadow-sm truncate">Facebook_v450_Pro.ipa</div>
+                <div class="text-[10px] text-slate-300/80 flex items-center gap-1.5 mt-0.5">
+                  <span>85.2 MB</span>
+                  <span>•</span>
+                  <span>Hôm nay 10:15</span>
+                </div>
+              </div>
+            </div>
+            <button onclick="event.stopPropagation(); quickSignFile('Facebook_v450_Pro.ipa')" class="glass-btn h-7 px-3 text-cyan-300 hover:text-white rounded-xl text-[10px] font-semibold flex items-center justify-center transition-all shrink-0">
+              Ký
+            </button>
+          </div>
+
+          <div class="file-item glass-card rounded-2xl p-2.5 flex items-center justify-between cursor-pointer transition-all hover:border-amber-400/30" onclick="handleFileClick(event, this, 'Cert_Personal_2026.p12', '12 KB', 'P12')">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <input type="checkbox" class="file-check hidden w-4 h-4 rounded-full bg-white/10 border-white/30 text-blue-500 focus:ring-0 mr-1" onclick="event.stopPropagation()">
+              <div class="w-9 h-9 rounded-xl bg-amber-500/25 border border-amber-400/40 flex items-center justify-center text-amber-300 font-bold text-xs shrink-0 shadow-inner">
+                P12
+              </div>
+              <div class="min-w-0">
+                <div class="text-xs font-semibold text-white drop-shadow-sm truncate">Cert_Personal_2026.p12</div>
+                <div class="text-[10px] text-slate-300/80 flex items-center gap-1.5 mt-0.5">
+                  <span>12 KB</span>
+                  <span>•</span>
+                  <span>Hôm nay 09:30</span>
+                </div>
+              </div>
+            </div>
+            <span class="h-7 px-2.5 text-[10px] text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 rounded-xl font-medium flex items-center justify-center shrink-0">
+              Chứng chỉ
+            </span>
+          </div>
+
+          <div class="file-item glass-card rounded-2xl p-2.5 flex items-center justify-between cursor-pointer transition-all hover:border-purple-400/30" onclick="handleFileClick(event, this, 'Profile_Wildcard.mobileprovision', '8 KB', 'PROV')">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <input type="checkbox" class="file-check hidden w-4 h-4 rounded-full bg-white/10 border-white/30 text-blue-500 focus:ring-0 mr-1" onclick="event.stopPropagation()">
+              <div class="w-9 h-9 rounded-xl bg-purple-500/25 border border-purple-400/40 flex items-center justify-center text-purple-300 font-bold text-xs shrink-0 shadow-inner">
+                PROV
+              </div>
+              <div class="min-w-0">
+                <div class="text-xs font-semibold text-white drop-shadow-sm truncate">Profile_Wildcard.mobileprovision</div>
+                <div class="text-[10px] text-slate-300/80 flex items-center gap-1.5 mt-0.5">
+                  <span>8 KB</span>
+                  <span>•</span>
+                  <span>Hôm qua 18:20</span>
+                </div>
+              </div>
+            </div>
+            <span class="h-7 px-2.5 text-[10px] text-slate-300 bg-white/10 border border-white/10 rounded-xl font-medium flex items-center justify-center shrink-0">
+              Khớp P12
+            </span>
+          </div>
+
+          <div class="file-item glass-card rounded-2xl p-2.5 flex items-center justify-between cursor-pointer transition-all hover:border-red-400/30" onclick="handleFileClick(event, this, 'YouTube_Plus_v19.ipa', '124 MB', 'IPA')">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <input type="checkbox" class="file-check hidden w-4 h-4 rounded-full bg-white/10 border-white/30 text-blue-500 focus:ring-0 mr-1" onclick="event.stopPropagation()">
+              <div class="w-9 h-9 rounded-xl bg-red-500/25 border border-red-400/40 flex items-center justify-center text-red-300 font-bold text-xs shrink-0 shadow-inner">
+                IPA
+              </div>
+              <div class="min-w-0">
+                <div class="text-xs font-semibold text-white drop-shadow-sm truncate">YouTube_Plus_v19.ipa</div>
+                <div class="text-[10px] text-slate-300/80 flex items-center gap-1.5 mt-0.5">
+                  <span>124 MB</span>
+                  <span>•</span>
+                  <span>18/11/2026</span>
+                </div>
+              </div>
+            </div>
+            <button onclick="event.stopPropagation(); quickSignFile('YouTube_Plus_v19.ipa')" class="glass-btn h-7 px-3 text-cyan-300 hover:text-white rounded-xl text-[10px] font-semibold flex items-center justify-center transition-all shrink-0">
+              Ký
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ================= TAB 2: KÝ ỨNG DỤNG (BÚT KÝ MORPHICON NGAY NGẮN & GỌN GÀNG) ================= -->
+      <div id="tab-sign" class="tab-content hidden flex-1 flex flex-col px-3.5 pt-1 overflow-y-auto pb-24 no-scrollbar">
+        
+        <!-- Header & Sub-Tab Switcher Cố Định -->
+        <div class="glass-panel rounded-2xl p-2.5 mb-2.5 sticky top-0 z-20">
+          <div class="flex items-center justify-between mb-2">
+            <h2 class="text-sm font-bold text-white drop-shadow-sm flex items-center gap-1.5">
+              <span>Ký ứng dụng</span>
+            </h2>
+            <span class="text-[9.5px] px-2 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-400/30 text-cyan-300 font-semibold font-mono">E-Sign Engine</span>
+          </div>
+
+          <!-- Phân 2 mục: App thư viện & App đã ký -->
+          <div class="bg-white/5 p-1 rounded-xl flex items-center border border-white/10">
+            <button onclick="switchSignSubTab('imported')" id="subtab-imported-btn" class="flex-1 h-8 rounded-lg text-xs font-semibold bg-white/20 text-white transition-all shadow flex items-center justify-center">
+              App thư viện (<span id="count-imported">4</span>)
+            </button>
+            <button onclick="switchSignSubTab('signed')" id="subtab-signed-btn" class="flex-1 h-8 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition-all flex items-center justify-center">
+              App đã ký (<span id="count-signed">2</span>)
+            </button>
+          </div>
+        </div>
+
+        <!-- MỤC 1: APP THƯ VIỆN (DANH SÁCH APP CHỜ KÝ VỚI NÚT BÚT MORPHICON GỌN GÀNG) -->
+        <div id="subtab-imported" class="space-y-2.5">
+          
+          <!-- Thông tin Chứng chỉ Hoạt Động (Lock Morphicon) -->
+          <div class="glass-card rounded-2xl p-2.5 flex items-center justify-between">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div id="lock-icon-container" class="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-400/30 text-amber-300 flex items-center justify-center cursor-pointer morphicon shrink-0" onclick="toggleLockMorph()" title="Nhấp để khóa/mở chứng chỉ">
+                <svg id="morph-lock-svg" class="w-4 h-4 text-amber-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path class="morph-lock-shackle" d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" fill="currentColor" fill-opacity="0.15"/>
+                  <circle cx="12" cy="16" r="1.5" fill="currentColor"/>
+                </svg>
+              </div>
+              <div class="min-w-0">
+                <div class="text-xs font-semibold text-white truncate">Apple Enterprise Cert</div>
+                <div class="text-[10px] text-emerald-300">Hợp lệ • Còn 360 ngày</div>
+              </div>
+            </div>
+            <button onclick="toggleLockMorph()" id="lock-status-btn" class="h-7 px-3 rounded-xl glass-btn text-xs text-cyan-300 font-semibold flex items-center justify-center shrink-0">
+              Khóa
+            </button>
+          </div>
+
+          <!-- Tiêu đề danh sách app chờ ký -->
+          <div class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider px-1 pt-1 flex items-center justify-between">
+            <span>Ứng dụng trong thư viện</span>
+            <span class="text-cyan-300 lowercase font-normal flex items-center gap-1">
+              <span>chạm bút để cấu hình ký</span>
+            </span>
+          </div>
+
+          <!-- Danh sách 4 App thư viện với Nút Bút Ký Morphicon Ngay Ngắn (w-8 h-8 đồng bộ) -->
+          <div id="library-app-list" class="space-y-2">
+            
+            <!-- Row 1: Facebook Pro -->
+            <div id="lib-item-fb" class="glass-card rounded-2xl p-2.5 flex items-center justify-between transition-all hover:border-cyan-400/30">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center font-bold text-white text-xs shadow shrink-0">
+                  FB
+                </div>
+                <div class="min-w-0">
+                  <div class="text-xs font-semibold text-white truncate">Facebook Pro</div>
+                  <div class="text-[10px] text-slate-300/80 flex items-center gap-1.5 mt-0.5">
+                    <span>85.2 MB</span>
+                    <span>•</span>
+                    <span class="text-cyan-300 font-mono">v450.0</span>
+                  </div>
+                </div>
+              </div>
+              <button onclick="openSignModalForApp('fb')" class="w-8 h-8 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/40 text-cyan-300 flex items-center justify-center active:scale-95 transition-all shadow-sm shrink-0" title="Mở bảng ký E-Sign cho Facebook Pro">
+                <div class="morphicon morph-pen w-4 h-4 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-cyan-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path class="pen-body" stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                    <path class="sign-stroke" stroke-linecap="round" d="M3 21c2-1 4-1 6 0"/>
+                  </svg>
+                </div>
+              </button>
+            </div>
+
+            <!-- Row 2: TikTok Mod -->
+            <div id="lib-item-tiktok" class="glass-card rounded-2xl p-2.5 flex items-center justify-between transition-all hover:border-cyan-400/30">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-slate-900 via-rose-600 to-cyan-500 flex items-center justify-center font-bold text-white text-xs shadow shrink-0">
+                  TT
+                </div>
+                <div class="min-w-0">
+                  <div class="text-xs font-semibold text-white truncate">TikTok Mod BHTikTok</div>
+                  <div class="text-[10px] text-slate-300/80 flex items-center gap-1.5 mt-0.5">
+                    <span>142.8 MB</span>
+                    <span>•</span>
+                    <span class="text-cyan-300 font-mono">v36.2</span>
+                  </div>
+                </div>
+              </div>
+              <button onclick="openSignModalForApp('tiktok')" class="w-8 h-8 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/40 text-cyan-300 flex items-center justify-center active:scale-95 transition-all shadow-sm shrink-0" title="Mở bảng ký E-Sign cho TikTok Mod">
+                <div class="morphicon morph-pen w-4 h-4 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-cyan-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path class="pen-body" stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                    <path class="sign-stroke" stroke-linecap="round" d="M3 21c2-1 4-1 6 0"/>
+                  </svg>
+                </div>
+              </button>
+            </div>
+
+            <!-- Row 3: YouTube Plus -->
+            <div id="lib-item-yt" class="glass-card rounded-2xl p-2.5 flex items-center justify-between transition-all hover:border-cyan-400/30">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 to-rose-700 flex items-center justify-center font-bold text-white text-xs shadow shrink-0">
+                  YT
+                </div>
+                <div class="min-w-0">
+                  <div class="text-xs font-semibold text-white truncate">YouTube Plus NoAds</div>
+                  <div class="text-[10px] text-slate-300/80 flex items-center gap-1.5 mt-0.5">
+                    <span>124.5 MB</span>
+                    <span>•</span>
+                    <span class="text-cyan-300 font-mono">v19.45</span>
+                  </div>
+                </div>
+              </div>
+              <button onclick="openSignModalForApp('yt')" class="w-8 h-8 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/40 text-cyan-300 flex items-center justify-center active:scale-95 transition-all shadow-sm shrink-0" title="Mở bảng ký E-Sign cho YouTube Plus">
+                <div class="morphicon morph-pen w-4 h-4 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-cyan-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path class="pen-body" stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                    <path class="sign-stroke" stroke-linecap="round" d="M3 21c2-1 4-1 6 0"/>
+                  </svg>
+                </div>
+              </button>
+            </div>
+
+            <!-- Row 4: CapCut Pro VIP -->
+            <div id="lib-item-capcut" class="glass-card rounded-2xl p-2.5 flex items-center justify-between transition-all hover:border-cyan-400/30">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-emerald-600 flex items-center justify-center font-bold text-white text-xs shadow shrink-0">
+                  CC
+                </div>
+                <div class="min-w-0">
+                  <div class="text-xs font-semibold text-white truncate">CapCut Pro VIP</div>
+                  <div class="text-[10px] text-slate-300/80 flex items-center gap-1.5 mt-0.5">
+                    <span>98.6 MB</span>
+                    <span>•</span>
+                    <span class="text-cyan-300 font-mono">v12.8</span>
+                  </div>
+                </div>
+              </div>
+              <button onclick="openSignModalForApp('capcut')" class="w-8 h-8 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/40 text-cyan-300 flex items-center justify-center active:scale-95 transition-all shadow-sm shrink-0" title="Mở bảng ký E-Sign cho CapCut Pro VIP">
+                <div class="morphicon morph-pen w-4 h-4 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-cyan-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path class="pen-body" stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                    <path class="sign-stroke" stroke-linecap="round" d="M3 21c2-1 4-1 6 0"/>
+                  </svg>
+                </div>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- MỤC 2: APP ĐÃ KÝ (CÁC NÚT ĐỒNG BỘ CHIỀU CAO h-8) -->
+        <div id="subtab-signed" class="hidden space-y-2">
+          
+          <div class="glass-card rounded-2xl p-2.5 flex items-center justify-between">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-500/80 to-rose-500/80 flex items-center justify-center font-bold text-white text-xs shadow shrink-0">IG</div>
+              <div class="min-w-0">
+                <div class="text-xs font-semibold text-white truncate">Instagram Rocket Pro</div>
+                <div class="text-[10px] text-slate-300/80">Đã ký • Hạn dùng 360 ngày</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button onclick="showSignNotification('Đang mở cài đặt qua itms-services://...')" class="h-8 px-3 text-emerald-300 bg-emerald-500/15 hover:bg-emerald-500/25 rounded-xl text-[10px] font-semibold border border-emerald-400/40 flex items-center justify-center transition-all">
+                Cài đặt
+              </button>
+              <button onclick="showSignNotification('Đã tạo liên kết chia sẻ IPA')" class="w-8 h-8 rounded-xl glass-btn text-slate-300 hover:text-white flex items-center justify-center morphicon shrink-0" title="Chia sẻ">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-2.5 flex items-center justify-between">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-500/80 to-amber-600/80 flex items-center justify-center font-bold text-white text-xs shadow shrink-0">YT</div>
+              <div class="min-w-0">
+                <div class="text-xs font-semibold text-white truncate">YouTube Plus NoAds</div>
+                <div class="text-[10px] text-slate-300/80">Đã ký • Hạn dùng 360 ngày</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button onclick="showSignNotification('Đang mở cài đặt qua itms-services://...')" class="h-8 px-3 text-emerald-300 bg-emerald-500/15 hover:bg-emerald-500/25 rounded-xl text-[10px] font-semibold border border-emerald-400/40 flex items-center justify-center transition-all">
+                Cài đặt
+              </button>
+              <button onclick="showSignNotification('Đã tạo liên kết chia sẻ IPA')" class="w-8 h-8 rounded-xl glass-btn text-slate-300 hover:text-white flex items-center justify-center morphicon shrink-0" title="Chia sẻ">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ================= TAB 3: CÀI ĐẶT CHÍNH (CĂN CHỈNH NÚT & CHEVRON THẲNG HÀNG 100%) ================= -->
+      <div id="tab-settings" class="tab-content hidden flex-1 flex flex-col px-3.5 pt-1 overflow-y-auto pb-24 no-scrollbar">
+        
+        <div class="glass-panel rounded-2xl p-2.5 mb-2 sticky top-0 z-20">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-sm font-bold text-white drop-shadow-sm">Cài đặt hệ thống</h2>
+              <p class="text-[9.5px] text-slate-300/80">Bấm từng mục để mở cấu hình chi tiết</p>
+            </div>
+            <div class="px-2 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-400/30 text-[9px] text-cyan-300 font-semibold font-mono">Pro v1.0</div>
+          </div>
+        </div>
+        
+        <!-- Nhóm 1: Chứng chỉ & Bảo vệ -->
+        <div class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider mb-1 px-1">Chứng chỉ & Ký số</div>
+        <div class="glass-card rounded-2xl divide-y divide-white/10 text-xs mb-2.5 overflow-hidden">
+          
+          <div class="py-2.5 px-3 flex justify-between items-center text-slate-200 cursor-pointer active:bg-white/10 transition-colors" onclick="openSettingSubpage('certs')">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center morphicon morph-cert shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/><circle cx="12" cy="14" r="2" fill="currentColor"/></svg>
+              </div>
+              <span class="text-xs font-medium text-slate-100 truncate">Quản lý chứng chỉ P12</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="text-[10.5px] text-cyan-300 font-medium">1 cert đang dùng</span>
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+
+          <div class="py-2.5 px-3 flex justify-between items-center text-slate-200 cursor-pointer active:bg-white/10 transition-colors" onclick="openSettingSubpage('antirevoke')">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center morphicon morph-shield shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+              </div>
+              <span class="text-xs font-medium text-slate-100 truncate">Chặn thu hồi (Anti-Revoke)</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="text-[10.5px] text-emerald-400 font-medium">Bảo vệ DNS</span>
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+
+          <div class="py-2.5 px-3 flex justify-between items-center text-slate-200 cursor-pointer active:bg-white/10 transition-colors" onclick="openSettingSubpage('import_url')">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-300 flex items-center justify-center morphicon morph-globe shrink-0">
+                <svg class="w-3.5 h-3.5 globe-axis" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M3.6 9h16.8M3.6 15h16.8M12 3a15.3 15.3 0 014 9 15.3 15.3 0 01-4 9 15.3 15.3 0 01-4-9 15.3 15.3 0 014-9z"/></svg>
+              </div>
+              <span class="text-xs font-medium text-slate-100 truncate">Nhập từ URL / WebDAV</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="text-[10.5px] text-slate-400">Cấu hình</span>
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nhóm 2: Cấu hình Ký & Đóng gói -->
+        <div class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider mb-1 px-1">Cấu hình Ký & Đóng gói</div>
+        <div class="glass-card rounded-2xl divide-y divide-white/10 text-xs mb-2.5 overflow-hidden">
+          
+          <div class="py-2.5 px-3 flex justify-between items-center text-slate-200 cursor-pointer active:bg-white/10 transition-colors" onclick="openSettingSubpage('compression')">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-300 flex items-center justify-center morphicon morph-compress shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path class="arrow-down" stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/><path class="arrow-up" stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+              </div>
+              <span class="text-xs font-medium text-slate-100 truncate">Mức độ nén IPA</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span id="current-compression-label" class="text-[10.5px] text-cyan-300 font-medium">Nhanh (Fast)</span>
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+
+          <div class="py-2.5 px-3 flex justify-between items-center text-slate-200 cursor-pointer active:bg-white/10 transition-colors" onclick="openSettingSubpage('server_port')">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-7 h-7 rounded-lg bg-cyan-500/20 text-cyan-300 flex items-center justify-center morphicon morph-server shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="7" rx="2"/><rect x="2" y="14" width="20" height="7" rx="2"/><circle class="led-1" cx="6" cy="6.5" r="1" fill="#22d3ee"/><circle class="led-2" cx="6" cy="17.5" r="1" fill="#38bdf8"/></svg>
+              </div>
+              <span class="text-xs font-medium text-slate-100 truncate">Cổng máy chủ nội bộ</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="text-[10.5px] text-cyan-300 font-mono">HTTPS:8080</span>
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+
+          <div class="py-2.5 px-3 flex justify-between items-center text-slate-200 cursor-pointer active:bg-white/10 transition-colors" onclick="openSettingSubpage('bundle_prefix')">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-7 h-7 rounded-lg bg-pink-500/20 text-pink-300 flex items-center justify-center morphicon shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+              </div>
+              <span class="text-xs font-medium text-slate-100 truncate">Đổi tiền tố Bundle ID</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="text-[10.5px] text-slate-400 font-mono">com.vnsign.*</span>
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nhóm 3: Giao diện & Hiệu ứng -->
+        <div class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider mb-1 px-1">Giao diện & Hiệu ứng</div>
+        <div class="glass-card rounded-2xl divide-y divide-white/10 text-xs mb-2.5 overflow-hidden">
+          
+          <div class="py-2.5 px-3 flex justify-between items-center text-slate-200 cursor-pointer active:bg-white/10 transition-colors" onclick="openSettingSubpage('wallpaper')">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span id="theme-color-indicator" class="w-4 h-4 rounded-full bg-indigo-500 shadow-sm ring-1 ring-white/30 shrink-0"></span>
+              <span class="text-xs font-medium text-slate-100 truncate">Hình nền phía sau kính</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span id="theme-name-display" class="text-[10.5px] text-cyan-300 font-medium">Aurora Không Gian</span>
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+
+          <div class="py-2.5 px-3 flex justify-between items-center text-slate-200">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-300 flex items-center justify-center morphicon morph-sparkle shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.286L13 21l-2.286-6.857L5 12l5.714-2.286L13 3z"/></svg>
+              </div>
+              <span class="text-xs font-medium text-slate-100 truncate">Hiệu ứng Morphicons</span>
+            </div>
+            <label class="ios-switch">
+              <input type="checkbox" checked onchange="showSignNotification('Đã cập nhật trạng thái Morphicons')">
+              <span class="ios-switch-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Nhóm 4: Bộ nhớ & Hệ thống -->
+        <div class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider mb-1 px-1">Bộ nhớ & Hệ thống</div>
+        <div class="glass-card rounded-2xl divide-y divide-white/10 text-xs mb-2.5 overflow-hidden">
+          
+          <div class="py-2.5 px-3 flex justify-between items-center text-slate-200 cursor-pointer active:bg-white/10 transition-colors" onclick="openSettingSubpage('cache_clean')">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-7 h-7 rounded-lg bg-red-500/20 text-red-300 flex items-center justify-center morphicon morph-trash shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path class="trash-lid" stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              </div>
+              <span class="text-xs font-medium text-slate-100 truncate">Dọn dẹp bộ nhớ đệm</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="text-[10.5px] text-slate-400 font-mono">14.2 MB</span>
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+
+          <div class="py-2.5 px-3 flex justify-between items-center text-slate-200 cursor-pointer active:bg-white/10 transition-colors" onclick="openSettingSubpage('backup')">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-7 h-7 rounded-lg bg-teal-500/20 text-teal-300 flex items-center justify-center morphicon shrink-0">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+              </div>
+              <span class="text-xs font-medium text-slate-100 truncate">Sao lưu & Khôi phục</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="text-[10.5px] text-slate-400">Sao lưu</span>
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-2 text-center text-[9.5px] text-slate-400 font-medium">
+          VN-Sign Pro v1.0.0 • 100% Offline • Morphicons Engine
+        </div>
+      </div>
+
+      <!-- ================= SUBPAGE 1: QUẢN LÝ CHỨNG CHỈ (P12 & PROVISION) ================= -->
+      <div id="subpage-certs" class="setting-subpage hidden absolute inset-0 bg-[#070a12]/95 z-50 flex flex-col p-3.5 pt-12 pb-16 overflow-y-auto no-scrollbar">
+        <div class="relative flex items-center justify-center mb-3 pb-2 border-b border-white/10 shrink-0">
+          <button onclick="closeSettingSubpage()" class="absolute left-0 text-xs text-cyan-300 flex items-center gap-1 font-semibold py-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            <span>Cài đặt</span>
+          </button>
+          <h3 class="text-xs font-bold text-white text-center">Quản lý Chứng Chỉ</h3>
+        </div>
+        
+        <div class="glass-card rounded-2xl p-3 mb-3 border-amber-400/30">
+          <div class="flex justify-between items-start mb-2">
+            <div>
+              <div class="text-xs font-bold text-white">Apple Enterprise: VNSIGN PRO</div>
+              <div class="text-[10px] text-slate-300">Team ID: 9X8K2MN4P2</div>
+            </div>
+            <span class="text-[10px] text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded-full font-bold">Hoạt động</span>
+          </div>
+          <div class="text-[10px] text-slate-300/90 space-y-1 mb-2.5">
+            <div class="flex justify-between">
+              <span>Hạn chứng chỉ:</span>
+              <span class="text-white font-mono">18/11/2027 (360 ngày)</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Mật khẩu P12:</span>
+              <span class="text-white font-mono">•••••••• (Đã lưu)</span>
+            </div>
+            <div class="flex justify-between">
+              <span>File Mobileprovision:</span>
+              <span class="text-cyan-300 font-medium">Wildcard (*) Hợp lệ</span>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="showSignNotification('Chứng chỉ của bạn hoàn toàn hợp lệ!')" class="flex-1 h-8 bg-cyan-600/70 hover:bg-cyan-500 text-white rounded-xl text-[11px] font-semibold flex items-center justify-center transition-all">
+              Kiểm tra thu hồi
+            </button>
+            <button onclick="showSignNotification('Đã gỡ chứng chỉ khỏi thiết bị')" class="h-8 px-3 bg-red-500/20 text-red-300 rounded-xl text-[11px] font-semibold border border-red-500/30 flex items-center justify-center transition-all">
+              Gỡ bỏ
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBPAGE 2: CHẶN THU HỒI (ANTI-REVOKE DNS) -->
+      <div id="subpage-antirevoke" class="setting-subpage hidden absolute inset-0 bg-[#070a12]/95 z-50 flex flex-col p-3.5 pt-12 pb-16 overflow-y-auto no-scrollbar">
+        <div class="relative flex items-center justify-center mb-3 pb-2 border-b border-white/10 shrink-0">
+          <button onclick="closeSettingSubpage()" class="absolute left-0 text-xs text-cyan-300 flex items-center gap-1 font-semibold py-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            <span>Cài đặt</span>
+          </button>
+          <h3 class="text-xs font-bold text-white text-center">Chặn Thu Hồi Chứng Chỉ</h3>
+        </div>
+        <div class="space-y-3">
+          <div class="glass-card rounded-2xl p-3 flex items-center justify-between">
+            <div>
+              <div class="text-xs font-semibold text-white">Chế độ Anti-Revoke Guard</div>
+              <div class="text-[10px] text-slate-400">Tự động chặn tên miền OCSP của Apple</div>
+            </div>
+            <label class="ios-switch">
+              <input type="checkbox" checked onchange="showSignNotification('Đã cập nhật trạng thái Anti-Revoke')">
+              <span class="ios-switch-slider"></span>
+            </label>
+          </div>
+          <div class="p-2.5 rounded-xl bg-white/5 border border-white/10 text-[10px] font-mono text-cyan-300 space-y-1">
+            <p>• ocsp.apple.com [BLOCKED]</p>
+            <p>• ocsp2.apple.com [BLOCKED]</p>
+            <p>• crl.apple.com [BLOCKED]</p>
+            <p>• app-attest.apple.com [BLOCKED]</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBPAGE 3: MỨC ĐỘ NÉN IPA -->
+      <div id="subpage-compression" class="setting-subpage hidden absolute inset-0 bg-[#070a12]/95 z-50 flex flex-col p-3.5 pt-12 pb-16 overflow-y-auto no-scrollbar">
+        <div class="relative flex items-center justify-center mb-3 pb-2 border-b border-white/10 shrink-0">
+          <button onclick="closeSettingSubpage()" class="absolute left-0 text-xs text-cyan-300 flex items-center gap-1 font-semibold py-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            <span>Cài đặt</span>
+          </button>
+          <h3 class="text-xs font-bold text-white text-center">Mức Độ Nén Tệp IPA</h3>
+        </div>
+        <div class="glass-card rounded-2xl divide-y divide-white/10 text-xs overflow-hidden">
+          <div onclick="setCompression('Nhanh (Fast)')" class="p-3 flex justify-between items-center cursor-pointer hover:bg-white/10">
+            <div>
+              <div class="font-semibold text-white text-xs">Nén Nhanh (Fast)</div>
+              <div class="text-[10px] text-slate-400">Ký cực nhanh, tốn ít CPU (Khuyên dùng)</div>
+            </div>
+            <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <div onclick="setCompression('Tiêu chuẩn (Standard)')" class="p-3 flex justify-between items-center cursor-pointer hover:bg-white/10">
+            <div>
+              <div class="font-semibold text-white text-xs">Tiêu chuẩn (Standard)</div>
+              <div class="text-[10px] text-slate-400">Cân bằng giữa tốc độ và dung lượng</div>
+            </div>
+          </div>
+          <div onclick="setCompression('Tối đa (Ultra)')" class="p-3 flex justify-between items-center cursor-pointer hover:bg-white/10">
+            <div>
+              <div class="font-semibold text-white text-xs">Tối đa (Ultra Compress)</div>
+              <div class="text-[10px] text-slate-400">Giảm tối đa dung lượng file IPA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBPAGE 4: HÌNH NỀN KÍNH MỜ -->
+      <div id="subpage-wallpaper" class="setting-subpage hidden absolute inset-0 bg-[#070a12]/95 z-50 flex flex-col p-3.5 pt-12 pb-16 overflow-y-auto no-scrollbar">
+        <div class="relative flex items-center justify-center mb-3 pb-2 border-b border-white/10 shrink-0">
+          <button onclick="closeSettingSubpage()" class="absolute left-0 text-xs text-cyan-300 flex items-center gap-1 font-semibold py-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            <span>Cài đặt</span>
+          </button>
+          <h3 class="text-xs font-bold text-white text-center">Hình Nền Kính Mờ</h3>
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div onclick="setTheme('aurora', 'Aurora Không Gian', '#6366f1')" class="cursor-pointer glass-card rounded-2xl p-2.5 flex flex-col items-center gap-1.5 border-cyan-400/50 hover:scale-[1.02] transition-transform">
+            <div class="w-full h-14 rounded-xl bg-theme-aurora border border-white/20 shadow"></div>
+            <span class="font-bold text-white text-[11px]">Aurora Không Gian</span>
+            <span class="text-[9.5px] text-indigo-300">Tím & Hồng huyền ảo</span>
+          </div>
+          <div onclick="setTheme('cyber', 'Cyber Dạ Quang', '#10b981')" class="cursor-pointer glass-card rounded-2xl p-2.5 flex flex-col items-center gap-1.5 hover:scale-[1.02] transition-transform">
+            <div class="w-full h-14 rounded-xl bg-theme-cyber border border-white/20 shadow"></div>
+            <span class="font-bold text-white text-[11px]">Cyber Dạ Quang</span>
+            <span class="text-[9.5px] text-emerald-300">Xanh Neon hiện đại</span>
+          </div>
+          <div onclick="setTheme('sunset', 'Hoàng Hôn Trầm', '#f97316')" class="cursor-pointer glass-card rounded-2xl p-2.5 flex flex-col items-center gap-1.5 hover:scale-[1.02] transition-transform">
+            <div class="w-full h-14 rounded-xl bg-theme-sunset border border-white/20 shadow"></div>
+            <span class="font-bold text-white text-[11px]">Hoàng Hôn Trầm</span>
+            <span class="text-[9.5px] text-orange-300">Cam ấm & Tím</span>
+          </div>
+          <div onclick="setTheme('midnight', 'Đen Tuyền OLED', '#334155')" class="cursor-pointer glass-card rounded-2xl p-2.5 flex flex-col items-center gap-1.5 hover:scale-[1.02] transition-transform">
+            <div class="w-full h-14 rounded-xl bg-slate-950 border border-slate-800 shadow"></div>
+            <span class="font-bold text-white text-[11px]">Đen Tuyền OLED</span>
+            <span class="text-[9.5px] text-slate-400">Thuần đen tối giản</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBPAGE 5: DỌN DẸP BỘ NHỚ ĐỆM -->
+      <div id="subpage-cache_clean" class="setting-subpage hidden absolute inset-0 bg-[#070a12]/95 z-50 flex flex-col p-3.5 pt-12 pb-16 overflow-y-auto no-scrollbar">
+        <div class="relative flex items-center justify-center mb-3 pb-2 border-b border-white/10 shrink-0">
+          <button onclick="closeSettingSubpage()" class="absolute left-0 text-xs text-cyan-300 flex items-center gap-1 font-semibold py-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            <span>Cài đặt</span>
+          </button>
+          <h3 class="text-xs font-bold text-white text-center">Dọn Dẹp Bộ Nhớ Đệm</h3>
+        </div>
+        <div class="glass-card rounded-2xl p-3 text-xs space-y-2 mb-3">
+          <div class="flex justify-between items-center text-slate-200">
+            <span>Tệp IPA giải nén tạm:</span>
+            <span class="text-cyan-300 font-mono">11.4 MB</span>
+          </div>
+          <div class="flex justify-between items-center text-slate-200">
+            <span>Nhật ký ký số (Log):</span>
+            <span class="text-cyan-300 font-mono">1.8 MB</span>
+          </div>
+          <div class="flex justify-between items-center text-slate-200">
+            <span>Cache biểu tượng & tải về:</span>
+            <span class="text-cyan-300 font-mono">1.0 MB</span>
+          </div>
+        </div>
+        <button onclick="showSignNotification('Đã dọn dẹp sạch sẽ 14.2 MB bộ nhớ cache!'); closeSettingSubpage();" class="w-full h-9 bg-red-600/80 hover:bg-red-500 text-white rounded-xl font-semibold text-xs transition-all flex items-center justify-center">
+          Xóa toàn bộ Cache ngay
+        </button>
+      </div>
+
+      <!-- SUBPAGE 6: SAO LƯU & KHÔI PHỤC -->
+      <div id="subpage-backup" class="setting-subpage hidden absolute inset-0 bg-[#070a12]/95 z-50 flex flex-col p-3.5 pt-12 pb-16 overflow-y-auto no-scrollbar">
+        <div class="relative flex items-center justify-center mb-3 pb-2 border-b border-white/10 shrink-0">
+          <button onclick="closeSettingSubpage()" class="absolute left-0 text-xs text-cyan-300 flex items-center gap-1 font-semibold py-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            <span>Cài đặt</span>
+          </button>
+          <h3 class="text-xs font-bold text-white text-center">Sao Lưu & Khôi Phục</h3>
+        </div>
+        <div class="space-y-2">
+          <button onclick="showSignNotification('Đã xuất file vnsign_backup.vnsign!'); closeSettingSubpage();" class="w-full p-3 glass-card rounded-2xl flex items-center justify-between hover:bg-white/10 transition-all text-left">
+            <div>
+              <div class="font-semibold text-white text-xs">Xuất bản sao lưu cấu hình</div>
+              <div class="text-[10px] text-slate-400">Bao gồm toàn bộ chứng chỉ và thiết lập</div>
+            </div>
+            <span class="text-cyan-300 text-xs font-bold shrink-0">Xuất ›</span>
+          </button>
+          <button onclick="showSignNotification('Chọn file .vnsign để khôi phục'); closeSettingSubpage();" class="w-full p-3 glass-card rounded-2xl flex items-center justify-between hover:bg-white/10 transition-all text-left">
+            <div>
+              <div class="font-semibold text-white text-xs">Khôi phục từ tệp sao lưu</div>
+              <div class="text-[10px] text-slate-400">Nhập lại chứng chỉ và cấu hình đã lưu</div>
+            </div>
+            <span class="text-cyan-300 text-xs font-bold shrink-0">Nhập ›</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- SUBPAGE 7: CỔNG LOCAL SERVER -->
+      <div id="subpage-server_port" class="setting-subpage hidden absolute inset-0 bg-[#070a12]/95 z-50 flex flex-col p-3.5 pt-12 pb-16 overflow-y-auto no-scrollbar">
+        <div class="relative flex items-center justify-center mb-3 pb-2 border-b border-white/10 shrink-0">
+          <button onclick="closeSettingSubpage()" class="absolute left-0 text-xs text-cyan-300 flex items-center gap-1 font-semibold py-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            <span>Cài đặt</span>
+          </button>
+          <h3 class="text-xs font-bold text-white text-center">Cổng Máy Chủ Nội Bộ</h3>
+        </div>
+        <div class="glass-card rounded-2xl p-3 text-xs space-y-3">
+          <div>
+            <label class="block text-slate-300 mb-1">Cổng HTTPS (Cài đặt trực tiếp IPA)</label>
+            <input type="number" value="8080" class="w-full bg-white/5 border border-white/15 rounded-xl p-2 text-white font-mono text-xs focus:outline-none focus:border-cyan-400">
+          </div>
+          <button onclick="showSignNotification('Đã cập nhật cổng thành 8080'); closeSettingSubpage();" class="w-full h-9 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-semibold flex items-center justify-center transition-all">
+            Lưu thiết lập
+          </button>
+        </div>
+      </div>
+
+      <!-- SUBPAGE 8: ĐỔI BUNDLE ID PREFIX -->
+      <div id="subpage-bundle_prefix" class="setting-subpage hidden absolute inset-0 bg-[#070a12]/95 z-50 flex flex-col p-3.5 pt-12 pb-16 overflow-y-auto no-scrollbar">
+        <div class="relative flex items-center justify-center mb-3 pb-2 border-b border-white/10 shrink-0">
+          <button onclick="closeSettingSubpage()" class="absolute left-0 text-xs text-cyan-300 flex items-center gap-1 font-semibold py-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            <span>Cài đặt</span>
+          </button>
+          <h3 class="text-xs font-bold text-white text-center">Tiền Tố Bundle ID</h3>
+        </div>
+        <div class="glass-card rounded-2xl p-3 text-xs space-y-3">
+          <div>
+            <label class="block text-slate-300 mb-1">Tiền tố Bundle ID khi nhân bản ứng dụng</label>
+            <input type="text" value="com.vnsign." class="w-full bg-white/5 border border-white/15 rounded-xl p-2 text-white font-mono text-xs focus:outline-none focus:border-cyan-400">
+          </div>
+          <button onclick="showSignNotification('Đã lưu tiền tố Bundle ID'); closeSettingSubpage();" class="w-full h-9 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-semibold flex items-center justify-center transition-all">
+            Lưu thay đổi
+          </button>
+        </div>
+      </div>
+
+      <!-- SUBPAGE 9: NHẬP TỪ URL / WEBDAV -->
+      <div id="subpage-import_url" class="setting-subpage hidden absolute inset-0 bg-[#070a12]/95 z-50 flex flex-col p-3.5 pt-12 pb-16 overflow-y-auto no-scrollbar">
+        <div class="relative flex items-center justify-center mb-3 pb-2 border-b border-white/10 shrink-0">
+          <button onclick="closeSettingSubpage()" class="absolute left-0 text-xs text-cyan-300 flex items-center gap-1 font-semibold py-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            <span>Cài đặt</span>
+          </button>
+          <h3 class="text-xs font-bold text-white text-center">Tải Từ URL</h3>
+        </div>
+        <div class="glass-card rounded-2xl p-3 text-xs space-y-3">
+          <div>
+            <label class="block text-slate-300 mb-1">Liên kết tệp trực tiếp (.ipa, .p12)</label>
+            <input type="text" placeholder="https://example.com/app.ipa" class="w-full bg-white/5 border border-white/15 rounded-xl p-2 text-white text-xs focus:outline-none focus:border-cyan-400">
+          </div>
+          <button onclick="showSignNotification('Đang tải tệp từ liên kết...'); closeSettingSubpage();" class="w-full h-9 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-semibold flex items-center justify-center transition-all">
+            Tải về & Nhập vào app
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= MENU DẤU 3 CHẤM ================= -->
+      <div id="more-menu" class="hidden absolute top-14 right-3 w-52 glass-panel rounded-2xl p-1.5 z-50 text-xs shadow-2xl">
+        <button onclick="toggleSelectMode(); closeMoreMenu();" class="w-full text-left px-3 py-2 text-slate-200 hover:bg-white/10 rounded-xl flex items-center justify-between">
+          <span>Chọn nhiều tệp</span>
+          <span class="text-[9.5px] text-cyan-300 bg-cyan-400/15 px-1.5 py-0.5 rounded font-medium">Mới</span>
+        </button>
+        <button onclick="showSignNotification('Tạo thư mục mới'); closeMoreMenu();" class="w-full text-left px-3 py-2 text-slate-200 hover:bg-white/10 rounded-xl flex items-center justify-between">
+          <span>Tạo thư mục mới</span>
+          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        </button>
+        <button onclick="showSignNotification('Sắp xếp theo ngày / tên / kích thước'); closeMoreMenu();" class="w-full text-left px-3 py-2 text-slate-200 hover:bg-white/10 rounded-xl flex items-center justify-between">
+          <span>Sắp xếp tệp tin</span>
+          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/></svg>
+        </button>
+        <button onclick="showSignNotification('Truyền tệp qua Wi-Fi'); closeMoreMenu();" class="w-full text-left px-3 py-2 text-slate-200 hover:bg-white/10 rounded-xl flex items-center justify-between">
+          <span>Truyền tệp qua Wi-Fi</span>
+          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/></svg>
+        </button>
+        <div class="h-px bg-white/10 my-1"></div>
+        <button onclick="showSignNotification('Đã xóa bộ nhớ tạm'); closeMoreMenu();" class="w-full text-left px-3 py-2 text-red-300 hover:bg-red-500/20 rounded-xl flex items-center justify-between">
+          <span>Xóa bộ nhớ đệm (Cache)</span>
+          <svg class="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+        </button>
+      </div>
+
+      <!-- ================= MODAL BỘ CHỌN TỆP TRÊN MÁY (DẤU +) ================= -->
+      <div id="file-picker-modal" class="hidden absolute inset-0 bg-black/60 backdrop-blur-md z-50 flex flex-col justify-end">
+        <div class="glass-panel border-t border-white/20 rounded-t-[32px] p-4 flex flex-col max-h-[85%] overflow-hidden">
+          <div class="w-10 h-1 bg-white/30 rounded-full mx-auto mb-3 shrink-0"></div>
+          
+          <div class="flex items-center justify-between mb-3 pb-2 border-b border-white/10 shrink-0">
+            <div>
+              <h3 class="text-xs font-bold text-white">Chọn tệp trên máy để nhập vào</h3>
+              <p class="text-[9.5px] text-slate-300">Chọn file .IPA hoặc .P12</p>
+            </div>
+            <button onclick="closeFilePicker()" class="w-7 h-7 rounded-full bg-white/10 text-slate-300 hover:text-white flex items-center justify-center shrink-0">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
+
+          <div class="space-y-2 overflow-y-auto max-h-60 no-scrollbar pr-0.5">
+            <div onclick="importSpecificFile('Tiktok_Mod_NoAds.ipa', '142 MB', 'IPA')" class="p-2 glass-card rounded-xl flex items-center justify-between cursor-pointer group">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="w-8 h-8 rounded-lg bg-pink-500/25 border border-pink-400/40 text-pink-300 font-bold text-[10px] flex items-center justify-center shrink-0">IPA</div>
+                <div class="min-w-0">
+                  <div class="text-xs font-semibold text-white group-hover:text-cyan-300 truncate">Tiktok_Mod_NoAds.ipa</div>
+                  <div class="text-[9.5px] text-slate-300/80">142 MB • Downloads</div>
+                </div>
+              </div>
+              <span class="h-6 px-2 text-[9.5px] font-semibold text-cyan-300 bg-white/10 rounded-lg border border-white/10 flex items-center justify-center shrink-0">Chọn +</span>
+            </div>
+
+            <div onclick="importSpecificFile('My_New_Cert.p12', '14 KB', 'P12')" class="p-2 glass-card rounded-xl flex items-center justify-between cursor-pointer group">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="w-8 h-8 rounded-lg bg-amber-500/25 border border-amber-400/40 text-amber-300 font-bold text-[10px] flex items-center justify-center shrink-0">P12</div>
+                <div class="min-w-0">
+                  <div class="text-xs font-semibold text-white group-hover:text-amber-300 truncate">My_New_Cert.p12</div>
+                  <div class="text-[9.5px] text-slate-300/80">14 KB • Files</div>
+                </div>
+              </div>
+              <span class="h-6 px-2 text-[9.5px] font-semibold text-amber-300 bg-white/10 rounded-lg border border-white/10 flex items-center justify-center shrink-0">Chọn +</span>
+            </div>
+          </div>
+
+          <div class="mt-3 pt-2 border-t border-white/10 shrink-0">
+            <button onclick="closeFilePicker()" class="w-full h-8 glass-btn text-slate-200 rounded-xl text-xs font-semibold flex items-center justify-center">Đóng</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= MODAL TÙY CHỌN TỪNG TỆP ================= -->
+      <div id="file-action-modal" class="hidden absolute inset-0 bg-black/60 backdrop-blur-md z-50 flex flex-col justify-end">
+        <div class="glass-panel border-t border-white/20 rounded-t-[32px] p-4 flex flex-col">
+          <div class="w-10 h-1 bg-white/30 rounded-full mx-auto mb-3 shrink-0"></div>
+          <div class="text-center mb-3">
+            <div id="action-file-type" class="w-10 h-10 rounded-xl bg-blue-500/25 border border-blue-400/40 text-blue-300 font-bold text-xs flex items-center justify-center mx-auto mb-1">IPA</div>
+            <h3 id="action-file-name" class="text-xs font-bold text-white truncate">Facebook_v450_Pro.ipa</h3>
+            <p id="action-file-size" class="text-[10px] text-slate-300/80">85.2 MB</p>
+          </div>
+          <div class="space-y-1.5 text-xs">
+            <button onclick="goToSignFromSelectedFile()" class="w-full h-9 bg-blue-600/90 hover:bg-blue-500 text-white font-semibold rounded-xl flex items-center justify-center gap-1.5 shadow-lg border border-white/20 transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+              <span>Ký ứng dụng này</span>
+            </button>
+            <button onclick="showSignNotification('Đã giải nén tệp'); closeActionModal();" class="w-full h-8 glass-btn text-slate-200 rounded-xl flex items-center justify-center">Giải nén gói (Unzip)</button>
+            <button onclick="deleteSingleFile()" class="w-full h-8 bg-red-500/20 hover:bg-red-500/30 text-red-300 rounded-xl border border-red-500/30 flex items-center justify-center">Xóa tệp</button>
+            <button onclick="closeActionModal()" class="w-full h-8 text-slate-400 hover:text-white rounded-xl flex items-center justify-center">Hủy</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= MODAL KHUNG KÍNH MỜ CẤU HÌNH KÝ CHUẨN E-SIGN (sign-config-modal) ================= -->
+      <div id="sign-config-modal" class="hidden absolute inset-0 bg-black/70 backdrop-blur-md z-50 flex flex-col justify-end">
+        <div class="glass-panel border-t border-white/20 rounded-t-[32px] p-4 flex flex-col max-h-[90%] overflow-hidden">
+          
+          <!-- Thanh kéo đỉnh Sheet -->
+          <div class="w-10 h-1 bg-white/30 rounded-full mx-auto mb-2 shrink-0"></div>
+
+          <!-- Header Modal: Căn giữa tuyệt đối -->
+          <div class="relative flex items-center justify-center pb-2.5 border-b border-white/10 shrink-0">
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider text-center">Cấu hình ký ứng dụng</h3>
+            <button onclick="closeSignModal()" class="absolute right-0 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center shrink-0">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          </div>
+
+          <!-- Thân Sheet cuộn mượt mà (Toàn bộ thông tin máy, chứng chỉ, E-Sign options) -->
+          <div class="space-y-2.5 overflow-y-auto no-scrollbar py-2.5 flex-1 pr-0.5">
+            
+            <!-- 1. THÔNG TIN ỨNG DỤNG ĐƯỢC CHỌN -->
+            <div class="glass-card rounded-2xl p-2.5 flex items-center gap-2.5">
+              <div id="modal-app-icon" class="w-11 h-11 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center font-bold text-white text-xs shadow shrink-0">
+                FB
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center justify-between">
+                  <h4 id="modal-app-name" class="text-xs font-bold text-white truncate">Facebook Pro</h4>
+                  <span id="modal-app-version" class="text-[9.5px] text-cyan-300 font-mono font-semibold">v450.0</span>
+                </div>
+                <div id="modal-app-bundle" class="text-[9.5px] text-slate-300 font-mono truncate mt-0.5">com.facebook.Facebook</div>
+                <div id="modal-app-size" class="text-[9.5px] text-slate-400 mt-0.5">85.2 MB • Gói IPA gốc</div>
+              </div>
+            </div>
+
+            <!-- 2. THÔNG TIN CHỨNG CHỈ P12 / DOANH NGHIỆP -->
+            <div class="glass-card rounded-2xl p-2.5 space-y-1.5">
+              <div class="flex items-center justify-between border-b border-white/10 pb-1.5">
+                <span class="text-[10px] font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/><circle cx="12" cy="14" r="2" fill="currentColor"/></svg>
+                  Chứng chỉ P12 / Doanh nghiệp
+                </span>
+                <span class="text-[9px] text-emerald-400 bg-emerald-500/20 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  Chưa thu hồi
+                </span>
+              </div>
+              
+              <div class="text-[10px] text-slate-300 space-y-1">
+                <div class="flex justify-between items-center">
+                  <span class="text-slate-400">Tên chứng chỉ:</span>
+                  <span class="text-white font-medium text-right truncate max-w-[170px]">Apple Enterprise: VNSIGN CO.</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-slate-400">Team Name:</span>
+                  <span class="text-white font-mono">VNSIGN PRO (9X8K2MN4P2)</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-slate-400">Thời hạn còn lại:</span>
+                  <span class="text-emerald-300 font-semibold font-mono">Còn 360 ngày (18/11/2027)</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-slate-400">Trạng thái Revoke:</span>
+                  <span class="text-cyan-300">Hoạt động bình thường</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. HỒ SƠ CẤU HÌNH (Provisioning Profile) -->
+            <div class="glass-card rounded-2xl p-2.5 space-y-1.5">
+              <div class="flex items-center justify-between border-b border-white/10 pb-1.5">
+                <span class="text-[10px] font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5 text-purple-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                  Provisioning Profile
+                </span>
+                <span class="text-[9px] text-purple-300 bg-purple-500/20 px-1.5 py-0.5 rounded font-mono">Wildcard (*)</span>
+              </div>
+              <div class="text-[10px] text-slate-300 space-y-1">
+                <div class="flex justify-between items-center">
+                  <span class="text-slate-400">UUID Profile:</span>
+                  <span class="text-slate-200 font-mono text-[9px] truncate max-w-[170px]">e7b92f41-9a14-482d-8b01-34e89201ca77</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-slate-400">Entitlements:</span>
+                  <span class="text-cyan-300 font-mono text-[9px]">get-task-allow: false • keychain:*</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. THÔNG TIN THIẾT BỊ (Device Info chuẩn E-Sign) -->
+            <div class="glass-card rounded-2xl p-2.5 space-y-1.5">
+              <div class="flex items-center justify-between border-b border-white/10 pb-1.5">
+                <span class="text-[10px] font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5 text-cyan-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                  Thông tin thiết bị (Device Info)
+                </span>
+                <span class="text-[9px] text-cyan-300 bg-cyan-500/20 px-1.5 py-0.5 rounded font-mono">Đã nhận diện</span>
+              </div>
+              <div class="text-[10px] text-slate-300 space-y-1">
+                <div class="flex justify-between items-center">
+                  <span class="text-slate-400">Tên thiết bị:</span>
+                  <span class="text-white font-medium">iPhone 16 Pro</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-slate-400">Phiên bản iOS:</span>
+                  <span class="text-cyan-300 font-mono font-medium">iOS 18.2</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-slate-400">Mã UDID:</span>
+                  <span class="text-slate-200 font-mono text-[9px] truncate max-w-[170px]" title="00008101-001248920192001E">00008101-001248920192001E</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. TÙY CHỌN NÂNG CAO (E-Sign Options với iOS Switch Native) -->
+            <div class="glass-card rounded-2xl p-2.5 space-y-2">
+              <div class="flex items-center justify-between border-b border-white/10 pb-1.5">
+                <span class="text-[10px] font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <svg class="w-3.5 h-3.5 text-pink-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+                  Tùy chọn nâng cao (E-Sign Options)
+                </span>
+              </div>
+
+              <!-- Custom App Name -->
+              <div>
+                <label class="block text-[10px] text-slate-300 mb-1">Đổi tên ứng dụng (Custom App Name)</label>
+                <input id="input-custom-name" type="text" class="w-full bg-white/5 border border-white/15 rounded-xl px-2.5 py-1.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 font-medium">
+              </div>
+
+              <!-- Custom Bundle ID -->
+              <div>
+                <label class="block text-[10px] text-slate-300 mb-1">Đổi Bundle ID (Nhân bản App)</label>
+                <input id="input-custom-bundle" type="text" class="w-full bg-white/5 border border-white/15 rounded-xl px-2.5 py-1.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 font-mono text-[11px]">
+              </div>
+
+              <!-- iOS Switch Toggles Căn Thẳng Hàng -->
+              <div class="space-y-2 pt-1">
+                <!-- Inject Dylib -->
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="text-[11px] font-medium text-white">Chèn thư viện (Inject Dylib)</div>
+                    <div id="modal-dylib-name" class="text-[9px] text-cyan-300 font-mono">Rocket.dylib</div>
+                  </div>
+                  <label class="ios-switch">
+                    <input id="toggle-inject-dylib" type="checkbox" checked>
+                    <span class="ios-switch-slider"></span>
+                  </label>
+                </div>
+
+                <!-- Remove Device Limits -->
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="text-[11px] font-medium text-white">Bỏ giới hạn thiết bị (Remove Limits)</div>
+                    <div class="text-[9px] text-slate-400">Cho phép cài trên mọi iPad / iOS cũ hơn</div>
+                  </div>
+                  <label class="ios-switch">
+                    <input id="toggle-remove-limits" type="checkbox" checked>
+                    <span class="ios-switch-slider"></span>
+                  </label>
+                </div>
+
+                <!-- File Sharing -->
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="text-[11px] font-medium text-white">Bật File Sharing (iTunes / Finder)</div>
+                    <div class="text-[9px] text-slate-400">Cho phép truy cập thư mục tài liệu app</div>
+                  </div>
+                  <label class="ios-switch">
+                    <input type="checkbox">
+                    <span class="ios-switch-slider"></span>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Sticky Bottom Action: Nút 'Ký ngay' & Tiến Trình -->
+          <div class="shrink-0 pt-2 border-t border-white/10">
+            <div id="modal-sign-progress-box" class="hidden mb-2">
+              <div class="flex justify-between items-center text-[10px] text-slate-200 mb-1">
+                <span id="modal-sign-status-text">Đang chuẩn bị ký...</span>
+                <span id="modal-sign-pct" class="font-mono text-cyan-300 font-bold">0%</span>
+              </div>
+              <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+                <div id="modal-sign-bar" class="h-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 w-0 transition-all duration-300"></div>
+              </div>
+            </div>
+
+            <button onclick="executeModalSign()" id="modal-btn-sign" class="w-full h-10 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 hover:brightness-110 text-white font-semibold text-xs rounded-xl shadow-lg shadow-cyan-500/25 active:scale-95 transition-all flex items-center justify-center gap-2 border border-white/20">
+              <svg id="modal-sign-icon" class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+              </svg>
+              <span id="modal-sign-text">Ký Ngay Ứng Dụng</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ================= THANH DOCK ĐÁY BO TRÒN VỚI VÒNG BẦU DỤC CĂN CHUẨN 100% ================= -->
+      <div id="dock-bar" class="absolute bottom-4 left-3.5 right-3.5 h-[56px] glass-panel rounded-full border border-white/20 p-1 z-40 shadow-2xl overflow-hidden">
+        
+        <!-- Bầu dục lướt chuyển động mượt mà (Sliding Oval Indicator - Chuẩn xác 100% qua transform % grid) -->
+        <div id="dock-indicator" class="absolute top-1 bottom-1 w-[calc(33.333%-2px)] rounded-full bg-white/15 border border-white/25 backdrop-blur-xl shadow-lg shadow-cyan-500/20 pointer-events-none"></div>
+
+        <!-- 3 Nút Tab căn đều 1/3 tuyệt đối -->
+        <div class="relative w-full h-full flex items-center">
+          
+          <!-- Tab 1: Danh sách tệp tin -->
+          <button onclick="switchTab('files', 0)" id="btn-files" class="tab-btn active relative z-10 w-1/3 h-full flex flex-col items-center justify-center gap-0.5 text-cyan-300 transition-colors">
+            <div class="morphicon morph-folder w-5 h-5 flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path class="folder-top" stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+              </svg>
+            </div>
+            <span class="text-[9.5px] font-semibold tracking-tight">Tệp tin</span>
+          </button>
+
+          <!-- Tab 2: Ký App -->
+          <button onclick="switchTab('sign', 1)" id="btn-sign" class="tab-btn relative z-10 w-1/3 h-full flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-slate-200 transition-colors">
+            <div class="morphicon morph-pen w-5 h-5 flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path class="pen-body" stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                <path class="sign-stroke" stroke-linecap="round" d="M3 21c2-1 4-1 6 0"/>
+              </svg>
+            </div>
+            <span class="text-[9.5px] font-semibold tracking-tight">Ký App</span>
+          </button>
+
+          <!-- Tab 3: Cài đặt -->
+          <button onclick="switchTab('settings', 2)" id="btn-settings" class="tab-btn relative z-10 w-1/3 h-full flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-slate-200 transition-colors">
+            <div class="morphicon morph-gear w-5 h-5 flex items-center justify-center">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </div>
+            <span class="text-[9.5px] font-semibold tracking-tight">Cài đặt</span>
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- Toast Thông Báo Toast Tinh Gọn -->
+      <div id="toast-notify" class="hidden absolute top-12 left-1/2 -translate-x-1/2 px-3.5 py-1.5 bg-slate-900/90 border border-cyan-400/40 rounded-full text-cyan-300 text-[11px] font-semibold backdrop-blur-xl shadow-2xl z-50 flex items-center gap-1.5 transition-all">
+        <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        <span id="toast-msg">Thông báo</span>
+      </div>
+
+      <!-- iOS Home Bar Indicator -->
+      <div class="absolute bottom-1 left-1/2 -translate-x-1/2 w-28 h-1 bg-white/30 rounded-full z-40 pointer-events-none"></div>
+    </div>
+  </div>
+
+  <script>
+    let isSelectMode = false;
+    let currentSelectedFile = null;
+    let isSigning = false;
+    let isLocked = true;
+    let currentTabIndex = 0;
+
+    // Danh mục dữ liệu app trong thư viện chờ ký
+    const LIBRARY_APPS = {
+      fb: {
+        id: 'lib-item-fb',
+        name: 'Facebook Pro',
+        version: 'v450.0',
+        bundle: 'com.facebook.Facebook',
+        size: '85.2 MB',
+        iconBg: 'from-blue-600 to-indigo-600',
+        iconText: 'FB',
+        dylib: 'Rocket.dylib'
+      },
+      tiktok: {
+        id: 'lib-item-tiktok',
+        name: 'TikTok Mod BHTikTok',
+        version: 'v36.2',
+        bundle: 'com.zhiliaoapp.musically',
+        size: '142.8 MB',
+        iconBg: 'from-slate-900 via-rose-600 to-cyan-500',
+        iconText: 'TT',
+        dylib: 'BHTikTok.dylib'
+      },
+      yt: {
+        id: 'lib-item-yt',
+        name: 'YouTube Plus NoAds',
+        version: 'v19.45',
+        bundle: 'com.google.ios.youtube',
+        size: '124.5 MB',
+        iconBg: 'from-red-600 to-rose-700',
+        iconText: 'YT',
+        dylib: 'YTLitePlus.dylib'
+      },
+      capcut: {
+        id: 'lib-item-capcut',
+        name: 'CapCut Pro VIP',
+        version: 'v12.8',
+        bundle: 'com.lemon.lvoverseas',
+        size: '98.6 MB',
+        iconBg: 'from-teal-500 to-emerald-600',
+        iconText: 'CC',
+        dylib: 'CapCutVIP.dylib'
+      }
+    };
+
+    let activeSigningAppKey = 'fb';
+
+    // Hiển thị Toast thông báo
+    function showSignNotification(msg) {
+      const toast = document.getElementById('toast-notify');
+      const text = document.getElementById('toast-msg');
+      if (!toast || !text) return;
+      text.textContent = msg;
+      toast.classList.remove('hidden');
+      toast.style.opacity = '1';
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.classList.add('hidden'), 300);
+      }, 2200);
+    }
+
+    // Cập nhật vị trí Bầu Dục Lướt (Toán học 100% chuẩn xác theo % Grid)
+    function updateDockIndicatorByIndex(index) {
+      const indicator = document.getElementById('dock-indicator');
+      if (!indicator) return;
+      // 3 tab căn đều: index 0 -> translateX(0), index 1 -> translateX(100%), index 2 -> translateX(200%)
+      const pct = index * 100;
+      indicator.style.transform = `translateX(${pct}%)`;
+    }
+
+    // Chuyển Tab chính
+    function switchTab(tabId, index) {
+      closeSettingSubpage();
+      closeSignModal();
+      currentTabIndex = index !== undefined ? index : (tabId === 'files' ? 0 : (tabId === 'sign' ? 1 : 2));
+
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+      const activeContent = document.getElementById('tab-' + tabId);
+      if (activeContent) activeContent.classList.remove('hidden');
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('text-cyan-300', 'text-white', 'active');
+        btn.classList.add('text-slate-400');
+      });
+
+      const activeBtn = document.getElementById('btn-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-400');
+        activeBtn.classList.add('text-cyan-300', 'active');
+        updateDockIndicatorByIndex(currentTabIndex);
+      }
+    }
+
+    // Chuyển Sub-tab trong Ký App
+    function switchSignSubTab(type) {
+      const btnImported = document.getElementById('subtab-imported-btn');
+      const btnSigned = document.getElementById('subtab-signed-btn');
+      const tabImported = document.getElementById('subtab-imported');
+      const tabSigned = document.getElementById('subtab-signed');
+
+      if (type === 'imported') {
+        btnImported.className = "flex-1 h-8 rounded-lg text-xs font-semibold bg-white/20 text-white transition-all shadow flex items-center justify-center";
+        btnSigned.className = "flex-1 h-8 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition-all flex items-center justify-center";
+        tabImported.classList.remove('hidden');
+        tabSigned.classList.add('hidden');
+      } else {
+        btnSigned.className = "flex-1 h-8 rounded-lg text-xs font-semibold bg-white/20 text-white transition-all shadow flex items-center justify-center";
+        btnImported.className = "flex-1 h-8 rounded-lg text-xs font-semibold text-slate-300 hover:text-white transition-all flex items-center justify-center";
+        tabSigned.classList.remove('hidden');
+        tabImported.classList.add('hidden');
+      }
+    }
+
+    // Mở Bảng Ký E-Sign Kính Mờ (sign-config-modal)
+    function openSignModalForApp(appKey) {
+      const app = LIBRARY_APPS[appKey];
+      if (!app) return;
+      activeSigningAppKey = appKey;
+
+      const icon = document.getElementById('modal-app-icon');
+      icon.className = `w-11 h-11 rounded-xl bg-gradient-to-tr ${app.iconBg} flex items-center justify-center font-bold text-white text-xs shadow shrink-0`;
+      icon.textContent = app.iconText;
+
+      document.getElementById('modal-app-name').textContent = app.name;
+      document.getElementById('modal-app-version').textContent = app.version;
+      document.getElementById('modal-app-bundle').textContent = app.bundle;
+      document.getElementById('modal-app-size').textContent = `${app.size} • Gói IPA gốc`;
+      document.getElementById('input-custom-name').value = app.name;
+      document.getElementById('input-custom-bundle').value = app.bundle + '.signed';
+      document.getElementById('modal-dylib-name').textContent = app.dylib;
+
+      // Đặt lại nút ký và thanh tiến trình
+      document.getElementById('modal-sign-progress-box').classList.add('hidden');
+      document.getElementById('modal-sign-bar').style.width = '0%';
+      document.getElementById('modal-sign-pct').textContent = '0%';
+      document.getElementById('modal-btn-sign').disabled = false;
+      document.getElementById('modal-sign-text').textContent = 'Ký Ngay Ứng Dụng';
+
+      document.getElementById('sign-config-modal').classList.remove('hidden');
+    }
+
+    function closeSignModal() {
+      if (isSigning) return;
+      document.getElementById('sign-config-modal').classList.add('hidden');
+    }
+
+    // Tiến hành Ký Ứng Dụng trên Khung Kính Mờ
+    function executeModalSign() {
+      if (isSigning) return;
+      isSigning = true;
+
+      const btn = document.getElementById('modal-btn-sign');
+      const text = document.getElementById('modal-sign-text');
+      const progressBox = document.getElementById('modal-sign-progress-box');
+      const bar = document.getElementById('modal-sign-bar');
+      const pct = document.getElementById('modal-sign-pct');
+      const statusText = document.getElementById('modal-sign-status-text');
+
+      btn.disabled = true;
+      progressBox.classList.remove('hidden');
+      text.textContent = 'Đang ký...';
+
+      let currentPct = 0;
+      const interval = setInterval(() => {
+        currentPct += 20;
+        if (currentPct > 100) currentPct = 100;
+        bar.style.width = currentPct + '%';
+        pct.textContent = currentPct + '%';
+
+        if (currentPct === 20) statusText.textContent = "1/4 Giải nén Payload...";
+        if (currentPct === 40) statusText.textContent = "2/4 Chèn Dylib & Mobileprovision...";
+        if (currentPct === 70) statusText.textContent = "3/4 Niêm phong CodeSignature...";
+        if (currentPct === 90) statusText.textContent = "4/4 Đóng gói tệp IPA...";
+
+        if (currentPct >= 100) {
+          clearInterval(interval);
+          statusText.textContent = "Ký số thành công 100%!";
+          text.textContent = "Đã Ký Thành Công!";
+
+          setTimeout(() => {
+            isSigning = false;
+            closeSignModal();
+
+            // Cập nhật giao diện: ẩn dòng khỏi App thư viện và thêm vào App đã ký
+            const signedApp = LIBRARY_APPS[activeSigningAppKey];
+            if (signedApp) {
+              const row = document.getElementById(signedApp.id);
+              if (row) {
+                row.style.opacity = '0.4';
+                row.style.pointerEvents = 'none';
+              }
+
+              // Tăng số lượng đã ký
+              const countSigned = document.getElementById('count-signed');
+              if (countSigned) {
+                countSigned.textContent = parseInt(countSigned.textContent || '2') + 1;
+              }
+
+              // Tự động chuyển sang mục App đã ký
+              switchSignSubTab('signed');
+              showSignNotification(`Đã ký thành công ${signedApp.name}!`);
+            }
+          }, 800);
+        }
+      }, 250);
+    }
+
+    // Chế độ Chọn Nhiều Tệp
+    function toggleSelectMode() {
+      isSelectMode = !isSelectMode;
+      const bar = document.getElementById('selection-bar');
+      const btn = document.getElementById('btn-select-mode');
+      const checkboxes = document.querySelectorAll('.file-check');
+
+      if (isSelectMode) {
+        bar.classList.remove('hidden');
+        btn.textContent = 'Xong';
+        btn.classList.add('bg-cyan-500/20');
+        checkboxes.forEach(cb => {
+          cb.classList.remove('hidden');
+          cb.checked = false;
+        });
+        updateSelectedCount();
+      } else {
+        bar.classList.add('hidden');
+        btn.textContent = 'Chọn';
+        btn.classList.remove('bg-cyan-500/20');
+        checkboxes.forEach(cb => cb.classList.add('hidden'));
+      }
+    }
+
+    function updateSelectedCount() {
+      const checked = document.querySelectorAll('.file-check:checked').length;
+      document.getElementById('selected-count').textContent = `Đã chọn ${checked} tệp`;
+    }
+
+    document.addEventListener('change', function(e) {
+      if (e.target && e.target.classList.contains('file-check')) {
+        updateSelectedCount();
+      }
+    });
+
+    function deleteSelectedFiles() {
+      const checked = document.querySelectorAll('.file-check:checked');
+      if (checked.length === 0) {
+        showSignNotification("Vui lòng tích chọn ít nhất 1 tệp!");
+        return;
+      }
+      checked.forEach(cb => {
+        const item = cb.closest('.file-item');
+        if (item) item.remove();
+      });
+      toggleSelectMode();
+      showSignNotification("Đã xóa các tệp đã chọn thành công!");
+    }
+
+    function moveSelectedFiles() {
+      const checked = document.querySelectorAll('.file-check:checked');
+      if (checked.length === 0) {
+        showSignNotification("Vui lòng tích chọn ít nhất 1 tệp để di chuyển!");
+        return;
+      }
+      showSignNotification(`Đang di chuyển ${checked.length} tệp...`);
+      toggleSelectMode();
+    }
+
+    // Menu 3 Chấm
+    function toggleMoreMenu() {
+      document.getElementById('more-menu').classList.toggle('hidden');
+    }
+    function closeMoreMenu() {
+      document.getElementById('more-menu').classList.add('hidden');
+    }
+
+    // Bộ Chọn Tệp
+    function openFilePicker() {
+      document.getElementById('file-picker-modal').classList.remove('hidden');
+    }
+    function closeFilePicker() {
+      document.getElementById('file-picker-modal').classList.add('hidden');
+    }
+
+    function importSpecificFile(name, size, type) {
+      closeFilePicker();
+      const list = document.getElementById('file-list');
+      const newItem = document.createElement('div');
+      newItem.className = "file-item glass-card rounded-2xl p-2.5 flex items-center justify-between cursor-pointer transition-all animate-pulse";
+      
+      const color = type === 'IPA' ? 'pink' : 'amber';
+      newItem.innerHTML = `
+        <div class="flex items-center gap-2.5 min-w-0">
+          <input type="checkbox" class="file-check ${isSelectMode ? '' : 'hidden'} w-4 h-4 rounded-full bg-white/10 border-white/30 text-blue-500 focus:ring-0 mr-1" onclick="event.stopPropagation()">
+          <div class="w-9 h-9 rounded-xl bg-${color}-500/25 border border-${color}-400/40 flex items-center justify-center text-${color}-300 font-bold text-xs shrink-0 shadow-inner">
+            ${type}
+          </div>
+          <div class="min-w-0">
+            <div class="text-xs font-semibold text-white drop-shadow-sm truncate">${name}</div>
+            <div class="text-[10px] text-slate-300/80 flex items-center gap-1.5 mt-0.5">
+              <span>${size}</span>
+              <span>•</span>
+              <span class="text-cyan-300 font-semibold">Vừa nhập</span>
+            </div>
+          </div>
+        </div>
+        <button onclick="event.stopPropagation(); quickSignFile('${name}')" class="glass-btn h-7 px-3 text-cyan-300 hover:text-white rounded-xl text-[10px] font-semibold flex items-center justify-center transition-all shrink-0">
+          Ký
+        </button>
+      `;
+      newItem.onclick = (e) => handleFileClick(e, newItem, name, size, type);
+      list.prepend(newItem);
+      setTimeout(() => newItem.classList.remove('animate-pulse'), 1000);
+      showSignNotification(`Đã nhập thành công ${name}!`);
+    }
+
+    function handleFileClick(e, element, name, size, type) {
+      if (isSelectMode) {
+        const cb = element.querySelector('.file-check');
+        if (cb) {
+          cb.checked = !cb.checked;
+          updateSelectedCount();
+        }
+        return;
+      }
+      currentSelectedFile = { name, size, type, element };
+      document.getElementById('action-file-name').textContent = name;
+      document.getElementById('action-file-size').textContent = size;
+      document.getElementById('action-file-type').textContent = type;
+      document.getElementById('file-action-modal').classList.remove('hidden');
+    }
+
+    function closeActionModal() {
+      document.getElementById('file-action-modal').classList.add('hidden');
+    }
+
+    function deleteSingleFile() {
+      if (currentSelectedFile && currentSelectedFile.element) {
+        currentSelectedFile.element.remove();
+        closeActionModal();
+        showSignNotification("Đã xóa tệp thành công!");
+      }
+    }
+
+    function goToSignFromSelectedFile() {
+      if (currentSelectedFile) {
+        closeActionModal();
+        switchTab('sign', 1);
+        switchSignSubTab('imported');
+        openSignModalForApp('fb');
+      }
+    }
+
+    function quickSignFile(name) {
+      switchTab('sign', 1);
+      switchSignSubTab('imported');
+      openSignModalForApp('fb');
+    }
+
+    // Morphicon Lock / Unlock
+    function toggleLockMorph() {
+      isLocked = !isLocked;
+      const container = document.getElementById('lock-icon-container');
+      const statusBtn = document.getElementById('lock-status-btn');
+      if (isLocked) {
+        container.classList.remove('morph-unlocked');
+        statusBtn.textContent = 'Khóa';
+        statusBtn.className = 'h-7 px-3 rounded-xl glass-btn text-xs text-cyan-300 font-semibold flex items-center justify-center shrink-0';
+        showSignNotification('Đã khóa chứng chỉ (Bảo vệ thông tin)');
+      } else {
+        container.classList.add('morph-unlocked');
+        statusBtn.textContent = 'Mở';
+        statusBtn.className = 'h-7 px-3 rounded-xl glass-btn text-xs text-amber-300 font-semibold flex items-center justify-center shrink-0';
+        showSignNotification('Đã mở khóa chứng chỉ');
+      }
+    }
+
+    // Quản lý Subpage trong Cài đặt
+    function openSettingSubpage(subId) {
+      document.querySelectorAll('.setting-subpage').forEach(sub => sub.classList.add('hidden'));
+      const target = document.getElementById('subpage-' + subId);
+      if (target) {
+        target.classList.remove('hidden');
+      }
+    }
+
+    function closeSettingSubpage() {
+      document.querySelectorAll('.setting-subpage').forEach(sub => sub.classList.add('hidden'));
+    }
+
+    function setCompression(name) {
+      document.getElementById('current-compression-label').textContent = name;
+      showSignNotification('Đã lưu cấu hình nén: ' + name);
+      closeSettingSubpage();
+    }
+
+    function setTheme(themeClass, themeName, colorHex) {
+      const screen = document.getElementById('screen');
+      screen.className = `relative w-full h-full bg-theme-${themeClass} text-slate-100 rounded-[42px] flex flex-col overflow-hidden transition-all duration-700`;
+      
+      const dot = document.getElementById('theme-color-indicator');
+      const label = document.getElementById('theme-name-display');
+      if (dot) dot.style.backgroundColor = colorHex;
+      if (label) label.textContent = themeName;
+
+      showSignNotification('Đã đổi nền kính sang: ' + themeName);
+      closeSettingSubpage();
+    }
+
+    // Khởi tạo
+    window.addEventListener('DOMContentLoaded', () => {
+      updateDockIndicatorByIndex(0);
+    });
+  </script>
+</body>
+</html>

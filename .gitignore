@@ -1,0 +1,28 @@
+# Desktop prototypes
+designer/
+vn-studio/
+app ký mã nguồn mở/
+
+# Build Artifacts
+target/
+**/target/
+DerivedData/
+build/
+*.build/
+.build/
+
+# Xcode User Data
+*.xcuserstate
+*.xcuserdatad
+xcuserdata/
+*.xcscmblueprint
+
+# macOS junk
+.DS_Store
+._*
+
+# Temporary & Log files
+*.tmp
+*.log
+*.swp
+*.bak

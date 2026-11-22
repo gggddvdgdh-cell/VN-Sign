@@ -1,0 +1,128 @@
+/* 
+  Localizable.strings (English)
+  VN-Sign Pro - On-Device iOS IPA Signing Tool
+*/
+
+/* Tab Bar */
+"tab_files" = "Files";
+"tab_sign" = "Sign App";
+"tab_settings" = "Settings";
+
+/* Subtabs */
+"subtab_imported" = "Library Apps";
+"subtab_signed" = "Signed Apps";
+
+/* Files View */
+"files_title" = "Files";
+"files_search_placeholder" = "Search IPA, P12, Mobileprovision...";
+"files_import_button" = "Import";
+"files_menu_select_all" = "Select All";
+"files_menu_deselect_all" = "Deselect All";
+"files_menu_delete_selected" = "Delete Selected";
+"files_menu_sort_name" = "Sort by Name";
+"files_menu_sort_date" = "Sort by Date";
+"files_menu_sort_size" = "Sort by Size";
+"files_empty_title" = "No Files Yet";
+"files_empty_subtitle" = "Tap the '+' button in the top right to import IPA files, .p12 certificates, or .mobileprovision profiles.";
+"files_action_sign" = "Sign Now";
+"files_action_share" = "Share";
+"files_action_delete" = "Delete";
+"files_selected_count" = "%d files selected";
+
+/* Sign View */
+"sign_title" = "Sign App";
+"sign_library_empty_title" = "Library is Empty";
+"sign_library_empty_subtitle" = "Import an IPA file from the Files tab to add it to your signing library.";
+"sign_signed_empty_title" = "No Signed Apps Yet";
+"sign_signed_empty_subtitle" = "Select an app from the library and tap the pen icon to begin signing.";
+"sign_btn_install" = "Install";
+"sign_btn_share" = "Share";
+"sign_btn_sign" = "Sign Now";
+"sign_badge_signed" = "Successfully Signed";
+
+/* Sign Sheet Modal */
+"modal_title" = "Signing Configuration";
+"modal_app_info_section" = "App Information";
+"modal_app_name" = "App Name";
+"modal_bundle_id" = "Bundle ID";
+"modal_version" = "Version";
+"modal_size" = "File Size";
+
+"modal_cert_section" = "Certificate & Profile";
+"modal_cert_name" = "Certificate";
+"modal_cert_team" = "Team ID";
+"modal_cert_expiry" = "Expires";
+"modal_cert_status" = "Status";
+"modal_cert_valid" = "Valid";
+"modal_cert_revoked" = "Revoked";
+"modal_cert_days_left" = "%d days left";
+"modal_profile_name" = "Provisioning Profile";
+"modal_profile_wildcard" = "Wildcard (*)";
+
+"modal_device_section" = "Target Device";
+"modal_device_model" = "Device Model";
+"modal_device_os" = "iOS Version";
+"modal_device_udid" = "UDID";
+
+"modal_advanced_section" = "Advanced Options";
+"modal_custom_name_placeholder" = "Custom Display Name (leave blank for original)";
+"modal_custom_bundle_placeholder" = "Custom Bundle ID (e.g., com.vip.app)";
+"modal_inject_dylib" = "Inject Dylib / Tweak";
+"modal_select_dylib" = "Select Dylib";
+"modal_remove_limits" = "Remove Device Limitations";
+"modal_file_sharing" = "Enable iTunes / Files Document Sharing";
+
+"modal_action_start_sign" = "Sign Now";
+"modal_action_signing" = "Processing...";
+"modal_action_success" = "Signing Completed!";
+"modal_action_failed" = "Signing Failed";
+"modal_action_close" = "Close";
+
+/* Signing Progress Steps */
+"step_extract" = "Step 1/4: Extracting IPA archive...";
+"step_inject" = "Step 2/4: Injecting Dylibs & Patching Plist...";
+"step_codesign" = "Step 3/4: Code Signing Mach-O & Sealing Entitlements...";
+"step_package" = "Step 4/4: Repackaging and Compressing IPA...";
+"step_completed" = "Finished! App is ready for installation.";
+
+/* Settings View */
+"settings_title" = "Settings";
+"settings_community_section" = "Community & Support";
+"settings_discord" = "Discord Community";
+"settings_discord_sub" = "discord.gg/679mFrKtH";
+"settings_zalo" = "Zalo Customer Care";
+"settings_zalo_sub" = "0788843545";
+
+"settings_appearance_section" = "Appearance & Wallpaper";
+"settings_wallpaper" = "App Wallpaper";
+"settings_wallpaper_featured" = "Featured Wallpaper";
+"settings_wallpaper_dark" = "OLED Pure Dark";
+"settings_wallpaper_custom" = "Choose from Photos...";
+"settings_blur_intensity" = "Glass Blur Intensity";
+
+"settings_signing_section" = "Signing & Network";
+"settings_anti_revoke" = "Anti-Revoke DNS";
+"settings_anti_revoke_desc" = "Blocks Apple certificate revocation servers (ocsp.apple.com, ppq.apple.com).";
+"settings_compression" = "IPA Compression Level";
+"settings_compression_fast" = "Fast (Store)";
+"settings_compression_balanced" = "Balanced";
+"settings_compression_ultra" = "Ultra (Maximum)";
+
+"settings_storage_section" = "Storage & Data";
+"settings_clear_cache" = "Clear Cache";
+"settings_cache_cleared" = "Cleared %0.1f MB of cached data.";
+"settings_backup" = "Backup Data";
+"settings_restore" = "Restore Data";
+
+"settings_app_info_section" = "About VN-Sign Pro";
+"settings_version" = "Version";
+"settings_build" = "Build";
+"settings_author" = "Developed by VN-Sign Team";
+"settings_disclaimer" = "This software is for research, educational, and personal testing purposes only.";
+
+/* Local Server / Install */
+"install_starting_server" = "Starting local installation server...";
+"install_prompt_title" = "Install Application";
+"install_prompt_message" = "Do you want to install '%@' directly via OTA?";
+"install_confirm" = "Install";
+"install_cancel" = "Cancel";

@@ -1,0 +1,128 @@
+/* 
+  Localizable.strings (Vietnamese)
+  VN-Sign Pro - Trình ký IPA trực tiếp trên iOS
+*/
+
+/* Tab Bar */
+"tab_files" = "Tệp tin";
+"tab_sign" = "Ký ứng dụng";
+"tab_settings" = "Cài đặt";
+
+/* Subtabs */
+"subtab_imported" = "App thư viện";
+"subtab_signed" = "App đã ký";
+
+/* Files View */
+"files_title" = "Tệp tin";
+"files_search_placeholder" = "Tìm tệp IPA, P12, Mobileprovision...";
+"files_import_button" = "Nhập tệp";
+"files_menu_select_all" = "Chọn tất cả";
+"files_menu_deselect_all" = "Bỏ chọn tất cả";
+"files_menu_delete_selected" = "Xoá đã chọn";
+"files_menu_sort_name" = "Sắp xếp theo tên";
+"files_menu_sort_date" = "Sắp xếp theo thời gian";
+"files_menu_sort_size" = "Sắp xếp theo kích thước";
+"files_empty_title" = "Chưa có tệp tin nào";
+"files_empty_subtitle" = "Chạm vào nút '+' góc phải để nhập tệp IPA, chứng chỉ .p12 hoặc hồ sơ .mobileprovision.";
+"files_action_sign" = "Ký ngay";
+"files_action_share" = "Chia sẻ";
+"files_action_delete" = "Xoá tệp";
+"files_selected_count" = "Đã chọn %d tệp";
+
+/* Sign View */
+"sign_title" = "Ký ứng dụng";
+"sign_library_empty_title" = "Thư viện ứng dụng trống";
+"sign_library_empty_subtitle" = "Nhập tệp IPA từ màn hình Tệp tin để thêm vào danh sách ký.";
+"sign_signed_empty_title" = "Chưa có ứng dụng nào được ký";
+"sign_signed_empty_subtitle" = "Chọn ứng dụng từ thư viện và nhấn biểu tượng bút ký để bắt đầu.";
+"sign_btn_install" = "Cài đặt";
+"sign_btn_share" = "Chia sẻ";
+"sign_btn_sign" = "Ký ngay";
+"sign_badge_signed" = "Đã ký thành công";
+
+/* Sign Sheet Modal */
+"modal_title" = "Cấu hình ký ứng dụng";
+"modal_app_info_section" = "Thông tin ứng dụng";
+"modal_app_name" = "Tên ứng dụng";
+"modal_bundle_id" = "Bundle ID";
+"modal_version" = "Phiên bản";
+"modal_size" = "Dung lượng";
+
+"modal_cert_section" = "Chứng chỉ & Hồ sơ ký";
+"modal_cert_name" = "Tên chứng chỉ";
+"modal_cert_team" = "Team ID";
+"modal_cert_expiry" = "Hạn dùng";
+"modal_cert_status" = "Trạng thái";
+"modal_cert_valid" = "Còn hiệu lực";
+"modal_cert_revoked" = "Đã thu hồi";
+"modal_cert_days_left" = "Còn %d ngày";
+"modal_profile_name" = "Hồ sơ cấu hình";
+"modal_profile_wildcard" = "Ký tự đại diện (*)";
+
+"modal_device_section" = "Thiết bị mục tiêu";
+"modal_device_model" = "Dòng máy";
+"modal_device_os" = "Phiên bản iOS";
+"modal_device_udid" = "Mã UDID";
+
+"modal_advanced_section" = "Tùy chọn nâng cao";
+"modal_custom_name_placeholder" = "Tên hiển thị tùy biến (để trống giữ nguyên)";
+"modal_custom_bundle_placeholder" = "Bundle ID tùy biến (vd: com.vip.app)";
+"modal_inject_dylib" = "Tiêm dylib / Tweak";
+"modal_select_dylib" = "Chọn dylib";
+"modal_remove_limits" = "Gỡ bỏ giới hạn thiết bị";
+"modal_file_sharing" = "Bật chia sẻ tệp iTunes/Files";
+
+"modal_action_start_sign" = "Ký ngay";
+"modal_action_signing" = "Đang xử lý...";
+"modal_action_success" = "Ký thành công!";
+"modal_action_failed" = "Lỗi ký tệp";
+"modal_action_close" = "Đóng";
+
+/* Signing Progress Steps */
+"step_extract" = "Bước 1/4: Giải nén gói IPA...";
+"step_inject" = "Bước 2/4: Tiêm Dylib & Tùy biến Plist...";
+"step_codesign" = "Bước 3/4: Ký mã Mach-O & Tạo Seal Entitlements...";
+"step_package" = "Bước 4/4: Nén và đóng gói IPA...";
+"step_completed" = "Hoàn tất! Ứng dụng sẵn sàng cài đặt.";
+
+/* Settings View */
+"settings_title" = "Cài đặt";
+"settings_community_section" = "Cộng đồng & Hỗ trợ";
+"settings_discord" = "Cộng đồng Discord";
+"settings_discord_sub" = "discord.gg/679mFrKtH";
+"settings_zalo" = "Hỗ trợ Zalo CSKH";
+"settings_zalo_sub" = "0788843545";
+
+"settings_appearance_section" = "Giao diện & Hình nền";
+"settings_wallpaper" = "Hình nền ứng dụng";
+"settings_wallpaper_featured" = "Hình nền mặc định (Featured)";
+"settings_wallpaper_dark" = "OLED Đen nguyên bản";
+"settings_wallpaper_custom" = "Chọn ảnh từ thư viện...";
+"settings_blur_intensity" = "Độ mờ kính (Blur)";
+
+"settings_signing_section" = "Cấu hình ký & Mạng";
+"settings_anti_revoke" = "Anti-Revoke DNS";
+"settings_anti_revoke_desc" = "Tự động chặn tên miền thu hồi chứng chỉ của Apple (ocsp.apple.com, ppq.apple.com).";
+"settings_compression" = "Chế độ nén IPA";
+"settings_compression_fast" = "Nhanh (Store)";
+"settings_compression_balanced" = "Cân bằng";
+"settings_compression_ultra" = "Tối đa (Ultra)";
+
+"settings_storage_section" = "Bộ nhớ & Dữ liệu";
+"settings_clear_cache" = "Dọn dẹp bộ nhớ đệm";
+"settings_cache_cleared" = "Đã dọn dẹp %0.1f MB bộ nhớ đệm.";
+"settings_backup" = "Sao lưu dữ liệu";
+"settings_restore" = "Khôi phục dữ liệu";
+
+"settings_app_info_section" = "Về VN-Sign Pro";
+"settings_version" = "Phiên bản";
+"settings_build" = "Bản dựng";
+"settings_author" = "Phát triển bởi VN-Sign Team";
+"settings_disclaimer" = "Ứng dụng phục vụ mục đích nghiên cứu, học tập và kiểm thử phần mềm trên thiết bị cá nhân.";
+
+/* Local Server / Install */
+"install_starting_server" = "Đang khởi động máy chủ cài đặt nội bộ...";
+"install_prompt_title" = "Cài đặt ứng dụng";
+"install_prompt_message" = "Bạn có muốn mở Cài đặt để cài đặt '%@' không?";
+"install_confirm" = "Cài đặt";
+"install_cancel" = "Hủy";
