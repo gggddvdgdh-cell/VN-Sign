@@ -147,14 +147,14 @@ public struct SignView: View {
         .toast(item: $toastMessage)
         .alert(isPresented: $showInstallAlert) {
             Alert(
-                title: Text(NSLocalizedString("install_prompt_title", comment: "")),
-                message: Text(String(format: NSLocalizedString("install_prompt_message", comment: ""), appToInstall?.name ?? "")),
-                primaryButton: .default(Text(NSLocalizedString("install_confirm", comment: "")), action: {
+                title: Text("Cài đặt trực tiếp (OTA)"),
+                message: Text("Hệ thống sẽ khởi tạo máy chủ OTA HTTPS nội bộ để cài đặt '\(appToInstall?.name ?? "")' trực tiếp lên màn hình chính.\n\n(Lưu ý: Nếu chưa cài đặt hồ sơ CA trong Cài đặt, hãy vào Cài đặt để kích hoạt hồ sơ VN-Sign CA trước)."),
+                primaryButton: .default(Text("Cài đặt ngay"), action: {
                     if let app = appToInstall {
                         LocalServer.shared.installAppDirectly(app)
                     }
                 }),
-                secondaryButton: .cancel(Text(NSLocalizedString("install_cancel", comment: "")))
+                secondaryButton: .cancel(Text("Hủy"))
             )
         }
     }

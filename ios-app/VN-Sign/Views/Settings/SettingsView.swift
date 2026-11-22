@@ -45,6 +45,7 @@ public struct SettingsView: View {
     
     @State private var profileToDelete: ProvisioningProfile?
     @State private var showDeleteProfileAlert = false
+    @State private var showCAInstructionsAlert = false
     
     public init() {}
     
@@ -188,6 +189,17 @@ public struct SettingsView: View {
                 .lineLimit(nil)
                 .minimumScaleFactor(0.75)
                 .fixedSize(horizontal: false, vertical: true)
+        }
+        .alert("Cài đặt Hồ sơ Tin cậy VN-Sign", isPresented: $showCAInstructionsAlert) {
+            Button("Mở Safari Cài Đặt") {
+                LocalServer.shared.openCAProfileInstallation()
+            }
+            Button("Chia sẻ Tệp .mobileconfig") {
+                LocalServer.shared.shareCAProfileFile()
+            }
+            Button("Đóng", role: .cancel) {}
+        } message: {
+            Text("Thực hiện 3 bước sau (chỉ cần làm 1 lần duy nhất cho máy):\n\n1. Bấm 'Mở Safari Cài Đặt' ➔ Bấm 'Cho phép' khi hỏi tải về hồ sơ.\n\n2. Mở Cài đặt trên iPhone ➔ Chọn dòng 'Đã tải về hồ sơ' ➔ Bấm 'Cài đặt'.\n\n3. Vào Cài đặt ➔ Cài đặt chung ➔ Giới thiệu ➔ Cài đặt tin cậy chứng nhận (ở cuối trang) ➔ Gạt BẬT 'VN-Sign Local Root CA'.")
         }
     }
     
@@ -771,6 +783,66 @@ public struct SettingsView: View {
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
+                }
+                
+                Divider().background(Color.white.opacity(0.08))
+                
+                // CA Profile Section for Direct On-Device OTA Install
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "checkmark.shield.fill")
+                            .font(.system(size: 16))
+                            .foregroundColor(AppTheme.cyan400)
+                        
+                        Text("Cài Đặt Trực Tiếp (Hồ Sơ Tin Cậy CA)")
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundColor(.white)
+                            .lineLimit(nil)
+                            .minimumScaleFactor(0.75)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    
+                    Text("Cài đặt hồ sơ chứng chỉ tin cậy của VN-Sign một lần duy nhất vào iPhone để kích hoạt tính năng cài đặt trực tiếp không qua máy tính và không bị lỗi kết nối.")
+                        .font(.system(size: 11))
+                        .foregroundColor(Color.white.opacity(0.6))
+                        .lineLimit(nil)
+                        .minimumScaleFactor(0.75)
+                        .fixedSize(horizontal: false, vertical: true)
+                    
+                    HStack(spacing: 8) {
+                        Button(action: {
+                            showCAInstructionsAlert = true
+                        }) {
+                            HStack(spacing: 6) {
+                                Image(systemName: "arrow.down.doc.fill")
+                                Text("Cài Đặt Hồ Sơ CA")
+                            }
+                            .font(.system(size: 13, weight: .bold))
+                            .foregroundColor(.black)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 9)
+                            .background(AppTheme.cyanGradient)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .cyanGlow(radius: 4)
+                        }
+                        .buttonStyle(ScaleButtonStyle())
+                        
+                        Button(action: {
+                            LocalServer.shared.shareCAProfileFile()
+                        }) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "square.and.arrow.up")
+                                Text("Chia sẻ File")
+                            }
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 9)
+                            .background(Color.white.opacity(0.12))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                        }
+                        .buttonStyle(ScaleButtonStyle())
+                    }
                 }
             }
         }

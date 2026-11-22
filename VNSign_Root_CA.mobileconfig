@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>PayloadCertificateFileName</key>
+            <string>vnsign_root_ca.crt</string>
+            <key>PayloadContent</key>
+            <data>
+MIIDZjCCAk6gAwIBAgIUbQuBpSu1bbGmOiasqbe0EfY21iQwDQYJKoZIhvcNAQEL
+BQAwSzEeMBwGA1UEAwwVVk4tU2lnbiBMb2NhbCBSb290IENBMRwwGgYDVQQKDBNW
+Ti1TaWduIENvcnBvcmF0aW9uMQswCQYDVQQGEwJWTjAeFw0yNjExMjExNDQzNTRa
+Fw00NjExMTcxNDQzNTRaMEsxHjAcBgNVBAMMFVZOLVNpZ24gTG9jYWwgUm9vdCBD
+QTEcMBoGA1UECgwTVk4tU2lnbiBDb3Jwb3JhdGlvbjELMAkGA1UEBhMCVk4wggEi
+MA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDXzQkRdvAgU+h7SQbS42JHc2+i
+8OaVbB4NETwjqGIZfOGyBOct3+cBaGFp0aaIh4dMyHJi3jbBfPLpnMDK4ZtS5DDA
+3qj8FtgFlluTveDzsdxb+FqyPy9gwXT6OoQ0VkW08UoZ5tdEYUvFS8siUWNKn/tv
+GgFLTtQyuUvAFqceb2juspvov4/DA5whIHyRmUD6ZvPjQ9Bf70QaCjPPIQgrKEIz
++Ow1da00z1otZvOc7pFw22FNtRoqIytIoWG46LrcWREBuuwZe/6Bo2pSDV0s42Ef
+gg8/dAvTPKxK0ZOab/1KGrJYHRBqd9XlC/TOOlqkaLa/q+zmhzEVHRN80w9NAgMB
+AAGjQjBAMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgGGMB0GA1UdDgQW
+BBRAti2PwfkMZrA/2yoFyLDF+ly5gjANBgkqhkiG9w0BAQsFAAOCAQEAVVNchm3m
+lRLoFb+WDKJFAG/9u8v2fRpx6hXuNdEZdSz4JIQyvxefASpTHLE8J8SbX2LjtwXl
+k1C0g/PjSJNUr4uGordcYGPUFthUKgiTTxYRlmgjB5+fcy7s9mISudtdfyaO+mY6
+BXpvVlMim3nOaoYN2yeqOKNMne/HdQPVOKweoyi8i/atx2tjZz9MZ4wfqFlcALS8
+FOxYvOUJoY7mlqIlw6QAQtBwryIU3KSwghmh6Kovx6+VdZ9FsK1noJ9GVsOQQJj2
+LjvpBPUTXnZ74v3sfYh9gzDodNI6k+ABV833qs0Bbx1eNxw9vx9cZFhKWQTHNHiP
+iyf/5gAA1NSRWg==
+            </data>
+            <key>PayloadDescription</key>
+            <string>Chứng chỉ gốc tin cậy nội bộ phục vụ cài đặt trực tiếp ứng dụng OTA HTTPS cho VN-Sign.</string>
+            <key>PayloadDisplayName</key>
+            <string>VN-Sign Local Root CA</string>
+            <key>PayloadIdentifier</key>
+            <string>com.vnsign.rootca.cert</string>
+            <key>PayloadType</key>
+            <string>com.apple.security.root</string>
+            <key>PayloadUUID</key>
+            <string>406A1F0D-EB94-481C-B7E3-CB02E803A435</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+        </dict>
+    </array>
+    <key>PayloadDescription</key>
+    <string>Cài đặt hồ sơ này để iPhone tin cậy máy chủ nội bộ VN-Sign và cho phép cài đặt trực tiếp ứng dụng không cần máy tính.</string>
+    <key>PayloadDisplayName</key>
+    <string>VN-Sign Local CA Profile</string>
+    <key>PayloadIdentifier</key>
+    <string>com.vnsign.rootca.profile</string>
+    <key>PayloadOrganization</key>
+    <string>VN-Sign Corporation</string>
+    <key>PayloadRemovalDisallowed</key>
+    <false/>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadUUID</key>
+    <string>89F95809-F913-4B31-80E1-BBF255FAA2A0</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+</dict>
+</plist>

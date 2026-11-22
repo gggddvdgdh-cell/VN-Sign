@@ -1,16 +1,20 @@
 import Foundation
 import Network
+import Security
 import UIKit
 
-/// Máy chủ HTTPS / HTTP cục bộ phục vụ giao thức itms-services:// để cài đặt trực tiếp không qua máy tính
+/// Máy chủ HTTPS (TLS) và HTTP cục bộ phục vụ giao thức itms-services:// để cài đặt trực tiếp không qua máy tính
 public final class LocalServer: ObservableObject {
     public static let shared = LocalServer()
     
     @Published public var isRunning: Bool = false
-    @Published public var serverPort: UInt16 = 8080
+    @Published public var httpsPort: UInt16 = ServerIdentity.httpsPort
+    @Published public var httpPort: UInt16 = ServerIdentity.httpPort
     @Published public var statusMessage: String = "Sẵn sàng"
+    public var serverPort: UInt16 { httpsPort }
     
-    private var listener: NWListener?
+    private var httpsListener: NWListener?
+    private var httpListener: NWListener?
     private let queue = DispatchQueue(label: "com.vnsign.localserver.queue")
     private var currentServedApp: AppItem?
     
@@ -18,45 +22,68 @@ public final class LocalServer: ObservableObject {
     
     // MARK: - Start / Stop Server
     
-    /// Khởi động máy chủ cục bộ trên cổng chỉ định
-    public func startServer(port: UInt16 = 8080) throws {
+    /// Khởi động máy chủ HTTPS (cổng 8443) và HTTP (cổng 8080)
+    public func startServer() throws {
         guard !isRunning else { return }
         
-        self.serverPort = port
-        let parameters = NWParameters.tcp
-        
-        let nwPort = NWEndpoint.Port(rawValue: port) ?? NWEndpoint.Port(rawValue: 8080)!
-        self.listener = try NWListener(using: parameters, on: nwPort)
-        
-        self.listener?.newConnectionHandler = { [weak self] connection in
-            self?.handleConnection(connection)
+        // 1. Khởi động HTTPS Listener với chứng chỉ bảo mật VN-Sign
+        if let tlsParameters = createTLSParameters() {
+            let nwHttpsPort = NWEndpoint.Port(rawValue: httpsPort) ?? NWEndpoint.Port(rawValue: 8443)!
+            self.httpsListener = try NWListener(using: tlsParameters, on: nwHttpsPort)
+            
+            self.httpsListener?.newConnectionHandler = { [weak self] connection in
+                self?.handleConnection(connection, isTLS: true)
+            }
+            
+            self.httpsListener?.stateUpdateHandler = { [weak self] state in
+                DispatchQueue.main.async {
+                    switch state {
+                    case .ready:
+                        self?.isRunning = true
+                        self?.statusMessage = "Máy chủ OTA HTTPS đang chạy (Port \(self?.httpsPort ?? 8443))"
+                    case .failed(let error):
+                        self?.statusMessage = "Lỗi HTTPS: \(error.localizedDescription)"
+                    default:
+                        break
+                    }
+                }
+            }
+            
+            self.httpsListener?.start(queue: queue)
         }
         
-        self.listener?.stateUpdateHandler = { [weak self] state in
+        // 2. Khởi động HTTP Listener phục vụ tải file .mobileconfig
+        let httpParameters = NWParameters.tcp
+        let nwHttpPort = NWEndpoint.Port(rawValue: httpPort) ?? NWEndpoint.Port(rawValue: 8080)!
+        self.httpListener = try NWListener(using: httpParameters, on: nwHttpPort)
+        
+        self.httpListener?.newConnectionHandler = { [weak self] connection in
+            self?.handleConnection(connection, isTLS: false)
+        }
+        
+        self.httpListener?.stateUpdateHandler = { [weak self] state in
             DispatchQueue.main.async {
                 switch state {
                 case .ready:
                     self?.isRunning = true
-                    self?.statusMessage = "Máy chủ OTA đang chạy trên cổng \(port)"
                 case .failed(let error):
-                    self?.isRunning = false
-                    self?.statusMessage = "Lỗi máy chủ: \(error.localizedDescription)"
-                case .cancelled:
-                    self?.isRunning = false
-                    self?.statusMessage = "Máy chủ đã dừng"
+                    print("[LocalServer] HTTP Listener failed: \(error)")
                 default:
                     break
                 }
             }
         }
         
-        self.listener?.start(queue: queue)
+        self.httpListener?.start(queue: queue)
     }
     
-    /// Dừng máy chủ cục bộ
+    /// Dừng toàn bộ máy chủ cục bộ
     public func stopServer() {
-        listener?.cancel()
-        listener = nil
+        httpsListener?.cancel()
+        httpsListener = nil
+        httpListener?.cancel()
+        httpListener = nil
+        
         DispatchQueue.main.async {
             self.isRunning = false
             self.statusMessage = "Đã dừng"
@@ -65,36 +92,100 @@ public final class LocalServer: ObservableObject {
     
     // MARK: - Direct Installation Action
     
-    /// Bắt đầu quy trình cài đặt OTA trực tiếp cho ứng dụng đã ký
+    /// Bắt đầu quy trình cài đặt OTA trực tiếp qua giao thức HTTPS bảo mật
     @MainActor
     public func installAppDirectly(_ app: AppItem) {
         self.currentServedApp = app
         
         if !isRunning {
-            try? startServer(port: self.serverPort)
+            try? startServer()
         }
         
-        // Tạo manifest URL
-        let localIP = getWiFiAddress() ?? "127.0.0.1"
-        let manifestEndpoint = "http://\(localIP):\(serverPort)/manifest.plist"
+        // Tạo manifest endpoint qua HTTPS 127.0.0.1
+        let manifestEndpoint = "https://127.0.0.1:\(httpsPort)/manifest.plist"
         guard let encodedManifest = manifestEndpoint.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let itmsURL = URL(string: "itms-services://?action=download-manifest&url=\(encodedManifest)") else {
             return
         }
         
-        // Mở itms-services:// để iOS tải và cài đặt
+        // Kích hoạt giao thức cài đặt OTA ngầm của Apple
         UIApplication.shared.open(itmsURL, options: [:]) { success in
             if success {
-                print("[LocalServer] Đã mở yêu cầu cài đặt itms-services thành công!")
+                print("[LocalServer] Đã mở yêu cầu itms-services HTTPS thành công!")
             } else {
                 print("[LocalServer] Không thể mở URL itms-services.")
             }
         }
     }
     
-    // MARK: - HTTP Request Handling
+    /// Hỗ trợ người dùng mở và cài đặt hồ sơ chứng chỉ CA cục bộ vào iPhone
+    @MainActor
+    public func openCAProfileInstallation() {
+        if !isRunning {
+            try? startServer()
+        }
+        
+        // Mở Safari để tải file cấu hình .mobileconfig từ cổng 8080
+        if let url = URL(string: "http://127.0.0.1:\(httpPort)/ca.mobileconfig") {
+            UIApplication.shared.open(url, options: [:]) { success in
+                if !success {
+                    // Dự phòng: Chia sẻ trực tiếp file .mobileconfig qua Share Sheet
+                    self.shareCAProfileFile()
+                }
+            }
+        }
+    }
     
-    private func handleConnection(_ connection: NWConnection) {
+    /// Xuất và chia sẻ file .mobileconfig ra ngoài
+    @MainActor
+    public func shareCAProfileFile() {
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("VNSign_Root_CA.mobileconfig")
+        try? ServerIdentity.rootCAMobileConfig.data(using: .utf8)?.write(to: tempURL)
+        
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootVC = windowScene.windows.first?.rootViewController {
+            let activityVC = UIActivityViewController(activityItems: [tempURL], applicationActivities: nil)
+            if let popover = activityVC.popoverPresentationController {
+                popover.sourceView = rootVC.view
+                popover.sourceRect = CGRect(x: rootVC.view.bounds.midX, y: rootVC.view.bounds.midY, width: 0, height: 0)
+                popover.permittedArrowDirections = []
+            }
+            rootVC.present(activityVC, animated: true)
+        }
+    }
+    
+    // MARK: - TLS Identity Configuration
+    
+    private func createTLSParameters() -> NWParameters? {
+        guard let p12Data = Data(base64Encoded: ServerIdentity.p12Base64) else { return nil }
+        let options: [String: Any] = [
+            kSecImportExportPassphrase as String: ServerIdentity.p12Password
+        ]
+        
+        var rawItems: CFArray?
+        let status = SecPKCS12Import(p12Data as CFData, options as CFDictionary, &rawItems)
+        guard status == errSecSuccess,
+              let items = rawItems as? [[String: Any]],
+              let firstItem = items.first,
+              let identity = firstItem[kSecImportItemIdentity as String] as! SecIdentity? else {
+            print("[LocalServer] Không thể nhập SecIdentity từ p12: \(status)")
+            return nil
+        }
+        
+        let tlsOptions = NWProtocolTLS.Options()
+        guard let secIdentity = sec_identity_create(identity) else {
+            print("[LocalServer] sec_identity_create thất bại")
+            return nil
+        }
+        
+        sec_protocol_options_set_local_identity(tlsOptions.securityProtocolOptions, secIdentity)
+        
+        return NWParameters(tls: tlsOptions, tcp: NWProtocolTCP.Options())
+    }
+    
+    // MARK: - HTTP / HTTPS Request Handling
+    
+    private func handleConnection(_ connection: NWConnection, isTLS: Bool) {
         connection.start(queue: queue)
         
         connection.receive(minimumIncompleteLength: 1, maximumLength: 4096) { [weak self] (data, _, isComplete, error) in
@@ -118,7 +209,9 @@ public final class LocalServer: ObservableObject {
             
             let path = parts[1]
             
-            if path.contains("manifest.plist") {
+            if path.contains("ca.mobileconfig") {
+                self.serveMobileConfig(connection: connection)
+            } else if path.contains("manifest.plist") {
                 self.serveManifest(connection: connection)
             } else if path.contains("download.ipa") {
                 self.serveIPA(connection: connection)
@@ -126,6 +219,25 @@ public final class LocalServer: ObservableObject {
                 self.serveNotFound(connection: connection)
             }
         }
+    }
+    
+    private func serveMobileConfig(connection: NWConnection) {
+        let configData = ServerIdentity.rootCAMobileConfig.data(using: .utf8) ?? Data()
+        let header = """
+        HTTP/1.1 200 OK\r
+        Content-Type: application/x-apple-aspen-config\r
+        Content-Length: \(configData.count)\r
+        Content-Disposition: attachment; filename="VNSign_Root_CA.mobileconfig"\r
+        Connection: close\r
+        \r
+        """
+        
+        var response = header.data(using: .utf8)!
+        response.append(configData)
+        
+        connection.send(content: response, completion: .contentProcessed({ _ in
+            connection.cancel()
+        }))
     }
     
     private func serveManifest(connection: NWConnection) {
@@ -137,8 +249,8 @@ public final class LocalServer: ObservableObject {
             originalIpaPath: ""
         )
         
-        let localIP = getWiFiAddress() ?? "127.0.0.1"
-        let downloadURL = "http://\(localIP):\(serverPort)/download.ipa"
+        // URL tải IPA bắt buộc phải qua HTTPS 127.0.0.1
+        let downloadURL = "https://127.0.0.1:\(httpsPort)/download.ipa"
         
         let manifestXML = """
         <?xml version="1.0" encoding="UTF-8"?>
@@ -218,32 +330,5 @@ public final class LocalServer: ObservableObject {
         connection.send(content: response.data(using: .utf8), completion: .contentProcessed({ _ in
             connection.cancel()
         }))
-    }
-    
-    // MARK: - Device IP Resolution
-    
-    private func getWiFiAddress() -> String? {
-        var address: String?
-        var ifaddr: UnsafeMutablePointer<ifaddrs>?
-        guard getifaddrs(&ifaddr) == 0 else { return nil }
-        guard let firstAddr = ifaddr else { return nil }
-        
-        for ifptr in sequence(first: firstAddr, next: { $0.pointee.ifa_next }) {
-            let interface = ifptr.pointee
-            let addrFamily = interface.ifa_addr.pointee.sa_family
-            if addrFamily == UInt8(AF_INET) {
-                let name = String(cString: interface.ifa_name)
-                if name == "en0" || name == "en1" || name == "lo0" {
-                    var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
-                    getnameinfo(interface.ifa_addr, socklen_t(interface.ifa_addr.pointee.sa_len),
-                                &hostname, socklen_t(hostname.count),
-                                nil, socklen_t(0), NI_NUMERICHOST)
-                    address = String(cString: hostname)
-                    if name == "en0" { break } // Ưu tiên Wi-Fi en0
-                }
-            }
-        }
-        freeifaddrs(ifaddr)
-        return address
     }
 }
