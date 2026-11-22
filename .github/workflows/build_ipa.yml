@@ -84,6 +84,14 @@ jobs:
           echo "Đã tìm thấy VN-Sign.app tại: $BUILT_APP"
           ls -la "$BUILT_APP"
 
+          # KIỂM TRA BẮT BUỘC: File thực thi nhị phân Mach-O ARM64 phải tồn tại
+          if [ ! -f "$BUILT_APP/VN-Sign" ]; then
+            echo "CRITICAL ERROR: Tệp thực thi VN-Sign không được biên dịch vào .app!"
+            echo "=== TOÀN BỘ LOG XCODEBUILD ==="
+            cat xcodebuild.log
+            exit 1
+          fi
+
           echo "=== 4. Đóng gói vào cấu trúc Payload/ và tạo file VN-Sign.ipa ==="
           rm -rf Payload VN-Sign.ipa
           mkdir -p Payload
@@ -116,8 +124,8 @@ jobs:
           retention-days: 30
           if-no-files-found: error
 
-      - name: Upload Build Log on Failure
-        if: failure()
+      - name: Upload Full Xcodebuild Log
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: xcodebuild-log
